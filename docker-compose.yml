@@ -12,10 +12,10 @@ services:
             - ../database/FigureDB.js:/docker-entrypoint-initdb.d/FigureDB.js:ro
         command: mongod --auth
         environment:
-            MONGO_INITDB_DATABASE: FigureDatabase
+            MONGO_INITDB_DATABASE: FigureDB
             MONGO_INITDB_ROOT_USERNAME: figureAdmin
             MONGO_INITDB_ROOT_PASSWORD: proyectoweb
-        container_name: db_FigureItOut
+        container_name: db_figureitout
     #Api
     api_figureitout:
         image: api
