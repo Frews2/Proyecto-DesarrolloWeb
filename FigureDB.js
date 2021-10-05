@@ -1,4 +1,4 @@
-database.Contrasenias.insert([
+db.Contrasenias.insert([
     {
         "Id": "e04b7d73-3908-4b94-8df1-9b6dc71f38c5",
         "Password": "pass"
@@ -17,7 +17,7 @@ database.Contrasenias.insert([
     }
 ])
 
-database.Cuentas.insert([
+db.Cuentas.insert([
     {
         "Id": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
         "Email": "sam@gmail.com",
@@ -44,14 +44,14 @@ database.Cuentas.insert([
     }
 ])
 
-database.Administradores.insert([
+db.Administradores.insert([
     {
         "IdCuenta": "2fda76ac-6382-41d4-8208-2e4324c495fc",
         "Apodo": "sam@gmail.com"
     }
 ])
 
-database.Periodistas.insert([
+db.Periodistas.insert([
     {
         "IdCuenta": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
         "Nombre": "Samuel Juarez",
@@ -64,7 +64,7 @@ database.Periodistas.insert([
     }
 ])
 
-database.Coleccionistas.insert([
+db.Coleccionistas.insert([
     {
         "IdCuenta": "6f2850f9-b82f-451d-baf2-26fd93874418",
         "Apodo": "Frews",
@@ -87,7 +87,7 @@ database.Coleccionistas.insert([
     }
 ])
 
-database.Figuras.insert([
+db.Figuras.insert([
     {
         "Id": "b763f4b3-f67a-498e-917d-f74b4affb19e",
         "Nombre": "Batman 2021 edicion especial",
@@ -98,7 +98,7 @@ database.Figuras.insert([
     }
 ])
 
-database.Colecciones.insert([
+db.Colecciones.insert([
     {
         "Id": "b763f4b3-f67a-498e-917d-f74b4affb19e",
         "IdPropietario": "Batman 2021 edicion especial",
@@ -106,7 +106,7 @@ database.Colecciones.insert([
     }
 ])
 
-database.Noticias.insert([
+db.Noticias.insert([
     {
         "Id": "a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
         "IdPeriodista": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
@@ -118,7 +118,7 @@ database.Noticias.insert([
     }
 ])
 
-database.Publicaciones.insert([
+db.Publicaciones.insert([
     {
         "Id": "296586c3-f036-49f8-b6c0-4f051de6c90a",
         "IdColeccionista": "6f2850f9-b82f-451d-baf2-26fd93874418",
@@ -131,7 +131,7 @@ database.Publicaciones.insert([
     }
 ])
 
-database.Comentarios.insert([
+db.Comentarios.insert([
     {
         "IdPublicacion": "296586c3-f036-49f8-b6c0-4f051de6c90a",
         "Texto": "Buen review",
@@ -139,7 +139,7 @@ database.Comentarios.insert([
     }
 ])
 
-database.Reviews.insert([
+db.Reviews.insert([
     {
         "IdPublicacion": "5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
         "Texto": "Review sobre el nuevo Batman 2021",
@@ -149,7 +149,7 @@ database.Reviews.insert([
     }
 ])
 
-database.Reportes.insert([
+db.Reportes.insert([
     {
         "Id": "7e15a339-c2b0-4210-b82c-a79f6db5f7ee",
         "IdPublicacion": "296586c3-f036-49f8-b6c0-4f051de6c90a",
