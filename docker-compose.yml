@@ -18,13 +18,13 @@ services:
         container_name: db_FigureItOut
     #Api
     api_figureitout:
-        image: api_FIO
+        image: api
         depends_on: 
             - "mongo_database"
         ports:
             - "4000:4000"
         build: 
-            context: ../API/
+            context: ../api/
             dockerfile: Dockerfile
 volumes:
     db_volume_mongo_database:
