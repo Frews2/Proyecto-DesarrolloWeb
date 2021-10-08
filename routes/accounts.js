@@ -26,6 +26,7 @@ router.post("/registeruser", async (req, res) => {
         } else{
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if (err) {
+                    console.log(err)
                     return res.status(500).json({
                         success: false,
                         origin: "accounts/registeruser",
@@ -86,7 +87,7 @@ router.post("/registeruser", async (req, res) => {
                                 }
                             })
                         })
-                        .catch(err => {
+                        .catch(error => {
                             console.error("An error ocurred while creating account", error);
                             return res.status(500).json({
                                 success: false,

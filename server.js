@@ -16,6 +16,9 @@ const app = express();
 const PORT = 4000;
 const urlDB = process.env.DB_CONNECTION_STRING;
 
+const allowedOrigins = [
+    'http://localhost:3314'
+]
 mongoose.connect(urlDB).then(() => {
     console.log('successfully connected to database');
     }).catch(err => {
