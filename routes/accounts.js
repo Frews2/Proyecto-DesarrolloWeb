@@ -1,91 +1,176 @@
 import express from "express";
-import mongo from "mongodb";
-import assert from "assert";
-import axios from "axios";
+import Cuenta from "../models/cuenta.js";
+import Administrador from "../models/administrador.js";
+import Coleccionista from "../models/coleccionista.js";
+import Periodista from "../models/periodista.js";
+import bcrypt  from "bcrypt";
+import jwt from "jsonwebtoken";
+
+
 
 const router = express.Router();
-const urlDB = process.env.DB_CONNECTION_STRING;
-const client = new mongo(urlDB);
 
-router.post("/RegisterUser", async (req, res) => {
-    
-    try{
-        const {account} = req.body;
-        var folderPath = process.cwd() + "/recursos/" + perfil + "/";
-        var filePath = folderPath + archivo.name;
-        
-        let arregloBytes = archivo;
-        let buffer = Buffer.from(arregloBytes.data.data);
-        
-
-        fileSystem.mkdir(folderPath, null, function (err) {
-            if (err) {
-                console.log('AVISO: Guardando en directorio existente');
-            };
-        })
-
-        fileSystem.writeFile(filePath, buffer, function (err) {
-            return res.status(200).json({
-                success: true,
-                origin: "RegisterAccount/SaveImg",
+router.post("/registeruser", async (req, res) => {
+    Cuenta.find({Email: req.body.email})
+    .exec()
+    .then(user => {
+        if(user.length >= 1) {
+            return res.status(422).json({
+                success: false,
+                origin: "accounts/registeruser",
                 data: {
-                message: "Se guardo el archivo en directorio ",
-                result: filePath} }); 
-        })
-    }
-    catch (error) {
-        console.error("Error en Guardar Imagen de perfil", error);
-        return res.status(400).json({
-        success: false,
-        origin: "RegisterAccount/SaveImg",
-        data: {
-        message: "No se pudo guardar Imagen de perfil",
-        result: null} }); 
-    }
+                    message: "Could not create account due to duplicate email:",
+                    result: null
+                }
+            });
+        } else{
+            bcrypt.hash(req.body.password, 10, (err, hash) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        origin: "accounts/registeruser",
+                        data: {
+                            message: "Could not generate password encryption protection",
+                            result: null
+                        }
+                    });
+                } else {
+                    const newUser = new Cuenta({
+                        Id: new mongoose.Types.ObjectId(),
+                        Email: req.body.email,
+                        TipoCuenta: req.body.tipoCuenta,
+                        Password: hash
+                    });
+                    const userType = newUser.TipoCuenta;
+                    const newUserInfo;
+                    switch (userType) {
+                        case "Administrador":
+                            newUserInfo = new Administrador({
+                                IdCuenta: newUser.Id,
+                                Apodo: req.body.apodo
+                            });
+                            break;
+                        case "Coleccionista":
+                            newUserInfo = new Coleccionista({
+                                IdCuenta: newUser.Id,
+                                Apodo: req.body.apodo,
+                                FechaRegistro: req.body.fechaRegistro,
+                                FechaNacimiento: req.body.fechaNacimiento,
+                                Pais: req.body.pais,
+                                Sexo: req.body.sexo,
+                                Estatus: "Activo"
+                            });
+                            break;
+                        case "Periodista":
+                            newUserInfo = new Periodista({
+                                IdCuenta: newUser.Id,
+                                Nombre: req.body.nombre,
+                                Ocupacion: req.body.ocupacion,
+                                FechaRegistro: req.body.fechaRegistro,
+                                FechaNacimiento: req.body.fechaNacimiento,
+                                Pais: req.body.pais,
+                                Sexo: req.body.sexo
+                            });
+                            break;
+                    }
+                    newUser.save();
+                    newUserInfo.save()
+                        .then(result => {
+                            console.log(result);
+                            return res.status(201).json({
+                                success: true,
+                                origin: "accounts/registeruser",
+                                data: {
+                                    message: "ACCOUNT GENERATED SUCCESSFULLY",
+                                    result: newUser
+                                }
+                            })
+                        })
+                        .catch(err => {
+                            console.error("An error ocurred while creating account", error);
+                            return res.status(500).json({
+                                success: false,
+                                origin: "accounts/registeruser",
+                                data: {
+                                    message: "Could not create account due to error:" + error,
+                                    result: null
+                                }
+                            });
+                        });
+                }
+            });
+        }
+    })
 });
 
-router.get("/ViewImg", async (req, res) => {
-    try{
-        const {path} = req.query;
-        const {type} = req.query;
-        var filePath = process.cwd() + "/recurso/" + path + type;
-
-        var contentType = null;
-
-        if ( type === ".png") {
-            contentType = "image/png";
-        } 
-        else if ( type === ".jpeg") {
-            contentType = "image/jpeg";
-        } 
-        else if ( type === ".jpg") {
-            contentType = "image/jpg";
-        }
-
-        fileSystem.readFile(filePath, function(err, content)
-        {
-            if(err) {return res.status(400).json({
+router.post("/login", async (req, res) => {
+    User.findOne({Email: req.body.email})
+    .exec()
+    .then(userLogin => {
+        if(userLogin.length < 1) {
+            return res.status(401).json({
                 success: false,
-                origin: "RegisterAccount/ViewImg",
+                origin: "accounts/login",
                 data: {
-                message: "No se pudo encontrar la imagen en ruta" + filePath,
-                result: null} });
+                    message: "Authorization failed. Could not login user",
+                    result: null
+                }
+            });
+        }
+        bcrypt.compare(req.body.password, userLogin.Password, (err, result) => {
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    origin: "accounts/login",
+                    data: {
+                        message: "Authorization failed. Could not login user",
+                        result: null
+                    }
+                });
             }
+            if (result) {
+                const token = jwt.sign(
+                    {
+                        userId: userLogin.Id,
+                        email: userLogin.Email
+                    },
+                    process.env.JWT_KEY, 
+                    {
+                        expiresIn: "2h"
+                    }
+                );
+                return res.status(200).json({
+                    success: true,
+                    origin: "accounts/registeruser",
+                    data: {
+                        message: "LOGIN SUCCESSFUL",
+                        result: token
+                    }
+                })
 
-            res.writeHead(200, { 
-                "Content-Type": contentType });
-            res.end(content, 'utf-8');
-        })
-    }
-    catch (error) {
-        console.error("Error al buscar imagen de perfil", error);
-        return res.status(400).json({
-        success: false,
-        origin: "RegisterAccount/ViewImg",
-        data: {
-        message: "No se pudo mostrar la imagen",
-        result: null} }); 
-    }
+            } else {
+                return res.status(401).json({
+                    success: false,
+                    origin: "accounts/login",
+                    data: {
+                        message: "Authorization failed. Could not login user",
+                        result: null
+                    }
+                });
+            }
+        });
+    })
+    .catch(err => {
+        console.error("An error ocurred while loggin in", error);
+        return res.status(500).json({
+            success: false,
+            origin: "accounts/login",
+            data: {
+                message: "Could not login user",
+                result: null
+            }
+        });
+    });
 });
 
 export default router;

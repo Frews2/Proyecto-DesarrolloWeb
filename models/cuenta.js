@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
 
 const cuentaSchema = new mongoose.Schema({
-    Id: {
-        type: String,
-        required: true,
-        unique: true,
-    },
+    Id: mongoose.Schema.Types.ObjectId,
     Email: {
         type: String,
         required: true,
@@ -19,7 +15,7 @@ const cuentaSchema = new mongoose.Schema({
         enum: ['Periodista', 'Coleccionista', 'Administrador'],
         validate: [validators.notEmpty, 'Account type is empty']
     },
-    PasswordId: {
+    Password: {
         type: String,
         required: true,
         unique: true,

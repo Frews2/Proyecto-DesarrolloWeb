@@ -9,9 +9,18 @@ import publicationRouter from './routes/publications.js';*/
 import imageRouter from "./routes/images.js";
 import cors from 'cors';
 import fileupload from "express-fileupload";
+import mongoose from 'mongoose';
+
 const app = express();
 const PORT = 4000;
+const urlDB = process.env.DB_CONNECTION_STRING;
 
+mongoose.connect(DB_CONNECTION_STRING).then(() => {
+    console.log('successfully connected to database');
+    }).catch(err => {
+    console.log(err);
+    process.exit();
+});
 
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
