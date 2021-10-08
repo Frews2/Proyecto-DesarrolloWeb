@@ -28,6 +28,7 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "mongodb://figureAdmin:proyectoweb@mongo_database"
+            JWT_KEY: "mongo"
         contauner_name: api
 volumes:
     db_volume_mongo_database:
