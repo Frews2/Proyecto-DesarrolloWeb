@@ -8,8 +8,7 @@ const adminSchema = new mongoose.Schema({
     },
     Apodo: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Nickname is empty']
+        required: true
     }
 });
 

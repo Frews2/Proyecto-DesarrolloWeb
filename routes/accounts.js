@@ -42,7 +42,7 @@ router.post("/registeruser", async (req, res) => {
                         Password: hash
                     });
                     const userType = newUser.TipoCuenta;
-                    const newUserInfo;
+                    const newUserInfo = new Cuenta;
                     switch (userType) {
                         case "Administrador":
                             newUserInfo = new Administrador({

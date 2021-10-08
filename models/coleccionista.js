@@ -8,8 +8,7 @@ const coleccionistaSchema = new mongoose.Schema({
     },
     Apodo: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Nickname is empty']
+        required: true
     },
     FechaRegistro: {
         type: String,
@@ -17,8 +16,7 @@ const coleccionistaSchema = new mongoose.Schema({
     },
     FechaNacimiento: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Birth date is empty']
+        required: true
     },
     Foto: {
         type: String,
@@ -26,14 +24,12 @@ const coleccionistaSchema = new mongoose.Schema({
     },
     Pais: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Country is empty']
+        required: true
     },
     Sexo: {
         type: String,
         required: true,
-        enum: ['Masculino', 'Femenino', 'Otro'],
-        validate: [validators.notEmpty, 'Sex is empty']
+        enum: ['Masculino', 'Femenino', 'Otro']
     },
     Estatus: {
         type: String,

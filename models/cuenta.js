@@ -6,20 +6,17 @@ const cuentaSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        match: /.+\@.+\..+/,
-        validate: [validators.notEmpty, 'Email is empty']
+        match: /.+\@.+\..+/
     },
     TipoCuenta: {
         type: String,
         required: true,
-        enum: ['Periodista', 'Coleccionista', 'Administrador'],
-        validate: [validators.notEmpty, 'Account type is empty']
+        enum: ['Periodista', 'Coleccionista', 'Administrador']
     },
     Password: {
         type: String,
         required: true,
-        unique: true,
-        validate: [validators.notEmpty, 'Password is empty']
+        unique: true
     }
 });
 

@@ -3,7 +3,8 @@
  Author(s): Ricardo Moguel Sanchez
 */
 import express from "express";
-/*import accountRouter from './routes/accounts.js';
+import accountRouter from './routes/accounts.js';
+/*
 import newsRouter from './routes/news.js';
 import publicationRouter from './routes/publications.js';*/
 import imageRouter from "./routes/images.js";
@@ -15,7 +16,7 @@ const app = express();
 const PORT = 4000;
 const urlDB = process.env.DB_CONNECTION_STRING;
 
-mongoose.connect(DB_CONNECTION_STRING).then(() => {
+mongoose.connect(urlDB).then(() => {
     console.log('successfully connected to database');
     }).catch(err => {
     console.log(err);

@@ -8,13 +8,11 @@ const periodistaSchema = new mongoose.Schema({
     },
     Nombre: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Name is empty']
+        required: true
     },
     Ocupacion: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Ocupation is empty']
+        required: true
     },
     FechaRegistro: {
         type: String,
@@ -22,8 +20,7 @@ const periodistaSchema = new mongoose.Schema({
     },
     FechaNacimiento: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Birth date is empty']
+        required: true
     },
     Foto: {
         type: String,
@@ -31,14 +28,12 @@ const periodistaSchema = new mongoose.Schema({
     },
     Pais: {
         type: String,
-        required: true,
-        validate: [validators.notEmpty, 'Country is empty']
+        required: true
     },
     Sexo: {
         type: String,
         required: true,
-        enum: ['Masculino', 'Femenino', 'Otro'],
-        validate: [validators.notEmpty, 'Sex is empty']
+        enum: ['Masculino', 'Femenino', 'Otro']
     }
 });
 
