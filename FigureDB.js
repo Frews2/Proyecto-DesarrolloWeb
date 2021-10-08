@@ -1,46 +1,27 @@
-db.Contrasenias.insert([
-    {
-        "Id": "e04b7d73-3908-4b94-8df1-9b6dc71f38c5",
-        "Password": "pass"
-    },
-    {
-        "Id": "6fb9c703-a712-434e-8619-cf06c80828b8",
-        "Password": "faraon"
-    },
-    {
-        "Id": "b390be36-2004-4c86-8c5c-26d301693635",
-        "Password": "raa"
-    },
-    {
-        "Id": "b390be36-2004-4c86-8c5c-26d301693699",
-        "Password": "word"
-    }
-])
-
 db.Cuentas.insert([
     {
         "Id": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
         "Email": "sam@gmail.com",
         "TipoCuenta": "periodista",
-        "PasswordId": "e04b7d73-3908-4b94-8df1-9b6dc71f38c5"
+        "Password": "pass"
     },
     {
         "Id": "6f2850f9-b82f-451d-baf2-26fd93874418",
         "Email": "frews@gmail.com",
         "TipoCuenta": "coleccionista",
-        "PasswordId": "b390be36-2004-4c86-8c5c-26d301693635"
+        "Password": "faraon"
     },
     {
         "Id": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
         "Email": "marcos@gmail.com",
         "TipoCuenta": "coleccionista",
-        "PasswordId": "6fb9c703-a712-434e-8619-cf06c80828b8"
+        "Password": "raa"
     },
     {
         "Id": "2fda76ac-6382-41d4-8208-2e4324c495fc",
         "Email": "pklove@gmail.com",
         "TipoCuenta": "administrador",
-        "PasswordId": "b390be36-2004-4c86-8c5c-26d301693635"
+        "Password": "word"
     }
 ])
 
