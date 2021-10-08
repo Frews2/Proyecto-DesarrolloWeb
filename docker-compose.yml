@@ -26,5 +26,7 @@ services:
         build: 
             context: ../api/
             dockerfile: Dockerfile
+         environment: 
+            DB_CONNECTION_STRING: "mongodb://figureAdmin:proyectoweb@mongo_database"
 volumes:
     db_volume_mongo_database:
