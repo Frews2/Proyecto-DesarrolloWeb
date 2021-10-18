@@ -1,34 +1,43 @@
-db.Cuentas.insert([
+var connection = connect("mongodb://figureAdmin:proyectoweb@localhost/admin");
+db = connection.getSiblingDB('FigureDB')
+db.Cuentas.insertMany([
     {
         "Id": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
         "Email": "sam@gmail.com",
         "TipoCuenta": "periodista",
-        "Password": "pass"
+        "Password": "$2a$10$P.B.9arPZ1I3Wg3m962TXewwih8mLS.XW4H6enWNpv0LQ6nI2jO.W",
+        "Apodo": "SamJuarez",
+        "Estatus": "Activo"
     },
     {
         "Id": "6f2850f9-b82f-451d-baf2-26fd93874418",
         "Email": "frews@gmail.com",
         "TipoCuenta": "coleccionista",
-        "Password": "faraon"
+        "Password": "$2a$10$Y6BUBqzyoZ9lLJYEawIgJu5rXNsOYkX/2chhvXM86osYdqENtnehu",
+        "Apodo": "El frews",
+        "Estatus": "Activo"
     },
     {
         "Id": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
         "Email": "marcos@gmail.com",
         "TipoCuenta": "coleccionista",
-        "Password": "raa"
+        "Password": "$2a$10$09vwxAXe6Z.LbLCoSi72huWEXcLo5/EPe7p5OVGEIJqOh/eHe4Iue",
+        "Apodo": "Marco Polo",
+        "Estatus": "Activo"
     },
     {
         "Id": "2fda76ac-6382-41d4-8208-2e4324c495fc",
         "Email": "pklove@gmail.com",
         "TipoCuenta": "administrador",
-        "Password": "word"
+        "Password": "$2a$10$p3587jEEAustpjOtyp6QNusUWtf/4dWzSApNA.vr9wEBqCXcd8DqW",
+        "Apodo": "El Admin",
+        "Estatus": "Activo"
     }
 ])
 
 db.Administradores.insert([
     {
-        "IdCuenta": "2fda76ac-6382-41d4-8208-2e4324c495fc",
-        "Apodo": "sam@gmail.com"
+        "IdCuenta": "2fda76ac-6382-41d4-8208-2e4324c495fc"
     }
 ])
 
@@ -45,26 +54,22 @@ db.Periodistas.insert([
     }
 ])
 
-db.Coleccionistas.insert([
+db.Coleccionistas.insertMany([
     {
         "IdCuenta": "6f2850f9-b82f-451d-baf2-26fd93874418",
-        "Apodo": "Frews",
         "FechaRegistro": "2021-10-01",
         "FechaNacimiento": "1998-05-30",
         "Foto": "rutafake",
         "Pais": "Canada",
-        "Sexo": "Masculino",
-        "Estatus": "Activo"
+        "Sexo": "Masculino"
     },
     {
         "IdCuenta": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
-        "Apodo": "Marcos",
         "FechaRegistro": "2021-10-04",
         "FechaNacimiento": "1999-12-22",
         "Foto": "rutafake",
         "Pais": "Panama",
-        "Sexo": "Masculino",
-        "Estatus": "Activo"
+        "Sexo": "Masculino"
     }
 ])
 
@@ -99,7 +104,7 @@ db.Noticias.insert([
     }
 ])
 
-db.Publicaciones.insert([
+db.Publicaciones.insertMany([
     {
         "Id": "296586c3-f036-49f8-b6c0-4f051de6c90a",
         "IdColeccionista": "6f2850f9-b82f-451d-baf2-26fd93874418",
