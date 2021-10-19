@@ -3,17 +3,16 @@ import React from "react";
 export class Login extends React.Component {
 
     render() {
-      /*
         function login(e) {
             e.preventDefault();
-            fetch("http://localhost:4000/accounts/login", {
+            fetch("http://localhost:4000/cuentas/Login", {
                 method: "post",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    usuario: datos.usuario,
-                    contrasenia: datos.contrasenia
+                    Email: datos.usuario,
+                    Password: datos.contrasenia
                 })
             })
             .then(response => response.json())
@@ -23,7 +22,6 @@ export class Login extends React.Component {
                 console.log(error)
             })
         }
-*/
         return (
             <div class="login">
             <form>
