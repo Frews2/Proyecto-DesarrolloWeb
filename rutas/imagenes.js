@@ -3,7 +3,7 @@ import fileSystem, { fstat } from 'fs';
 
 const router = express.Router();
 
-router.post("/SaveImg", async (req, res) => {
+router.post("/GuardarImagen", async (req, res) => {
     
     try{
         const {perfil} = req.query;
@@ -24,7 +24,7 @@ router.post("/SaveImg", async (req, res) => {
         fileSystem.writeFile(filePath, buffer, function (err) {
             return res.status(200).json({
                 success: true,
-                origin: "RegisterAccount/SaveImg",
+                origin: "imagenes/GuardarImagen",
                 data: {
                 message: "Se guardo el archivo en directorio ",
                 result: filePath} }); 
@@ -34,18 +34,18 @@ router.post("/SaveImg", async (req, res) => {
         console.error("Error en Guardar Imagen de perfil", error);
         return res.status(400).json({
         success: false,
-        origin: "RegisterAccount/SaveImg",
+        origin: "imagenes/GuardarImagen",
         data: {
         message: "No se pudo guardar Imagen de perfil",
         result: null} }); 
     }
 });
 
-router.get("/ViewImg", async (req, res) => {
+router.get("/Ver", async (req, res) => {
     try{
         const {path} = req.query;
         const {type} = req.query;
-        var filePath = process.cwd() + "/recurso/" + path + type;
+        var directorio = process.cwd() + "/recursos/" + path + type;
 
         var contentType = null;
 
@@ -59,13 +59,13 @@ router.get("/ViewImg", async (req, res) => {
             contentType = "image/jpg";
         }
 
-        fileSystem.readFile(filePath, function(err, content)
+        fileSystem.readFile(directorio, function(err, content)
         {
             if(err) {return res.status(400).json({
                 success: false,
-                origin: "RegisterAccount/ViewImg",
+                origin: "imagenes/Ver",
                 data: {
-                message: "No se pudo encontrar la imagen en ruta" + filePath,
+                message: "No se pudo encontrar la imagen en ruta" + directorio,
                 result: null} });
             }
 
@@ -78,7 +78,7 @@ router.get("/ViewImg", async (req, res) => {
         console.error("Error al buscar imagen de perfil", error);
         return res.status(400).json({
         success: false,
-        origin: "RegisterAccount/ViewImg",
+        origin: "imagenes/Ver",
         data: {
         message: "No se pudo mostrar la imagen",
         result: null} }); 

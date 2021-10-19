@@ -7,9 +7,6 @@ WORKDIR /node
 COPY package*.json ./
 
 RUN npm install
-RUN npm install mongoose --save
-RUN npm install jsonwebtoken --save
-RUN npm install bcrypt --save
 # If you are building your code for production
 # RUN npm ci --only=production
 

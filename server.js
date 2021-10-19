@@ -3,32 +3,41 @@
  Author(s): Ricardo Moguel Sanchez
 */
 import express from "express";
-import accountRouter from './routes/accounts.js';
+import cuentaRouter from './rutas/cuentas.js';
 /*
-import newsRouter from './routes/news.js';
-import publicationRouter from './routes/publications.js';*/
-import imageRouter from "./routes/images.js";
+import newsRouter from './rutas/noticias.js';
+import publicationRouter from './rutas/reviews.js';*/
+import imagenRouter from "./rutas/imagenes.js";
+import codigosRouter from "./rutas/codigos.js";
 import cors from 'cors';
 import fileupload from "express-fileupload";
 import mongoose from 'mongoose';
 
 const app = express();
 const PORT = 4000;
-const urlDB = process.env.DB_CONNECTION_STRING;
+const URL_BASE_DE_DATOS = process.env.DB_CONNECTION_STRING;
+const USUARIO_BASE_DE_DATOS = process.env.MONGO_USERNAME;
+const CONTRASENIA_BASE_DE_DATOS = process.env.MONGO_PASSWORD;
 
-const allowedOrigins = [
-    'http://localhost:3314'
-]
-mongoose.connect(urlDB).then(() => {
-    console.log('successfully connected to database');
-    }).catch(err => {
-    console.log(err);
+mongoose.connect(URL_BASE_DE_DATOS,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    user: USUARIO_BASE_DE_DATOS,
+    pass: CONTRASENIA_BASE_DE_DATOS
+}).then(() => {
+    console.log('EXITO: Conectado a la base de datos de FigureItOut');
+}).catch(eror => {
+    console.log(eror);
     process.exit();
 });
 
+const rutasDisponibles = [
+    'http://localhost:27017'
+]
+
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
-    if (allowedOrigins.indexOf(req.header('Origin')) !== -1) {
+    if (rutasDisponibles.indexOf(req.header('Origin')) !== -1) {
         corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
     } else {
         corsOptions = { origin: false } // disable CORS for this request
@@ -41,14 +50,16 @@ app.use(fileupload());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
-app.use("/accounts", cors(corsOptionsDelegate), accountRouter);
+app.use("/cuentas", cors(corsOptionsDelegate), cuentaRouter);
 /*
-app.use("/news", cors(corsOptionsDelegate), newsRouter);
-app.use("/publication", cors(corsOptionsDelegate), publicationRouter);*/
-app.use("/images", cors(corsOptionsDelegate), imageRouter);
+app.use("/noticias", cors(corsOptionsDelegate), noticiasRouter);
+app.use("/reviews", cors(corsOptionsDelegate), reviewsRouter);*/
+app.use("/codigos", cors(corsOptionsDelegate), codigosRouter);
+app.use("/imagenes", cors(corsOptionsDelegate), imagenRouter);
 
 app.all("*", cors(corsOptionsDelegate), (req, res) => res.status(404).send({
     success: false,
-    msg: "This route does not exist"}));
+    msg: "ERROR: Ruta ingresada no existe"}));
 
-app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`EXITO: SERVIDOR CORRIENDO EN PUERTO: ${PORT}`));
+export { app, server };
