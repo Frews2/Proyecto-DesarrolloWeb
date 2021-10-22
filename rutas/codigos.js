@@ -18,7 +18,7 @@ router.post("/Verificar", async (req, res) => {
   checarCodigoConfirmacion(Correo, Numero)
     .then((resultado) => {
       if (resultado.esCorrecto) {
-        activarCuenta(Apodo)
+        activarCuenta(Correo)
           .then((activado) => {
             if (activado) {
               respuestaJSON.mensaje = resultado.mensaje;
