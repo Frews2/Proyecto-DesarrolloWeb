@@ -60,12 +60,12 @@ export async function guardarCuenta(usuario) {
     });
 }
 
-export async function activarCuenta(usuario) {
+export async function activarCuenta(correo) {
   const CUENTA_ACTIVA = {
     Estatus: 'Activo'
   }
   
-  return Cuenta.updateOne({Apodo: usuario}, CUENTA_ACTIVA)
+  return Cuenta.updateOne({Email: correo}, CUENTA_ACTIVA)
     .then(exito => {
       return exito.ok == 1;
     })
@@ -74,61 +74,3 @@ export async function activarCuenta(usuario) {
       return false;
     })
 }
-/*
-export async function hacerLogin(usuario) {
-  return Cuenta.findOne({ Email: usuario.Email })
-  .then((cuentaEncontrada) => {
-    if (cuentaEncontrada == null) {
-      return res.status(401).json({
-        exito: false,
-        origen: "cuentas/Login",
-        mensaje: "ERROR: Autentificación falliida. Email no encontrado No se pudo iniciar sesión",
-        resultado: null
-      });      
-    } else {
-      bcrypt.compare(usuario.Password, cuentaEncontrada.Password, (err, respuesta) => {
-        if (err) {
-          return res.status(401).json({
-            exito: false,
-            origen: "cuentas/Login",
-            mensaje: cuentaEncontrada.Password + " ERROR: Autentificación falliida. No se pudo iniciar sesión " + usuario.Password,
-            resultado: null
-          });
-        }
-        if (respuesta) {
-          const token = jwt.sign(
-            {
-              userId: cuentaEncontrada.Id,
-              email: cuentaEncontrada.Email
-            },
-            process.env.JWT_KEY, 
-            {
-              expiresIn: "2h"
-            }
-          );
-          return res.status(200).json({
-            exito: true,
-            origen: "cuentas/Login",
-            mensaje: "EXITO: Sesión Iniciada",
-            resultado: token
-          })
-        } else {
-          return res.status(401).json({
-            exito: false,
-            origen: "cuentas/Login",
-            mensaje: cuentaEncontrada.Password + " ERROR: Autentificación falliida. No se pudo iniciar sesión " + usuario.Password,
-            resultado: null
-          });
-        }
-      });
-    }
-  })
-  .catch(() => {
-    return res.status(500).json({
-      exito: false,
-      origen: "cuentas/Login",
-      mensaje: "ERROR: Ocurrió un error. No se puede iniciar sesión",
-      resultado: null
-    })
-  });
-}*/
