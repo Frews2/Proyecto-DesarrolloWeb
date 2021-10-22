@@ -6,7 +6,7 @@ import { activarCuenta } from "../controladores/cuentaControlador.js";
 const router = express.Router();
 
 router.post("/Verificar", async (req, res) => {
-  const { Correo, Numero, Apodo } = req.body;
+  const { Correo, Numero } = req.body;
 
   var respuestaJSON = {
     exito: true,
