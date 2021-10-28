@@ -64,5 +64,5 @@ const cuentaSchema = new mongoose.Schema({
     }
 });
 
-const Cuenta = mongoose.model('Cuentas', cuentaSchema);
+const Cuenta = mongoose.model('cuentas', cuentaSchema);
 export default Cuenta;
