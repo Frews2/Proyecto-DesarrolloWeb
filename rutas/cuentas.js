@@ -57,22 +57,6 @@ router.post("/Registrar", checkSchema(esSchemaCuentaValido), async (req, res) =>
       return res.status(500).send(respuestaJSON)
     });
 });
-/*
-router.post("/Login", async (req, res) => {
-    hacerLogin(req.body)
-    .then(respuesta => {
-      res.send(respuesta);
-    }).catch(error => {
-      res.send(
-        {
-          exito: false,
-          origen: "cuentas/login",
-          mensaje: "ERROR: " + error.msg,
-          resultado: null
-        }
-      );
-    });
-});*/
 
 router.post("/Login", async (req, res) => {
   return Cuenta.findOne({ Email: req.body.Email })

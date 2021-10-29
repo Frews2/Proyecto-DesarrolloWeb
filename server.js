@@ -5,10 +5,11 @@
 import express from "express";
 import cuentaRouter from './rutas/cuentas.js';
 /*
-import newsRouter from './rutas/noticias.js';
+
 import publicationRouter from './rutas/reviews.js';*/
 import imagenRouter from "./rutas/imagenes.js";
 import codigosRouter from "./rutas/codigos.js";
+import noticiasRouter from './rutas/noticias.js';
 import cors from 'cors';
 import fileupload from "express-fileupload";
 import mongoose from 'mongoose';
@@ -52,10 +53,10 @@ app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5000
 
 app.use("/cuentas", cors(corsOptionsDelegate), cuentaRouter);
 /*
-app.use("/noticias", cors(corsOptionsDelegate), noticiasRouter);
 app.use("/reviews", cors(corsOptionsDelegate), reviewsRouter);*/
 app.use("/codigos", cors(corsOptionsDelegate), codigosRouter);
 app.use("/imagenes", cors(corsOptionsDelegate), imagenRouter);
+app.use("/noticias", cors(corsOptionsDelegate), noticiasRouter);
 
 app.all("*", cors(corsOptionsDelegate), (req, res) => res.status(404).send({
     success: false,

@@ -1,15 +1,15 @@
-import { Guid } from "js-guid";
-import Noticia from '../models/noticia.js';
+import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
+import Noticia from "../models/noticia.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
 
-export async function guardarNoticia(idContenido, nuevaNoticia) {
+export async function guardarNoticia(idCreador, nuevaNoticia) {
     const { imagen } = nuevaNoticia;
 
     var rutaImagen = "";
 
     var resultadoJSON = {
         exito: true,
-        origen: "publicacion/guardar",
+        origen: "noticia/guardar",
         mensaje: "EXITO: Publicación guardada",
     };
 
@@ -30,9 +30,11 @@ export async function guardarNoticia(idContenido, nuevaNoticia) {
             return resultadoJSON;
         } 
     }
+    const GUID = Guid.newGuid();
+
 
     const noticia = {
-        IdPublicacion: idContenido,
+        IdPublicacion: GUID,
         IdFigura: nuevaNoticia.IdFigura,
         Texto: nuevaNoticia.Texto,
         Foto: rutaImagen,
@@ -48,6 +50,8 @@ export async function guardarNoticia(idContenido, nuevaNoticia) {
         if(!seGuardo) {
             resultadoJSON.exito = false;
             resultadoJSON.mensaje = "Error: Ocurrió un error al intentar crear la noticia. Intenté de nuevo."
+        } else{
+            return guardarPublicacion(idCreador, noticiaAGuardar.IdPublicacion)
         }
 
         return resultadoJSON;
@@ -63,7 +67,11 @@ export async function guardarNoticia(idContenido, nuevaNoticia) {
 export async function eliminarNoticia(idPublicacion) {
     return Noticia.deleteOne({IdPublicacion: idPublicacion})
         .then(exito => {
-            return exito.ok == 1;
+            if (!exito){
+                return false;
+            } else {
+                return eliminarPublicacion(idPublicacion);
+            }
         })
         .catch(error => {
             console.error(error);

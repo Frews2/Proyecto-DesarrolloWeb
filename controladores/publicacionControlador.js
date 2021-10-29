@@ -1,8 +1,6 @@
-import { Guid } from "js-guid";
-
 import Publicacion from '../modelos/publicacion.js';
 
-export async function guardarPublicacion(idCuenta) {
+export async function guardarPublicacion(idContenido, idCreador) {
 
     var respuestaJSON = {
         exito: true,
@@ -11,11 +9,9 @@ export async function guardarPublicacion(idCuenta) {
         resultado: ""
     };
 
-    const GUID = Guid.newGuid();
-
     const nuevaPublicacion = {
-        IdPublicacion: GUID,
-        IdCuenta: IdCuenta
+        IdPublicacion: idContenido,
+        IdCuenta: idCreador
     }
 
     const publicacion = new Publicacion(nuevaPublicacion);
