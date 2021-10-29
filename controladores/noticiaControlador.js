@@ -1,5 +1,5 @@
 import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
-import Noticia from "../models/noticia.js";
+import Noticia from "../modelos/noticia.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
 
 export async function guardarNoticia(idCreador, nuevaNoticia) {

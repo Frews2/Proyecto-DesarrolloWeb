@@ -1,15 +1,7 @@
 import { existeCuentaActiva } from "../controladores/cuentaControlador.js";
-import { existeCuentaActiva } from "../controladores/cuentaControlador.js";
+import { existeFigura } from "../controladores/figuraControlador.js";
 
-const checkSchemaNota = {
-  titulo: {
-    isString: true,
-    isLength: {
-      errorMessage:
-        "El título de la nota debe tener al menos 5 caracteres y máximo 50 caracteres.",
-      options: { min: 5, max: 50 },
-    },
-  },
+const checkSchemaNoticia = {
   Texto: {
     isLength: {
       errorMessage:

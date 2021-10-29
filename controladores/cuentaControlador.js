@@ -19,6 +19,17 @@ export function existeCuenta(email) {
     });
 }
 
+export async function existeCuentaActiva(idCuenta) {
+  return Cuenta.exists({ IdCuenta: idCuenta, Estatus: "Activo"})
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
 export async function guardarCuenta(usuario) {
   const GUID = Guid.newGuid();
   usuario.IdCuenta = GUID;

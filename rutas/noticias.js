@@ -1,11 +1,7 @@
 import express from "express";
-
-
 import { validationResult, checkSchema } from "express-validator";
-
 import { guardarNoticia, obtenerNoticias } from '../controladores/noticiaControlador.js';
-
-import checkSchemaNoticia from "../utilidades/noticiaValidador";
+import checkSchemaNoticia from "../utilidades/noticiaValidador.js";
 
 const router = express.Router();
 
