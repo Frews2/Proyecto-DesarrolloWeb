@@ -1,18 +1,18 @@
 import React from "react";
 import '../css/form.css';
-import { Register } from "../components/login";
+import { Registro } from "../components/login";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-function RegisterPage() {
+function PaginaRegistro() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout title="Registrate">
     <main>
-      <Register></Register>
+      <Registro></Registro>
     </main>
   </Layout>
   );
 }
 
-export default RegisterPage;
+export default PaginaRegistro;

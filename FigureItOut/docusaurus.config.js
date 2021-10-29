@@ -40,18 +40,13 @@ const config = {
   ],
 
   themeConfig:
-    /* @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
         title: 'Figure It Out',
         items: [
+          
           {
-            to:'/login',
-            position: 'left',
-            label: 'Iniciar Sesion',
-          },
-          {
-            to: '/notices', 
+            to: '/noticias', 
             label: 'Noticias', 
             position: 'left'
           },

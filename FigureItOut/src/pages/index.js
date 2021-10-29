@@ -6,10 +6,11 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import './home.css';
 import HomepageFeatures from '../components/HomepageFeatures';
 
+
 function HomepageHeader() {
   return (    
-      <div class="hero-image">
-        <div class="hero-text">
+      <div className="hero-image">
+        <div className="hero-text">
           <h1>Figure It Out</h1>
           <p>Las ultimas noticias en figuras</p>
         </div>
@@ -24,7 +25,8 @@ export default function Home() {
       title="Home">
       <HomepageHeader/>
       <main>
-        <HomepageFeatures />
+          <HomepageFeatures></HomepageFeatures>
+        
       </main>
       
     </Layout>
