@@ -60,7 +60,7 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         console.error(error);
         resultadoJSON.exito = false;
         resultadoJSON.mensaje = "ERROR: Ocurrió un error al intentar crear la noticia. Intenté de nuevo.";
-        return resultadoCreacion;
+        return resultadoJSON;
     })
 }
 

@@ -81,8 +81,9 @@ router.post("/Login", async (req, res) => {
         if (respuesta) {
           const token = jwt.sign(
             {
-              userId: cuentaEncontrada.Id,
-              email: cuentaEncontrada.Email
+              Email: cuentaEncontrada.Email,
+              TipoCuenta: cuentaEncontrada.TipoCuenta,
+              Apodo: cuentaEncontrada.Apodo
             },
             process.env.JWT_KEY, 
             {
