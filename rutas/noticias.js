@@ -2,10 +2,12 @@ import express from "express";
 import { validationResult, checkSchema } from "express-validator";
 import { guardarNoticia, obtenerNoticias } from '../controladores/noticiaControlador.js';
 import checkSchemaNoticia from "../utilidades/noticiaValidador.js";
+//import { VerificarToken } from "../utilidades/tokenValidador.js";
 
 const router = express.Router();
 
 router.post("/Registrar", 
+//VerificarToken,
 checkSchema(checkSchemaNoticia),
 async (req, res) => {
 

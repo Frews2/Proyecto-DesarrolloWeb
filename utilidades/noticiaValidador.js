@@ -2,6 +2,13 @@ import { existeCuentaActiva } from "../controladores/cuentaControlador.js";
 import { existeFigura } from "../controladores/figuraControlador.js";
 
 const checkSchemaNoticia = {
+  Titulo: {
+    isLength: {
+      errorMessage:
+        "El nombre de la noticia debe tener minimo de 3 caracteres y máximo 30",
+      options: { min: 3, max: 30 },
+    },
+  },
   Texto: {
     isLength: {
       errorMessage:

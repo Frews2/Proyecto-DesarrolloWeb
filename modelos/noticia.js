@@ -6,6 +6,10 @@ const noticiaSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    Titulo: {
+        type: String,
+        required: true
+    },
     IdFigura: {
         type: String,
         required: true

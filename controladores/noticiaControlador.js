@@ -5,7 +5,7 @@ import { guardarImagenNoticia } from "../utilidades/servicioImagen.js";
 
 export async function guardarNoticia(idCreador, nuevaNoticia) {
     const { Foto } = nuevaNoticia;
-
+    var GUID = Guid.newGuid();
     var rutaImagen = "";
 
     var resultadoJSON = {
@@ -16,7 +16,7 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
     };
 
     if (Foto) {
-        const respuestaGuardado = await guardarImagenNoticia(idCreador,Foto)
+        const respuestaGuardado = await guardarImagenNoticia(GUID,Foto)
             .then((resultado) => {
                 return resultado;
             })
@@ -32,11 +32,10 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         } 
         rutaImagen = respuestaGuardado.rutaImagen;
     }
-    var GUID = Guid.newGuid();
-
 
     const noticia = {
         IdPublicacion: GUID,
+        Titulo: nuevaNoticia.Titulo,
         IdFigura: nuevaNoticia.IdFigura,
         Texto: nuevaNoticia.Texto,
         Foto: rutaImagen,
