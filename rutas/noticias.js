@@ -27,14 +27,15 @@ async (req, res) => {
 
   var nuevaNoticia = req.body;
 
-  if(req.files && req.files.imagen) {
-    nuevaNoticia.imagen = req.files.imagen;
+  if(req.files && req.files.Foto) {
+    nuevaNoticia.Foto = req.files.Foto;
   }
-
-    guardarNoticia(nuevaNoticia)
+  
+    guardarNoticia(nuevaNoticia.IdCuenta, nuevaNoticia)
     .then(resultadoCreacion => {
         if (resultadoCreacion.exito) {
             respuestaJSON.mensaje = resultadoCreacion.mensaje;
+            respuestaJSON.resultado = resultadoCreacion.resultado;
           return res.status(200).send(respuestaJSON);
         } else {
             respuestaJSON.exitoso = false;
@@ -46,7 +47,7 @@ async (req, res) => {
         console.error(error)
 
         respuestaJSON.exito = false;
-        respuestaJSON.mensaje = "Ocurrió un error al intentar crear la nota. Intente más tarde."
+        respuestaJSON.mensaje = "Ocurrió un error al intentar crear la noticia. Intente más tarde."
         respuestaJSON.resultado = error;
 
         return res.status(500).send(respuestaJSON);

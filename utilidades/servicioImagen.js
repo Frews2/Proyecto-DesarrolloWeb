@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Guid } from "js-guid";
 
-const carpeta = process.cwd() + "/recursos/";
+const carpeta = process.cwd() + "/recursos";
 
 if (!fs.existsSync(carpeta)) {
     fs.mkdir(carpeta, null, function (err) {
@@ -24,11 +24,9 @@ const guardarArchivo = (path, data) => {
   });
 }
 
-export async function guardarImagen(nuevaImagen) {
-    const { nombre, data } = nuevaImagen;
-    const id = Guid.newGuid();
-
-    const rutaImagen = `${carpeta}/publicaciones/${id}${nombre}`;
+export async function guardarImagenNoticia(idUsuario,nuevaImagen) {
+    const { name, data } = nuevaImagen;
+    const rutaImagen = `${carpeta}/noticias/${idUsuario}${name}`;
 
     var respuestaJSON = {
       exito: false,

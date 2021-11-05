@@ -1,9 +1,10 @@
+import { Guid } from "js-guid";
 import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
 import Noticia from "../modelos/noticia.js";
-import { guardarImagen } from "../utilidades/servicioImagen.js";
+import { guardarImagenNoticia } from "../utilidades/servicioImagen.js";
 
 export async function guardarNoticia(idCreador, nuevaNoticia) {
-    const { imagen } = nuevaNoticia;
+    const { Foto } = nuevaNoticia;
 
     var rutaImagen = "";
 
@@ -11,12 +12,12 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         exito: true,
         origen: "noticia/guardar",
         mensaje: "EXITO: Publicación guardada",
+        resultado: null
     };
 
-    if (imagen) {
-        const respuestaGuardado = await guardarImagen(imagen)
+    if (Foto) {
+        const respuestaGuardado = await guardarImagenNoticia(idCreador,Foto)
             .then((resultado) => {
-                rutaImagen = respuestaGuardado.path;
                 return resultado;
             })
             .catch((err) => {
@@ -25,12 +26,13 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
             });
 
         if(!respuestaGuardado.exito) {
-            resultadoJSON.exito = respuestaGuardado.exito;
+            resultadoJSON.exito = false;
             resultadoJSON.mensaje = respuestaGuardado.mensaje;
             return resultadoJSON;
         } 
+        rutaImagen = respuestaGuardado.rutaImagen;
     }
-    const GUID = Guid.newGuid();
+    var GUID = Guid.newGuid();
 
 
     const noticia = {
@@ -45,7 +47,7 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
 
     return noticiaAGuardar.save()
     .then((seGuardo) => {
-        console.log(seGuardo);
+        console.log("NOTICIA GUARDADA: " + seGuardo);
 
         if(!seGuardo) {
             resultadoJSON.exito = false;
@@ -54,6 +56,7 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
             return guardarPublicacion(idCreador, noticiaAGuardar.IdPublicacion)
         }
 
+        resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
         return resultadoJSON;
     })
     .catch(error => {

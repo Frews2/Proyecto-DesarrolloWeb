@@ -1,6 +1,6 @@
 import Publicacion from '../modelos/publicacion.js';
 
-export async function guardarPublicacion(idContenido, idCreador) {
+export async function guardarPublicacion(idCreador, idContenido) {
 
     var respuestaJSON = {
         exito: true,
