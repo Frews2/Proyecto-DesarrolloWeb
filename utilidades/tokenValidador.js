@@ -1,21 +1,19 @@
 import jwt from 'jsonwebtoken';
+const KEY = process.env.JWT_KEY;
 
-export function obtenerToken(estudiante) {
-    return jwt.sign({usuario: estudiante}, 'secretKey', {expiresIn: "1h"});
-}
-
-export function VerificarToken(req, res, next) {
-    const bearerHeader = req.headers['authorization'];
+export function ChecarTokenActivo(req, res, next) {
+    const tokenRecibido = req.headers['authorization'];
+    console.log("Token: " + tokenRecibido);
+    console.log("Secreto: "+ KEY);
   
-    if (typeof bearerHeader !== 'undefined') {
-  
-      jwt.verify(bearerHeader, 'secretKey', (error, authData) => {
+    if (typeof tokenRecibido !== 'undefined') {
+      jwt.verify(tokenRecibido, KEY, (error, authData) => {
         if (error) {
           res.status(403).send(
             {
-              exitoso: false,
-              mensaje: "No cuentas con un usuario",
-              data: null,
+              exito: false,
+              mensaje: "ERROR: El token es invalido o ha expirado",
+              resultado: null,
             }
           )
         }else{
@@ -27,7 +25,7 @@ export function VerificarToken(req, res, next) {
       res.status(403).send(
         {
           exitoso: false,
-          mensaje: "No cuentas con un usuario",
+          mensaje: "ERROR: El token no tiene el formato necesario. Realice su login nuevamente.",
           data: null,
         }
       )
