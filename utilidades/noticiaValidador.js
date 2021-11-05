@@ -16,7 +16,7 @@ const checkSchemaNoticia = {
       options: { min: 10, max: 5000 },
     },
   },
-  IdFugura: {
+  IdFigura: {
     custom: {
       options: async (value, { req }) => {
         return existeFigura(req.body.IdFigura, value).then((existe) => {

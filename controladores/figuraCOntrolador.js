@@ -40,7 +40,6 @@ export async function guardarFigura(nuevaFigura) {
   }
   const GUID = Guid.newGuid();
 
-
   const figura = {
       IdFigura: GUID,
       Nombre: nuevaFigura.Nombre,
