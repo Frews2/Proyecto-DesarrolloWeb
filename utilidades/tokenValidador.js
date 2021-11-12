@@ -3,8 +3,6 @@ const KEY = process.env.JWT_KEY;
 
 export function ChecarTokenActivo(req, res, next) {
     const tokenRecibido = req.headers['authorization'];
-    console.log("Token: " + tokenRecibido);
-    console.log("Secreto: "+ KEY);
   
     if (typeof tokenRecibido !== 'undefined') {
       jwt.verify(tokenRecibido, KEY, (error, authData) => {

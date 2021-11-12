@@ -1,5 +1,30 @@
-import { existeCuentaActiva } from "../controladores/cuentaControlador.js";
+import { existePeriodistaActivo } from "../controladores/cuentaControlador.js";
 import { existeFigura } from "../controladores/figuraControlador.js";
+
+function esFormatoValido(formato) {
+  const JPG = ".jpg";
+  const JPEG = ".jpeg";
+  const PNG = ".png";
+
+  if (!(formato == JPG || formato == JPEG || formato == PNG)) {
+    throw new Error(
+      "ERROR: El formato de la imagen es invalido."
+    );
+  } else{
+    return true;
+  }
+}
+
+function tieneImagen(imagen) {
+  
+  if (imagen === null) {
+    throw new Error(
+      "ERROR: No se tiene una Foto agregada a la noticia."
+    );
+  } else{
+    return true;
+  }
+}
 
 const checkSchemaNoticia = {
   Titulo: {
@@ -14,6 +39,27 @@ const checkSchemaNoticia = {
       errorMessage:
         "El contenido de la noticia debe tener minimo de 10 caracteres y máximo 5000",
       options: { min: 10, max: 5000 },
+    },
+  },
+  Foto: {
+    custom: {
+      options: (value) => {
+        return tieneImagen(value);
+      },
+    },
+  },
+  DescripcionFoto: {
+    isLength: {
+      errorMessage:
+        "La descripción de la foto de la noticia debe tener minimo de 10 caracteres y máximo 5000",
+      options: { min: 10, max: 5000 },
+    },
+  },
+  TipoFoto: {
+    custom: {
+      options: (value) => {
+        return esFormatoValido(value);
+      },
     },
   },
   IdFigura: {
@@ -34,10 +80,10 @@ const checkSchemaNoticia = {
   IdCuenta: {
     custom: {
       options: async (value) => {
-        return existeCuentaActiva(value).then((existe) => {
+        return existePeriodistaActivo(value).then((existe) => {
           if (!existe) {
             return Promise.reject(
-              "El creador especificado no se encuentra activo o no existe. Por favor verifique la información."
+              "El creador especificado no se encuentra activo o no es Periodista. Por favor verifique la información."
             );
           }
 

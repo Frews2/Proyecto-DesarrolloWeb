@@ -24,9 +24,10 @@ const guardarArchivo = (path, data) => {
   });
 }
 
-export async function guardarImagenNoticia(idUsuario,nuevaImagen) {
+export async function guardarImagenNoticia(nuevaImagen) {
     const { name, data } = nuevaImagen;
-    const rutaImagen = `${carpeta}/noticias/${idUsuario}${name}`;
+    const GUID = Guid.newGuid();
+    const rutaImagen = `${carpeta}/noticias/${GUID}${name}`;
 
     var respuestaJSON = {
       exito: false,

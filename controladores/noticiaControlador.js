@@ -5,7 +5,7 @@ import { guardarImagenNoticia } from "../utilidades/servicioImagen.js";
 
 export async function guardarNoticia(idCreador, nuevaNoticia) {
     const { Foto } = nuevaNoticia;
-    var GUID = Guid.newGuid();
+    const GUID = Guid.newGuid();
     var rutaImagen = "";
 
     var resultadoJSON = {
@@ -15,23 +15,21 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         resultado: null
     };
 
-    if (Foto) {
-        const respuestaGuardado = await guardarImagenNoticia(GUID,Foto)
-            .then((resultado) => {
-                return resultado;
-            })
-            .catch((err) => {
-                console.error(err);
-                return err;
-            });
+    const respuestaGuardado = await guardarImagenNoticia(Foto)
+        .then((resultado) => {
+            return resultado;
+        })
+        .catch((err) => {
+            console.error(err);
+            return err;
+        });
 
-        if(!respuestaGuardado.exito) {
-            resultadoJSON.exito = false;
-            resultadoJSON.mensaje = respuestaGuardado.mensaje;
-            return resultadoJSON;
-        } 
-        rutaImagen = respuestaGuardado.rutaImagen;
+    if (!respuestaGuardado.exito) {
+        resultadoJSON.exito = false;
+        resultadoJSON.mensaje = respuestaGuardado.mensaje;
+        return resultadoJSON;
     }
+    rutaImagen = respuestaGuardado.rutaImagen;
 
     const noticia = {
         IdPublicacion: GUID,
@@ -39,6 +37,8 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         IdFigura: nuevaNoticia.IdFigura,
         Texto: nuevaNoticia.Texto,
         Foto: rutaImagen,
+        TipoFoto: nuevaNoticia.TipoFoto,
+        DescripcionFoto: nuevaNoticia.DescripcionFoto,
         Etiquetas: nuevaNoticia.Etiquetas,
     }
 

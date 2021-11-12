@@ -20,7 +20,15 @@ const noticiaSchema = new mongoose.Schema({
     },
     Foto: {
         type: String,
-        required: false
+        required: true
+    },
+    TipoFoto: {
+        type: String,
+        required: true
+    },
+    DescripcionFoto: {
+        type: String,
+        required: true
     },
     Etiquetas: {
         type: [String],
