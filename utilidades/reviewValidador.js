@@ -1,4 +1,4 @@
-import { existePeriodistaActivo } from "../controladores/cuentaControlador.js";
+import { existeColeccionistaActivo } from "../controladores/cuentaControlador.js";
 import { existeFigura } from "../controladores/figuraControlador.js";
 
 function esFormatoValido(formato) {
@@ -19,26 +19,33 @@ function tieneImagen(imagen) {
   
   if (imagen === null) {
     throw new Error(
-      "ERROR: No se tiene una Foto agregada a la noticia."
+      "ERROR: No se tiene una Foto agregada a la crítica."
     );
   } else{
     return true;
   }
 }
 
-const checkSchemaNoticia = {
+const checkSchemaReview = {
   Titulo: {
     isLength: {
       errorMessage:
-        "El nombre de la noticia debe tener minimo de 3 caracteres y máximo 30",
+        "El título de la crítica debe tener minimo de 3 caracteres y máximo 30",
       options: { min: 3, max: 30 },
     },
   },
   Texto: {
     isLength: {
       errorMessage:
-        "El contenido de la noticia debe tener minimo de 10 caracteres y máximo 5000",
+        "El contenido de la crítica debe tener minimo de 10 caracteres y máximo 5000",
       options: { min: 10, max: 5000 },
+    },
+  },
+  Calificacion: {
+    isLength: {
+      errorMessage:
+        "La calificación de la crítica debe tener minimo de 10 caracteres y máximo 5000",
+      options: { min: 0, max: 10 },
     },
   },
   Foto: {
@@ -58,7 +65,7 @@ const checkSchemaNoticia = {
   DescripcionFoto: {
     isLength: {
       errorMessage:
-        "La descripción de la foto de la noticia debe tener minimo de 10 caracteres y máximo 5000",
+        "La descripción de la foto de la crítica debe tener minimo de 10 caracteres y máximo 5000",
       options: { min: 10, max: 5000 },
     },
   },
@@ -75,7 +82,7 @@ const checkSchemaNoticia = {
         return existeFigura(req.body.IdFigura, value).then((existe) => {
           if (!existe) {
             return Promise.reject(
-              "La figura especificada de la noticia no se encuentra en nuestro sistema. Por favor verifique la información."
+              "La figura especificada en la crítica no se encuentra en nuestro sistema. Por favor verifique la información."
             );
           }
 
@@ -87,10 +94,10 @@ const checkSchemaNoticia = {
   IdCuenta: {
     custom: {
       options: async (value) => {
-        return existePeriodistaActivo(value).then((existe) => {
+        return existeColeccionistaActivo(value).then((existe) => {
           if (!existe) {
             return Promise.reject(
-              "El creador especificado no se encuentra activo o no es Periodista. Por favor verifique la información."
+              "El creador especificado no se encuentra activo o no es Coleccionista. Por favor verifique la información."
             );
           }
 
@@ -101,4 +108,4 @@ const checkSchemaNoticia = {
   },
 };
 
-export default checkSchemaNoticia;
+export default checkSchemaReview;

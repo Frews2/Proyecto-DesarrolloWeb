@@ -24,7 +24,19 @@ const figuraSchema = new mongoose.Schema({
     },
     Foto: {
         type: String,
-        required: false
+        required: true
+    },
+    NombreFoto: {
+        type: String,
+        required: true
+    },
+    TipoFoto: {
+        type: String,
+        required: true
+    },
+    DescripcionFoto: {
+        type: String,
+        required: true
     }
 });
 

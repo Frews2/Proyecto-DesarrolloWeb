@@ -1,17 +1,17 @@
 import { Guid } from "js-guid";
 import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
-import Noticia from "../modelos/noticia.js";
+import Review from "../modelos/review.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
 
-export async function guardarNoticia(idCreador, nuevaNoticia) {
-    const CARPETA = "noticias";
-    const { Foto } = nuevaNoticia;
+export async function guardarReview(idCreador, nuevaCritica) {
+    const CARPETA = "reviews";
+    const { Foto } = nuevaCritica;
     const GUID = Guid.newGuid();
     var rutaImagen = "";
 
     var resultadoJSON = {
         exito: true,
-        origen: "noticia/guardar",
+        origen: "review/guardar",
         mensaje: "EXITO: Publicación guardada",
         resultado: null
     };
@@ -30,31 +30,33 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         resultadoJSON.mensaje = respuestaGuardado.mensaje;
         return resultadoJSON;
     }
+    
     rutaImagen = respuestaGuardado.rutaImagen;
 
-    const noticia = {
+    const review = {
         IdPublicacion: GUID,
-        Titulo: nuevaNoticia.Titulo,
-        IdFigura: nuevaNoticia.IdFigura,
-        Texto: nuevaNoticia.Texto,
+        Titulo: nuevaCritica.Titulo,
+        IdFigura: nuevaCritica.IdFigura,
+        Texto: nuevaCritica.Texto,
+        Calificacion: nuevaCritica.Calificacion,
         Foto: rutaImagen,
-        NombreFoto: nuevaNoticia.NombreFoto,
-        TipoFoto: nuevaNoticia.TipoFoto,
-        DescripcionFoto: nuevaNoticia.DescripcionFoto,
-        Etiquetas: nuevaNoticia.Etiquetas,
+        NombreFoto: nuevaCritica.NombreFoto,
+        TipoFoto: nuevaCritica.TipoFoto,
+        DescripcionFoto: nuevaCritica.DescripcionFoto,
+        Etiquetas: nuevaCritica.Etiquetas,
     }
 
-    const noticiaAGuardar = new Noticia(noticia);
+    const reviewAGuardar = new Review(review);
 
-    return noticiaAGuardar.save()
+    return reviewAGuardar.save()
     .then((seGuardo) => {
-        console.log("NOTICIA GUARDADA: " + seGuardo);
+        console.log("CRITICA GUARDADA: " + seGuardo);
 
         if(!seGuardo) {
             resultadoJSON.exito = false;
-            resultadoJSON.mensaje = "Error: Ocurrió un error al intentar crear la noticia. Intenté de nuevo."
+            resultadoJSON.mensaje = "Error: Ocurrió un error al intentar crear la crítica. Intenté de nuevo."
         } else{
-            return guardarPublicacion(idCreador, noticiaAGuardar.IdPublicacion)
+            return guardarPublicacion(idCreador, reviewAGuardar.IdPublicacion)
         }
 
         resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
@@ -63,13 +65,13 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
     .catch(error => {
         console.error(error);
         resultadoJSON.exito = false;
-        resultadoJSON.mensaje = "ERROR: Ocurrió un error al intentar crear la noticia. Intenté de nuevo.";
+        resultadoJSON.mensaje = "ERROR: Ocurrió un error al intentar crear la crítica. Intenté de nuevo.";
         return resultadoJSON;
     })
 }
 
-export async function eliminarNoticia(idPublicacion) {
-    return Noticia.deleteOne({IdPublicacion: idPublicacion})
+export async function eliminarReview(idPublicacion) {
+    return Review.deleteOne({IdPublicacion: idPublicacion})
         .then(exito => {
             if (!exito){
                 return false;
@@ -83,19 +85,19 @@ export async function eliminarNoticia(idPublicacion) {
         })
 }
 
-export async function obtenerNoticias(busqueda) {
+export async function obtenerReviews(busqueda) {
     const { Nombre, Figura, Etiqueta } = busqueda;
 
     if (Nombre) {
-          return await Noticia.find({ Titulo: Nombre });
+          return await Review.find({ Titulo: Nombre });
     } else {
         if (Figura) {
-            return await Noticia.find({IdFigura: Figura});
+            return await Review.find({IdFigura: Figura});
         } else {
             if (Etiqueta) {
-                return await Noticia.find({Etiquetas: Etiqueta}); 
+                return await Review.find({Etiquetas: Etiqueta}); 
             } else{
-                return await Noticia.find();
+                return await Review.find();
             }
         }
     }

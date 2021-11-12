@@ -22,6 +22,10 @@ const noticiaSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    NombreFoto: {
+        type: String,
+        required: true
+    },
     TipoFoto: {
         type: String,
         required: true

@@ -4,9 +4,7 @@
 */
 import express from "express";
 import cuentaRouter from './rutas/cuentas.js';
-/*
-
-import publicationRouter from './rutas/reviews.js';*/
+import criticasRouter from './rutas/reviews.js';
 import imagenRouter from "./rutas/imagenes.js";
 import codigosRouter from "./rutas/codigos.js";
 import noticiasRouter from './rutas/noticias.js';
@@ -39,11 +37,11 @@ const rutasDisponibles = [
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
     if (rutasDisponibles.indexOf(req.header('Origin')) !== -1) {
-        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+        corsOptions = { origin: true }
     } else {
-        corsOptions = { origin: false } // disable CORS for this request
+        corsOptions = { origin: false } 
     }
-    callback(null, corsOptions) // callback expects two parameters: error and options
+    callback(null, corsOptions)
 }
  
 app.use(cors());
@@ -52,8 +50,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 app.use("/cuentas", cors(corsOptionsDelegate), cuentaRouter);
-/*
-app.use("/reviews", cors(corsOptionsDelegate), reviewsRouter);*/
+app.use("/reviews", cors(corsOptionsDelegate), criticasRouter);
 app.use("/codigos", cors(corsOptionsDelegate), codigosRouter);
 app.use("/imagenes", cors(corsOptionsDelegate), imagenRouter);
 app.use("/noticias", cors(corsOptionsDelegate), noticiasRouter);

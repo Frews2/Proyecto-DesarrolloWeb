@@ -1,4 +1,6 @@
+import { Guid } from "js-guid";
 import Figura from "../modelos/figura.js";
+import { guardarImagen } from "../utilidades/servicioImagen.js";
 
 export async function existeFigura(idFigura) {
     return Figura.exists({ IdFigura: idFigura})
@@ -11,49 +13,51 @@ export async function existeFigura(idFigura) {
       });
 }
 export async function guardarFigura(nuevaFigura) {
-  const { imagen } = nuevaFigura;
-
+  const CARPETA = "figuras";
+  const { Foto } = nuevaCritica;
+  const GUID = Guid.newGuid();
   var rutaImagen = "";
 
   var resultadoJSON = {
-      exito: true,
-      origen: "figura/guardar",
-      mensaje: "EXITO: Figura guardada",
+    exito: true,
+    origen: "figura/guardar",
+    mensaje: "EXITO: Figura guardada",
   };
 
-  if (imagen) {
-      const respuestaGuardado = await guardarImagen(imagen)
-          .then((resultado) => {
-              rutaImagen = respuestaGuardado.path;
-              return resultado;
-          })
-          .catch((err) => {
-              console.error(err);
-              return err;
-          });
+  const respuestaGuardado = await guardarImagen(Foto, CARPETA)
+    .then((resultado) => {
+      return resultado;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 
-      if(!respuestaGuardado.exito) {
-          resultadoJSON.exito = respuestaGuardado.exito;
-          resultadoJSON.mensaje = respuestaGuardado.mensaje;
-          return resultadoJSON;
-      } 
+  if (!respuestaGuardado.exito) {
+    resultadoJSON.exito = false;
+    resultadoJSON.mensaje = respuestaGuardado.mensaje;
+    return resultadoJSON;
   }
-  const GUID = Guid.newGuid();
+  
+  rutaImagen = respuestaGuardado.rutaImagen;
 
   const figura = {
-      IdFigura: GUID,
-      Nombre: nuevaFigura.Nombre,
-      Altura: nuevaFigura.Altura,
-      Material: nuevaFigura.Material,
-      Marca: nuevaFigura.Marca,
-      Foto: rutaImagen
+    IdFigura: GUID,
+    Nombre: nuevaFigura.Nombre,
+    Altura: nuevaFigura.Altura,
+    Material: nuevaFigura.Material,
+    Marca: nuevaFigura.Marca,
+    Foto: rutaImagen,
+    NombreFoto: nuevaFigura.NombreFoto,
+    TipoFoto: nuevaFigura.TipoFoto,
+    DescripcionFoto: nuevaFigura.DescripcionFoto,
   }
 
   const figuraAGuardar = new Figura(figura);
 
   return figuraAGuardar.save()
   .then((seGuardo) => {
-      console.log(seGuardo);
+      console.log("FIGURA GUARDADA: " + seGuardo);
 
       if(!seGuardo) {
           resultadoJSON.exito = false;
@@ -65,19 +69,17 @@ export async function guardarFigura(nuevaFigura) {
   .catch(error => {
       console.error(error);
       resultadoJSON.exito = false;
-      resultadoJSON.mensaje = "ERROR: Ocurrió un error al intentar crear la noticia. Intenté de nuevo.";
+      resultadoJSON.mensaje = "ERROR: Ocurrió un error al intentar crear la figura. Intenté de nuevo.";
       return resultadoJSON;
   })
 }
 
-export async function obtenerFiguras() {
-  return Figura.find()
-    .then((figuras) => {
-      return figuras;
-    })
-    .catch((err) => {
-      console.error(err);
+export async function obtenerFiguras(busqueda) {
+  const { NombreFigura} = busqueda;
 
-      return [];
-    })
+  if (Nombre) {
+    return await Figura.find({ Nombre: NombreFigura });
+  } else {
+    return await Figura.find();
+  }
 }

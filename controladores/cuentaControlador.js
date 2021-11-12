@@ -41,6 +41,17 @@ export async function existePeriodistaActivo(idCuenta) {
     });
 }
 
+export async function existeColeccionistaActivo(idCuenta) {
+  return Cuenta.exists({ IdCuenta: idCuenta, TipoCuenta: "Coleccionista", Estatus: "Activo"})
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
 export async function guardarCuenta(usuario) {
   const GUID = Guid.newGuid();
   usuario.IdCuenta = GUID;

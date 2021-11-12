@@ -24,10 +24,10 @@ const guardarArchivo = (path, data) => {
   });
 }
 
-export async function guardarImagenNoticia(nuevaImagen) {
+export async function guardarImagen(nuevaImagen, tipoCarpeta) {
     const { name, data } = nuevaImagen;
     const GUID = Guid.newGuid();
-    const rutaImagen = `${carpeta}/noticias/${GUID}${name}`;
+    const rutaImagen = `${carpeta}/${tipoCarpeta}/${GUID}${name}`;
 
     var respuestaJSON = {
       exito: false,

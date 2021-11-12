@@ -1,39 +1,39 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarNoticia, obtenerNoticias } from '../controladores/noticiaControlador.js';
-import checkSchemaNoticia from "../utilidades/noticiaValidador.js";
+import { guardarFigura, obtenerFiguras } from '../controladores/figuraControlador.js';
+import checkSchemaFigura from "../utilidades/figuraValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
 const router = express.Router();
 
-router.post("/Registrar", 
+router.post("/registrar", 
 ChecarTokenActivo,
-checkSchema(checkSchemaNoticia),
+checkSchema(checkSchemaFigura),
 async (req, res) => {
 
   const { errors } = validationResult(req);
 
     var respuestaJSON = {
         exito: true,
-        origen: "noticias/Registrar",
-        mensaje: "EXITO: Noticia guardada",
+        origen: "figuras/registrar",
+        mensaje: "EXITO: Figura guardada",
         resultado: null
     };
 
-  if (errors.length > 0) {
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = "Se encontaron errores al validar la noticia. Corrijalos por favor.";
-    respuestaJSON.resultado = errors;
-    return res.status(400).send(respuestaJSON).end();
-  }
+    if (errors.length > 0) {
+        respuestaJSON.exito = false;
+        respuestaJSON.mensaje = "Se encontaron errores al validar la figura. Corrijalos por favor.";
+        respuestaJSON.resultado = errors;
+        return res.status(400).send(respuestaJSON).end();
+    }
 
-  var nuevaNoticia = req.body;
+    var nuevaFigura = req.body;
 
-  if(req.files && req.files.Foto) {
-    nuevaNoticia.Foto = req.files.Foto;
-  }
+    if(req.files && req.files.Foto) {
+        nuevaFigura.Foto = req.files.Foto;
+    }
   
-    guardarNoticia(nuevaNoticia.IdCuenta, nuevaNoticia)
+    guardarFigura(nuevaFigura)
     .then(resultadoCreacion => {
         if (resultadoCreacion.exito) {
             respuestaJSON.mensaje = resultadoCreacion.mensaje;
@@ -49,7 +49,7 @@ async (req, res) => {
         console.error(error);
 
         respuestaJSON.exito = false;
-        respuestaJSON.mensaje = "Ocurrió un error al intentar crear la noticia. Intente más tarde."
+        respuestaJSON.mensaje = "Ocurrió un error al intentar registrar la figura. Intente más tarde."
         respuestaJSON.resultado = error;
 
         return res.status(500).send(respuestaJSON);
@@ -62,20 +62,20 @@ router.get("/buscar", async (req, res) => {
 
     var respuestaJSON = {
         exito: true,
-        origen: "noticias/buscar",
-        mensaje: "EXITO: Noticias encontradas",
+        origen: "figuras/buscar",
+        mensaje: "EXITO: Figura(s) encontradas",
         resultado: null
     };
 
-    obtenerNoticias(busqueda)
-      .then((noticias) => {
-        if (noticias && noticias.length > 0) {
-            respuestaJSON.resultado = noticias;
+    obtenerFiguras(busqueda)
+      .then((reviews) => {
+        if (reviews && reviews.length > 0) {
+            respuestaJSON.resultado = reviews;
 
             return res.status(200).send(respuestaJSON);
         } else {
             respuestaJSON.exito = false;
-            respuestaJSON.mensaje = "No se encontraron noticias";
+            respuestaJSON.mensaje = "No se encontraron figuras. Ingrese un filtro diferente.";
             return res.status(405).send(respuestaJSON);
         }
       })

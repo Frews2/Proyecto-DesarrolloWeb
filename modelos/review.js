@@ -11,6 +11,10 @@ const reviewSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    Titulo: {
+        type: String,
+        required: true
+    },
     Texto: {
         type: String,
         required: true
@@ -21,7 +25,19 @@ const reviewSchema = new mongoose.Schema({
     },
     Foto: {
         type: String,
-        required: false
+        required: true
+    },
+    NombreFoto: {
+        type: String,
+        required: true
+    },
+    TipoFoto: {
+        type: String,
+        required: true
+    },
+    DescripcionFoto: {
+        type: String,
+        required: true
     },
     Etiquetas: {
         type: [String],
