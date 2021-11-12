@@ -1,4 +1,4 @@
-export function esFormatoValido(formato) {
+export async function esFormatoValido(formato) {
   const JPG = ".jpg";
   const JPEG = ".jpeg";
   const PNG = ".png";
@@ -12,7 +12,7 @@ export function esFormatoValido(formato) {
   }
 }
 
-export function existeImagen(imagen) {
+export async function existeImagen(imagen) {
   
   if (imagen === null) {
     "ERROR: No se tiene una Foto agregada a la publicacición."
