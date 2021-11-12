@@ -49,6 +49,7 @@ db.figuras.insert([
         "Material": "Acero Inoxidable",
         "Marca": "Guason Inc.",
         "Foto": "rutafake",
+        "NombreFoto": "fotoFake.jpg",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara vestido de negro."
     }
@@ -92,6 +93,7 @@ db.noticias.insert([
         "Titulo": "BATMAN PLATEADO",
         "Texto": "Nueva figura de batman plateado",
         "Foto": "rutafake",
+        "NombreFoto": "fotoFake",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara vestido de colores claros.",
         "Etiquetas": ["DC","Batman","Metal"],
@@ -103,9 +105,11 @@ db.reviews.insert([
     {
         "IdPublicacion": "5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
         "IdFigura": "b763f4b3-f67a-498e-917d-f74b4affb19e",
+        "Titulo": "Review de Batman millenial 2021",
         "Texto": "Review sobre el nuevo Batman 2021",
         "Calificacion": " 3.5 de 5 estrellas",
         "Foto": "rutafake",
+        "NombreFoto": "fotoFake",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara vestido de negro.",
         "Etiquetas": ["DC","Batman","Metal"],
