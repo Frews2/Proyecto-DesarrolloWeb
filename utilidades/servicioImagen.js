@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { Guid } from "js-guid";
 
 const carpeta = process.cwd() + "/recursos";
 
@@ -26,8 +25,7 @@ const guardarArchivo = (path, data) => {
 
 export async function guardarImagen(nuevaImagen, tipoCarpeta) {
     const { name, data } = nuevaImagen;
-    const GUID = Guid.newGuid();
-    const rutaImagen = `${carpeta}/${tipoCarpeta}/${GUID}${name}`;
+    const rutaImagen = `${carpeta}/${tipoCarpeta}/${name}`;
 
     var respuestaJSON = {
       exito: false,

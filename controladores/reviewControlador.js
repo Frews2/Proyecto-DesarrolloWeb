@@ -8,6 +8,8 @@ export async function guardarReview(idCreador, nuevaCritica) {
     const { Foto } = nuevaCritica;
     const GUID = Guid.newGuid();
     var rutaImagen = "";
+    const nombreArchivo = GUID + nuevaFigura.NombreFoto;
+    Foto.name = nombreArchivo;
 
     var resultadoJSON = {
         exito: true,
@@ -40,7 +42,7 @@ export async function guardarReview(idCreador, nuevaCritica) {
         Texto: nuevaCritica.Texto,
         Calificacion: nuevaCritica.Calificacion,
         Foto: rutaImagen,
-        NombreFoto: nuevaCritica.NombreFoto,
+        NombreFoto: nombreArchivo,
         TipoFoto: nuevaCritica.TipoFoto,
         DescripcionFoto: nuevaCritica.DescripcionFoto,
         Etiquetas: nuevaCritica.Etiquetas,

@@ -1,30 +1,6 @@
 import { existeColeccionistaActivo } from "../controladores/cuentaControlador.js";
 import { existeFigura } from "../controladores/figuraControlador.js";
-
-function esFormatoValido(formato) {
-  const JPG = ".jpg";
-  const JPEG = ".jpeg";
-  const PNG = ".png";
-
-  if (!(formato == JPG || formato == JPEG || formato == PNG)) {
-    throw new Error(
-      "ERROR: El formato de la imagen es invalido."
-    );
-  } else{
-    return true;
-  }
-}
-
-function tieneImagen(imagen) {
-  
-  if (imagen === null) {
-    throw new Error(
-      "ERROR: No se tiene una Foto agregada a la crítica."
-    );
-  } else{
-    return true;
-  }
-}
+import { esFormatoValido, existeImagen } from "../utilidades/imagenValidador.js";
 
 const checkSchemaReview = {
   Titulo: {
@@ -50,8 +26,16 @@ const checkSchemaReview = {
   },
   Foto: {
     custom: {
-      options: (value) => {
-        return tieneImagen(value);
+      options: async (value, { req }) => {
+        return existeImagen(req.body.Foto, value).then((existe) => {
+          if (!existe) {
+            return Promise.reject(
+              "No existe una foto, por favor agregue una foto."
+            );
+          }
+
+          return existe;
+        });
       },
     },
   },
@@ -71,8 +55,16 @@ const checkSchemaReview = {
   },
   TipoFoto: {
     custom: {
-      options: (value) => {
-        return esFormatoValido(value);
+      options: async (value, { req }) => {
+        return esFormatoValido(req.body.TipoFoto, value).then((existe) => {
+          if (!existe) {
+            return Promise.reject(
+              "El tipo de foto no es valido. Por favor verifique que la foto tenga extensión correcta."
+            );
+          }
+
+          return existe;
+        });
       },
     },
   },
