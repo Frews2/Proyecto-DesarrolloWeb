@@ -8,7 +8,8 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
     const { Foto } = nuevaNoticia;
     const GUID = Guid.newGuid();
     var rutaImagen = "";
-    const nombreArchivo = GUID + nuevaNoticia.NombreFoto;
+    const nombreArchivo = GUID + nuevaNoticia.NombreFoto + nuevaNoticia.TipoFoto;
+    const archivoSinExtension = GUID + nuevaNoticia.NombreFoto;
     Foto.name = nombreArchivo;
 
     var resultadoJSON = {
@@ -40,7 +41,7 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         IdFigura: nuevaNoticia.IdFigura,
         Texto: nuevaNoticia.Texto,
         Foto: rutaImagen,
-        NombreFoto: nombreArchivo,
+        NombreFoto: archivoSinExtension,
         TipoFoto: nuevaNoticia.TipoFoto,
         DescripcionFoto: nuevaNoticia.DescripcionFoto,
         Etiquetas: nuevaNoticia.Etiquetas,
