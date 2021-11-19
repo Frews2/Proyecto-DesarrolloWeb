@@ -2,6 +2,18 @@ import { existeColeccionistaActivo } from "../controladores/cuentaControlador.js
 import { existeFigura } from "../controladores/figuraControlador.js";
 import { esFormatoValido, existeImagen } from "../utilidades/imagenValidador.js";
 
+function esCalificacionValida(valor) {
+  const MIN = 0;
+  const MAX = 10;
+  if (valor < MIN || valor > MAX ) {
+    throw new Error(
+      "ERROR: La calificacion debe ser un valor entre 0 y 10."
+    );
+  } else{
+    return true;
+  }
+}
+
 const checkSchemaReview = {
   Titulo: {
     isLength: {
@@ -18,10 +30,10 @@ const checkSchemaReview = {
     },
   },
   Calificacion: {
-    isLength: {
-      errorMessage:
-        "La calificación de la crítica debe tener minimo de 10 caracteres y máximo 5000",
-      options: { min: 0, max: 10 },
+    custom: {
+      options: (value) => {
+        return esCalificacionValida(value);
+      },
     },
   },
   Foto: {

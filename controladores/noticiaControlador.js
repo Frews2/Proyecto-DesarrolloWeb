@@ -103,3 +103,12 @@ export async function obtenerNoticias(busqueda) {
         }
     }
 }
+
+export async function obtenerNoticia(idContenido) {
+
+    if (idContenido != null) {
+          return await Noticia.find({ IdPublicacion: idContenido });
+    } else {
+        
+    }
+}
