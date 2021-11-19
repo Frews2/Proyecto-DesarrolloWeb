@@ -15,8 +15,8 @@ export async function esFormatoValido(formato) {
 export async function existeImagen(imagen) {
   
   if (imagen === null) {
-    "ERROR: No se tiene una Foto agregada a la publicacición."
     throw new Error(
+      "ERROR: No se tiene una Foto agregada a la publicacición."
     );
   } else{
     return true;
