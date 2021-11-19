@@ -76,12 +76,27 @@ export async function guardarFigura(nuevaFigura) {
   })
 }
 
-export async function obtenerFiguras(busqueda) {
-  const { NombreFigura} = busqueda;
+export async function obtenerFiguras(texto) {
+  var filtro = {};
+  if (texto) {
+    filtro.$or = [
+      { Titulo: { $regex: texto, $options: "i" } },
+      { Etiquetas: { $regex: texto, $options: "i" } },
+    ];
 
-  if (Nombre) {
-    return await Figura.find({ Nombre: NombreFigura });
+    return Figura.find(filtro)
+      .then((figuras) => {
+        return figuras;
+      })
+      .catch((err) => {
+        console.error(err);
+        return [];
+      });
   } else {
     return await Figura.find();
   }
+}
+
+export async function obtenerFiguraDatos(identificador) {
+  return await Figura.findOne({ IdFigura: identificador });
 }

@@ -8,6 +8,7 @@ import criticasRouter from './rutas/reviews.js';
 import imagenRouter from "./rutas/imagenes.js";
 import codigosRouter from "./rutas/codigos.js";
 import noticiasRouter from './rutas/noticias.js';
+import figurasRouter from "./rutas/figuras.js";
 import cors from 'cors';
 import fileupload from "express-fileupload";
 import mongoose from 'mongoose';
@@ -54,6 +55,7 @@ app.use("/reviews", cors(corsOptionsDelegate), criticasRouter);
 app.use("/codigos", cors(corsOptionsDelegate), codigosRouter);
 app.use("/imagenes", cors(corsOptionsDelegate), imagenRouter);
 app.use("/noticias", cors(corsOptionsDelegate), noticiasRouter);
+app.use("/figuras", cors(corsOptionsDelegate), figurasRouter);
 
 app.all("*", cors(corsOptionsDelegate), (req, res) => res.status(404).send({
     success: false,
