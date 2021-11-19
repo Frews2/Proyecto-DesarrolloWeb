@@ -14,7 +14,7 @@ export async function existeFigura(idFigura) {
 }
 export async function guardarFigura(nuevaFigura) {
   const CARPETA = "figuras";
-  const { Foto } = nuevaCritica;
+  const { Foto } = nuevaFigura;
   const GUID = Guid.newGuid();
   var rutaImagen = "";
   const nombreArchivo = GUID + nuevaFigura.NombreFoto;

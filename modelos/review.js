@@ -9,7 +9,6 @@ const reviewSchema = new mongoose.Schema({
     IdFigura: {
         type: String,
         required: true,
-        unique: true
     },
     Titulo: {
         type: String,
