@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import './home.css';
 import HomepageFeatures from '../components/HomepageFeatures';
+import Noticias from '../components/noticias/noticias';
 
 
 function HomepageHeader() {
@@ -26,6 +27,9 @@ export default function Home() {
       <HomepageHeader/>
       <main>
           <HomepageFeatures></HomepageFeatures>
+      <div className="contenedorNoticias">
+          <Noticias></Noticias>
+      </div>
         
       </main>
       

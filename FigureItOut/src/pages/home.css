@@ -39,18 +39,6 @@ color: white;
 }
 
 
-.noticias {
-  border: 2px solid black;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 900px;
-  height: 300px;
-  margin: 20px;
-  position: f;
-}
 
 .paginationBttns {
   width: 80%;
@@ -58,6 +46,8 @@ color: white;
   list-style: none;
   display: flex;
   justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .paginationBttns a {
@@ -90,6 +80,4 @@ color: white;
   color:black;
 	background: #39195a;
 }
-.contenedorNoticias{
-  padding-left: 300px;
-}
+

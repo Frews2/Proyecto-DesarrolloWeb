@@ -6,12 +6,12 @@ export class Registro extends Component {
         form:{
             email:'',
             apodo:'',
-            password:'',
+            contraseña:'',
             nombre:'',
             ocupacion:'',
             fechaNacimiento:'',
             pais:'',
-            confirmarPassword:'',
+            confirmarContraseña:'',
             sexo:'',
             tipoCuenta:'',
             nombre:''
@@ -27,7 +27,7 @@ export class Registro extends Component {
         });
         if(this.state.form.email.length >=5 && this.state.form.password.length >=4 &&
             this.state.form.apodo.length >=5 && this.state.form.fechaNacimiento.length > 0
-            && this.state.form.sexo.length > 0 && this.state.form.password === this.state.form.confirmarPassword
+            && this.state.form.sexo.length > 0 && this.state.form.contraseña === this.state.form.confirmarContraseña
             && this.state.form.pais.length > 0 && this.state.form.tipoCuenta.length){
             this.setState({
                 disabled: false
@@ -56,7 +56,7 @@ export class Registro extends Component {
             
             body: JSON.stringify({
                 Email: this.state.form.email,
-                Password: this.state.form.password,
+                Password: this.state.form.contraseña,
                 TipoCuenta: this.state.form.tipoCuenta,
                 Apodo: this.state.form.apodo,
                 Nombre: this.state.form.nombre,
@@ -89,34 +89,34 @@ export class Registro extends Component {
         return (
             <div className="login">
             <form onSubmit={(e)=>this.registrar(e)}>
-                <h2>Registrate</h2>
+                <h1>Registrate</h1>
 
                 <div className="form-group">
-                    <label>Apodo *</label>
-                    <input type="text" maxLength="15" className="form-control"  minLength={4} placeholder="Escribe tu apodo" 
+                    <label for="apodo">Apodo *</label>
+                    <input type="text" id="apodo" maxLength="15" className="form-control"  minLength={4} placeholder="Escribe tu apodo" 
                     onChange={this.handleChange} name="apodo" required/>
                 </div>
                 <div className="form-group">
-                    <label>Nombre</label>
-                    <input type="text" maxLength="15" className="form-control" name="nombre"
+                    <label for ="nombre" >Nombre</label>
+                    <input type="text" id="nombre" maxLength="15" className="form-control" name="nombre"
                      minLength={1} placeholder="Escribe tu primer nombre(opcional)" onChange={this.handleChange}/>
                 </div>
 
                 <div className="form-group">
-                    <label>Ocupacion</label>
-                    <input type="text" maxLength="15" className="form-control"  minLength={4}  name="ocupacion"
+                    <label for="ocupacion" >Ocupacion</label>
+                    <input type="text" id="ocupacion"maxLength="15" className="form-control"  minLength={4}  name="ocupacion"
                     placeholder="Escribe tu ocupacion(opcional)" onChange={this.handleChange}/>
                 </div>
 
                 <div className="form-group">
-                    <label>Fecha Nacimiento *</label>
-                    <input type="date" className="form-control" min="1950-01-01" max="2021-10-08" 
+                    <label for="fechaNacimiento">Fecha Nacimiento *</label>
+                    <input type="date" id="fechaNacimiento" className="form-control" min="1950-01-01" max="2021-10-08" 
                     onChange={this.handleChange} name="fechaNacimiento" required/>
                 </div>
                 
                 <div className="form-group">
-                    <label >Pais *</label>
-                        <select id="country" name="pais" onChange={this.handleChange} required>
+                    <label for="pais" >Pais *</label>
+                        <select id="pais" name="pais" onChange={this.handleChange} required>
                             <option disabled selected>Selecciona una opción</option>
                             <option value="Argentina">Argentina</option>
                             <option value="Australia">Australia</option>
@@ -128,34 +128,34 @@ export class Registro extends Component {
                             <option value="Colombia">Colombia</option>
                             <option value="Costa Rica">Costa Rica</option>
                             <option value="Cuba">Cuba</option>
-                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="Republica Dominicana">Republica Dominicana</option>
                             <option value="Ecuador">Ecuador</option>
                             <option value="El Salvador">El Salvador</option>
-                            <option value="France">France</option>
+                            <option value="Francia">Francia</option>
                             <option value="Germany">Germany</option>
-                            <option value="Great Britain">Great Britain</option>
+                            <option value="Gran Bretaña">Great Britain</option>
                             <option value="Guatemala">Guatemala</option>
                             <option value="Haiti">Haiti</option>
                             <option value="Honduras">Honduras</option>
                             <option value="India">India</option>
                             <option value="Jamaica">Jamaica</option>
                             <option value="Mexico">Mexico</option>
-                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nueva Zelanda">New Zealand</option>
                             <option value="Panama">Panama</option>
                             <option value="Paraguay">Paraguay</option>
                             <option value="Peru">Peru</option>
                             <option value="Puerto Rico">Puerto Rico</option>
-                            <option value="Spain">Spain</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="United States of America">United States of America</option>
+                            <option value="España">España</option>
+                            <option value="Reino Unido">Reino Unido</option>
+                            <option value="Estados Unidos de America">Estados Unidos de America</option>
                             <option value="Uraguay">Uruguay</option>
                             <option value="Venezuela">Venezuela</option>
                         </select>
                     </div>
 
                 <div className="form-group">
-                    <label >Sexo *</label>
-                    <select onChange={this.handleChange} name="sexo" required>
+                    <label for="Sexo" >Sexo *</label>
+                    <select onChange={this.handleChange} id="Sexo" name="sexo" required>
                         <option disabled selected>Selecciona una opción</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
@@ -164,8 +164,8 @@ export class Registro extends Component {
                 </div>
 
                 <div className="form-group">
-                    <label name="tipoCuenta">Tipo de cuenta *</label>
-                    <select onChange={this.handleChange} name="tipoCuenta" required>
+                    <label for="tipoCuenta">Tipo de cuenta *</label>
+                    <select onChange={this.handleChange} id="tipoCuenta" name="tipoCuenta" required>
                         <option disabled selected>Selecciona una opción</option>
                         <option value="Periodista">Periodista</option>
                         <option value="Coleccionista">Coleccionista</option>
@@ -173,25 +173,25 @@ export class Registro extends Component {
                 </div>
 
                 <div className="form-group">
-                    <label>Correo *</label>
-                    <input type="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} 
+                    <label for="email" >Correo *</label>
+                    <input type="email" id="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} 
                     maxLength="50" name="email" pattern= "[a-z0-9._%+-]+@+[a-z0-9.-]+\.[a-z]{2,}$" onChange={this.handleChange} required/>
                 </div>
 
                 <div className="form-group">
-                    <label>Contraseña *</label>
-                    <input name="password" type="password" maxLength="15" className="form-control"  minLength={4}
+                    <label for="contraseña">Contraseña *</label>
+                    <input name="contraseña" id="contraseña" type="password" maxLength="15" className="form-control"  minLength={4}
                     placeholder="introduce tu contraseña" onChange={this.handleChange} required />
                 </div>
 
                 <div className="form-group">
-                    <label>Confirmar Contraseña *</label>
-                    <input name="confirmarPassword" type="password" maxLength="15" className="form-control"  minLength={4}
+                    <label for="confirmarContraseña">Confirmar Contraseña *</label>
+                    <input name="confirmarContraseña" id="confirmarContraseña" type="password" maxLength="15" className="form-control"  minLength={4}
                     placeholder="introduce tu contraseña" onChange={this.handleChange} required />
                 </div>
-                <button type="submit" className="loginBtn" disabled={this.state.disabled} >Registrate</button>
-                <p className="forgot-password text-right">¿Ya estas registrado?<a href="/login">ingresa aqui</a> </p>
-                <p className="forgot-password text-right">Los campos con (*) son obligatorios de llenar </p>
+                <button type="submit" className="botonNormal" disabled={this.state.disabled} >Registrate</button>
+                <p>¿Ya estas registrado?<a href="/login">ingresa aqui</a> </p>
+                <p >Los campos con (*) son obligatorios de llenar </p>
             </form>
             </div>
         );

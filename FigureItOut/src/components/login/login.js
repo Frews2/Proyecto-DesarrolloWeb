@@ -60,21 +60,21 @@ export class Login extends Component {
         return (
             <div className="login">
                 <form onSubmit={(e)=>this.login(e)}>
-                <h2>Iniciar Sesion</h2>
+                <h1>Iniciar Sesion</h1>
 
                 <div className="form-group">
-                    <label>Email</label>
-                    <input type="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} 
+                    <label for="email" >Email:</label>
+                    <input type="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} id="email"
                     maxLength="50" name="email" pattern= "[a-z0-9._%+-]+@+[a-z0-9.-]+\.[a-z]{2,}$" onChange={this.handleChange} required/>
                 </div>
 
                 <div className="form-group" >
-                    <label>Contraseña</label>
+                    <label for="password">Contraseña:</label>
                     <input name="password" type="password" maxLength="15" className="form-control"  minLength={4}
-                    placeholder="introduce tu contraseña" onChange={this.handleChange} required />
+                    placeholder="introduce tu contraseña" onChange={this.handleChange} id="password" required />
                 </div>
                 <div className="form-end">
-                    <button type="submit" className="loginBtn" disabled={this.state.disabled}>Acceder</button>
+                    <button type="submit" className="botonNormal" disabled={this.state.disabled}>Acceder</button>
                     <p>¿Olvidaste tu <a href="#">contraseña?</a></p>
                     <p> ¿No estas registrado?<a href="/registro">registrate</a> </p>
                 </div>

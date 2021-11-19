@@ -1,5 +1,5 @@
 import React from "react";
-import '../css/form.css';
+import '../css/figureItOutStyle.css';
 import { Registro } from "../components/login";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
