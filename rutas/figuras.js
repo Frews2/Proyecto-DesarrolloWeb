@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarFigura, obtenerFiguras } from '../controladores/figuraControlador.js';
+import { guardarFigura, obtenerFiguras, obtenerFiguraDatos } from '../controladores/figuraControlador.js';
 import checkSchemaFigura from "../utilidades/figuraValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
@@ -58,7 +58,7 @@ async (req, res) => {
 
 
 router.get("/buscar", async (req, res) => {
-    const TEXTO_BUSQUEDA = req.query;
+  const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
         exito: true,
@@ -90,7 +90,7 @@ router.get("/buscar", async (req, res) => {
 })
 
 router.get("/obtenerPorId", async (req, res) => {
-    const ID_FIGURA = req.query;
+    const ID_FIGURA = req.query.id;
 
     var respuestaJSON = {
         exito: true,

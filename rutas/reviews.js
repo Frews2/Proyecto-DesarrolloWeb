@@ -58,7 +58,7 @@ async (req, res) => {
 
 
 router.get("/buscar", async (req, res) => {
-    const TEXTO_BUSQUEDA = req.query;
+    const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
         exito: true,
@@ -90,7 +90,7 @@ router.get("/buscar", async (req, res) => {
 })
 
 router.get("/obtenerPorId", async (req, res) => {
-    const ID_REVIEW = req.query;
+    const ID_REVIEW = req.query.id;
 
     var respuestaJSON = {
         exito: true,
