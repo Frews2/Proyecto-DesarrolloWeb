@@ -58,7 +58,7 @@ async (req, res) => {
 
 
 router.get("/buscar", async (req, res) => {
-    const busqueda = req.query;
+    const TEXTO_BUSQUEDA = req.query;
 
     var respuestaJSON = {
         exito: true,
@@ -67,7 +67,7 @@ router.get("/buscar", async (req, res) => {
         resultado: null
     };
 
-    obtenerNoticias(busqueda)
+    obtenerNoticias(TEXTO_BUSQUEDA)
       .then((noticias) => {
         if (noticias && noticias.length > 0) {
             respuestaJSON.resultado = noticias;
@@ -87,6 +87,38 @@ router.get("/buscar", async (req, res) => {
 
         return res.status(500).send(respuestaJSON);
       });
+})
+
+router.get("/obtenerPorId", async (req, res) => {
+  const ID_NOTICIA= req.query;
+
+  var respuestaJSON = {
+      exito: true,
+      origen: "noticias/obtenerPorId",
+      mensaje: "EXITO: Noticias encontradas",
+      resultado: null
+  };
+
+  obtenerNoticiaDatos(ID_NOTICIA)
+    .then((noticias) => {
+      if (noticias && noticias.length > 0) {
+          respuestaJSON.resultado = noticias;
+
+          return res.status(200).send(respuestaJSON);
+      } else {
+          respuestaJSON.exito = false;
+          respuestaJSON.mensaje = "No se encontró una noticia. Ingrese una Id válida.";
+          return res.status(405).send(respuestaJSON);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      respuestaJSON.exito = false;
+      respuestaJSON.mensaje = error.message;
+      respuestaJSON.resultado = error;
+
+      return res.status(500).send(respuestaJSON);
+    });
 })
 
 export default router;

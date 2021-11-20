@@ -6,6 +6,10 @@ const noticiaSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    IdCuenta: {
+        type: String,
+        required: true,
+    },
     Titulo: {
         type: String,
         required: true
@@ -41,6 +45,11 @@ const noticiaSchema = new mongoose.Schema({
     Comentarios: {
         type: [String],
         default: [] 
+    },
+    FechaRegistro: {
+        type: Date,
+        required: true,
+        default: Date.now
     }
 });
 

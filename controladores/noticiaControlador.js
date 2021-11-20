@@ -1,9 +1,8 @@
-import { Guid } from "js-guid";
-import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
+import { Guid } from "js-guid";;
 import Noticia from "../modelos/noticia.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
 
-export async function guardarNoticia(idCreador, nuevaNoticia) {
+export async function guardarNoticia(nuevaNoticia) {
     const CARPETA = "noticias";
     const { Foto } = nuevaNoticia;
     const GUID = Guid.newGuid();
@@ -38,13 +37,14 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
     const noticia = {
         IdPublicacion: GUID,
         Titulo: nuevaNoticia.Titulo,
+        IdCuenta: nuevaNoticia.IdCuenta,
         IdFigura: nuevaNoticia.IdFigura,
         Texto: nuevaNoticia.Texto,
         Foto: rutaImagen,
         NombreFoto: archivoSinExtension,
         TipoFoto: nuevaNoticia.TipoFoto,
         DescripcionFoto: nuevaNoticia.DescripcionFoto,
-        Etiquetas: nuevaNoticia.Etiquetas,
+        Etiquetas: nuevaNoticia.Etiquetas
     }
 
     const noticiaAGuardar = new Noticia(noticia);
@@ -56,11 +56,10 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
         if(!seGuardo) {
             resultadoJSON.exito = false;
             resultadoJSON.mensaje = "Error: Ocurrió un error al intentar crear la noticia. Intenté de nuevo."
-        } else{
-            return guardarPublicacion(idCreador, noticiaAGuardar.IdPublicacion)
+        } else {
+            resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
         }
 
-        resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
         return resultadoJSON;
     })
     .catch(error => {
@@ -71,44 +70,38 @@ export async function guardarNoticia(idCreador, nuevaNoticia) {
     })
 }
 
-export async function eliminarNoticia(idPublicacion) {
-    return Noticia.deleteOne({IdPublicacion: idPublicacion})
-        .then(exito => {
-            if (!exito){
-                return false;
-            } else {
-                return eliminarPublicacion(idPublicacion);
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        return false;
-        })
+export async function eliminarNoticia(id) {
+    return Noticia.deleteOne({IdPublicacion: id})
+    .then(exito => {
+        return exito.ok == 1;
+    })
+    .catch(error => {
+        console.error(error);
+    return false;
+    })
 }
 
-export async function obtenerNoticias(busqueda) {
-    const { Nombre, Figura, Etiqueta } = busqueda;
-
-    if (Nombre) {
-          return await Noticia.find({ Titulo: Nombre });
+export async function obtenerNoticias(texto) {
+    var filtro = {};
+    if (texto) {
+        filtro.$or = [
+            { Titulo: { $regex: texto, $options: "i" } },
+            { Etiquetas: { $regex: texto, $options: "i" } },
+        ];
+        return Noticia.find(filtro)
+        .sort({ FechaRegistro: 'descending'})
+        .then((noticias) => {
+            return noticias;
+        })
+        .catch((err) => {
+            console.error(err);
+            return [];
+        });
     } else {
-        if (Figura) {
-            return await Noticia.find({IdFigura: Figura});
-        } else {
-            if (Etiqueta) {
-                return await Noticia.find({Etiquetas: Etiqueta}); 
-            } else{
-                return await Noticia.find();
-            }
-        }
+        return await Noticia.find();
     }
 }
-
-export async function obtenerNoticia(idContenido) {
-
-    if (idContenido != null) {
-          return await Noticia.find({ IdPublicacion: idContenido });
-    } else {
-        
-    }
+  
+export async function obtenerNoticiaDatos(identificador) {
+    return await Noticia.findOne({ IdPublicacion: identificador });
 }
