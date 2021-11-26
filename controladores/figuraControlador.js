@@ -17,7 +17,8 @@ export async function guardarFigura(nuevaFigura) {
   const { Foto } = nuevaFigura;
   const GUID = Guid.newGuid();
   var rutaImagen = "";
-  const nombreArchivo = GUID + nuevaFigura.NombreFoto;
+  const nombreArchivo = GUID + nuevaFigura.NombreFoto + nuevaFigura.TipoFoto;
+  const archivoSinExtension = GUID + nuevaFigura.NombreFoto;
   Foto.name = nombreArchivo;
 
   var resultadoJSON = {
@@ -50,7 +51,7 @@ export async function guardarFigura(nuevaFigura) {
     Material: nuevaFigura.Material,
     Marca: nuevaFigura.Marca,
     Foto: rutaImagen,
-    NombreFoto: nombreArchivo,
+    NombreFoto: archivoSinExtension,
     TipoFoto: nuevaFigura.TipoFoto,
     DescripcionFoto: nuevaFigura.DescripcionFoto,
   }
