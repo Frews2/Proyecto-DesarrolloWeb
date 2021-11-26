@@ -78,7 +78,7 @@ export async function guardarFigura(nuevaFigura) {
 
 export async function obtenerFiguras(texto) {
   var filtro = {};
-  if (texto != null) {
+  if (texto) {
     filtro.$or = [
       { Nombre: { $regex: texto, $options: "i" } },
       { Marca: { $regex: texto, $options: "i" } },

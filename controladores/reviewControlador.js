@@ -82,6 +82,24 @@ export async function eliminarReview(id) {
     })
 }
 
+export async function obtenerReviewsReportados() {
+    const BANEADO = "BANEADO";
+    var filtro = {};
+    filtro.$or = [
+        { Estatus: { $regex: BANEADO } }
+    ];
+
+    return await Review.find(filtro)
+        .sort({ FechaRegistro: 'ascending' })
+        .then((criticias) => {
+            return criticias;
+        })
+        .catch((err) => {
+            console.error(err);
+            return [];
+        });
+}
+
 export async function obtenerReviews(texto) {
     var filtro = {};
     if (texto) {
@@ -105,5 +123,5 @@ export async function obtenerReviews(texto) {
 }
   
 export async function obtenerReviewDatos(identificador) {
-    return await Review.findOne({ IdPublicacion: identificador });
+    return await Review.find({ IdPublicacion: identificador });
 }

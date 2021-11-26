@@ -81,6 +81,24 @@ export async function eliminarNoticia(id) {
     })
 }
 
+export async function obtenerNoticiasReportadas() {
+    const BANEADO = "BANEADO";
+    var filtro = {};
+    filtro.$or = [
+        { Estatus: { $regex: BANEADO } }
+    ];
+
+    return await Noticia.find(filtro)
+        .sort({ FechaRegistro: 'ascending' })
+        .then((noticias) => {
+            return noticias;
+        })
+        .catch((err) => {
+            console.error(err);
+            return [];
+        });
+}
+
 export async function obtenerNoticias(texto) {
     var filtro = {};
     if (texto) {
@@ -103,5 +121,5 @@ export async function obtenerNoticias(texto) {
 }
   
 export async function obtenerNoticiaDatos(identificador) {
-    return await Noticia.findOne({ IdPublicacion: identificador });
+    return await Noticia.find({ IdPublicacion: identificador });
 }
