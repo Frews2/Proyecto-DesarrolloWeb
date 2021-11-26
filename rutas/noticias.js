@@ -57,7 +57,9 @@ async (req, res) => {
 })
 
 
-router.get("/buscar", async (req, res) => {
+router.get("/buscar", 
+ChecarTokenActivo,
+async (req, res) => {
     const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
@@ -89,7 +91,9 @@ router.get("/buscar", async (req, res) => {
       });
 })
 
-router.get("/obtenerPorId", async (req, res) => {
+router.get("/obtenerPorId", 
+ChecarTokenActivo,
+ async (req, res) => {
   const ID_NOTICIA= req.query.id;
 
   var respuestaJSON = {
