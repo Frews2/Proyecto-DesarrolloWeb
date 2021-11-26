@@ -4,7 +4,11 @@ const reviewSchema = new mongoose.Schema({
     IdPublicacion: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+    },
+    IdCuenta: {
+        type: String,
+        required: true,
     },
     IdFigura: {
         type: String,
@@ -44,7 +48,12 @@ const reviewSchema = new mongoose.Schema({
     },
     Comentarios: {
         type: [String],
-        default: [] 
+        default: []
+    },
+    FechaRegistro: {
+        type: Date,
+        required: true,
+        default: Date.now
     }
 });
 

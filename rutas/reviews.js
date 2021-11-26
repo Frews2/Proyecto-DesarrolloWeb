@@ -57,8 +57,10 @@ async (req, res) => {
 })
 
 
-router.get("/buscar", async (req, res) => {
-    const busqueda = req.query;
+router.get("/buscar",
+ChecarTokenActivo,
+async (req, res) => {
+    const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
         exito: true,
@@ -67,7 +69,7 @@ router.get("/buscar", async (req, res) => {
         resultado: null
     };
 
-    obtenerReviews(busqueda)
+    obtenerReviews(TEXTO_BUSQUEDA)
       .then((reviews) => {
         if (reviews && reviews.length > 0) {
             respuestaJSON.resultado = reviews;
@@ -76,6 +78,40 @@ router.get("/buscar", async (req, res) => {
         } else {
             respuestaJSON.exito = false;
             respuestaJSON.mensaje = "No se encontraron críticas. Ingrese un filtro diferente.";
+            return res.status(405).send(respuestaJSON);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        respuestaJSON.exito = false;
+        respuestaJSON.mensaje = error.message;
+        respuestaJSON.resultado = error;
+
+        return res.status(500).send(respuestaJSON);
+      });
+})
+
+router.get("/obtenerPorId",
+ChecarTokenActivo,
+async (req, res) => {
+    const ID_REVIEW = req.query.id;
+
+    var respuestaJSON = {
+        exito: true,
+        origen: "reviews/obtenerPorId",
+        mensaje: "EXITO: Críticas encontradas",
+        resultado: null
+    };
+
+    obtenerReviews(ID_REVIEW)
+      .then((reviews) => {
+        if (reviews && reviews.length > 0) {
+            respuestaJSON.resultado = reviews;
+
+            return res.status(200).send(respuestaJSON);
+        } else {
+            respuestaJSON.exito = false;
+            respuestaJSON.mensaje = "No se encontró una crítica. Ingrese una Id válida.";
             return res.status(405).send(respuestaJSON);
         }
       })

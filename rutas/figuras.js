@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarFigura, obtenerFiguras } from '../controladores/figuraControlador.js';
+import { guardarFigura, obtenerFiguras, obtenerFiguraDatos } from '../controladores/figuraControlador.js';
 import checkSchemaFigura from "../utilidades/figuraValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
@@ -57,8 +57,10 @@ async (req, res) => {
 })
 
 
-router.get("/buscar", async (req, res) => {
-    const busqueda = req.query;
+router.get("/buscar",
+ChecarTokenActivo,
+async (req, res) => {
+  const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
         exito: true,
@@ -67,15 +69,49 @@ router.get("/buscar", async (req, res) => {
         resultado: null
     };
 
-    obtenerFiguras(busqueda)
-      .then((reviews) => {
-        if (reviews && reviews.length > 0) {
-            respuestaJSON.resultado = reviews;
+    obtenerFiguras(TEXTO_BUSQUEDA)
+      .then((figuras) => {
+        if (figuras && figuras.length > 0) {
+            respuestaJSON.resultado = figuras;
 
             return res.status(200).send(respuestaJSON);
         } else {
             respuestaJSON.exito = false;
             respuestaJSON.mensaje = "No se encontraron figuras. Ingrese un filtro diferente.";
+            return res.status(405).send(respuestaJSON);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        respuestaJSON.exito = false;
+        respuestaJSON.mensaje = error.message;
+        respuestaJSON.resultado = error;
+
+        return res.status(500).send(respuestaJSON);
+      });
+})
+
+router.get("/obtenerPorId", 
+ChecarTokenActivo,
+async (req, res) => {
+    const ID_FIGURA = req.query.id;
+
+    var respuestaJSON = {
+        exito: true,
+        origen: "figuras/obtenerPorId",
+        mensaje: "EXITO: Figura encontrada",
+        resultado: null
+    };
+
+    obtenerFiguraDatos(ID_FIGURA)
+      .then((figuras) => {
+        if (figuras && figuras.length > 0) {
+            respuestaJSON.resultado = figuras;
+
+            return res.status(200).send(respuestaJSON);
+        } else {
+            respuestaJSON.exito = false;
+            respuestaJSON.mensaje = "No se encontró una figura. Ingrese una Id válida.";
             return res.status(405).send(respuestaJSON);
         }
       })

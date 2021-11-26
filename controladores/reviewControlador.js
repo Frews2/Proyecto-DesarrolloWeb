@@ -1,9 +1,8 @@
 import { Guid } from "js-guid";
-import { guardarPublicacion, eliminarPublicacion} from "./publicacionControlador.js";
 import Review from "../modelos/review.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
 
-export async function guardarReview(idCreador, nuevaCritica) {
+export async function guardarReview(nuevaCritica) {
     const CARPETA = "reviews";
     const { Foto } = nuevaCritica;
     const GUID = Guid.newGuid();
@@ -38,6 +37,7 @@ export async function guardarReview(idCreador, nuevaCritica) {
     const review = {
         IdPublicacion: GUID,
         Titulo: nuevaCritica.Titulo,
+        IdCuenta: nuevaCritica.IdCuenta,
         IdFigura: nuevaCritica.IdFigura,
         Texto: nuevaCritica.Texto,
         Calificacion: nuevaCritica.Calificacion,
@@ -45,7 +45,7 @@ export async function guardarReview(idCreador, nuevaCritica) {
         NombreFoto: nombreArchivo,
         TipoFoto: nuevaCritica.TipoFoto,
         DescripcionFoto: nuevaCritica.DescripcionFoto,
-        Etiquetas: nuevaCritica.Etiquetas,
+        Etiquetas: nuevaCritica.Etiquetas
     }
 
     const reviewAGuardar = new Review(review);
@@ -57,11 +57,10 @@ export async function guardarReview(idCreador, nuevaCritica) {
         if(!seGuardo) {
             resultadoJSON.exito = false;
             resultadoJSON.mensaje = "Error: Ocurrió un error al intentar crear la crítica. Intenté de nuevo."
-        } else{
-            return guardarPublicacion(idCreador, reviewAGuardar.IdPublicacion)
+        } else {
+            resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
         }
-
-        resultadoJSON.resultado = "Ruta de imagen es: " + seGuardo.Foto;
+        
         return resultadoJSON;
     })
     .catch(error => {
@@ -72,35 +71,39 @@ export async function guardarReview(idCreador, nuevaCritica) {
     })
 }
 
-export async function eliminarReview(idPublicacion) {
-    return Review.deleteOne({IdPublicacion: idPublicacion})
-        .then(exito => {
-            if (!exito){
-                return false;
-            } else {
-                return eliminarPublicacion(idPublicacion);
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        return false;
-        })
+export async function eliminarReview(id) {
+    return Review.deleteOne({IdPublicacion: id})
+    .then(exito => {
+        return exito.ok == 1;
+    })
+    .catch(error => {
+        console.error(error);
+    return false;
+    })
 }
 
-export async function obtenerReviews(busqueda) {
-    const { Nombre, Figura, Etiqueta } = busqueda;
+export async function obtenerReviews(texto) {
+    var filtro = {};
+    if (texto) {
+        filtro.$or = [
+            { Titulo: { $regex: texto, $options: "i" } },
+            { Etiquetas: { $regex: texto, $options: "i" } },
+        ];
 
-    if (Nombre) {
-          return await Review.find({ Titulo: Nombre });
+        return Review.find(filtro)
+        .sort({ FechaRegistro: 'descending'})
+        .then((criticias) => {
+            return criticias;
+        })
+        .catch((err) => {
+            console.error(err);
+            return [];
+        });
     } else {
-        if (Figura) {
-            return await Review.find({IdFigura: Figura});
-        } else {
-            if (Etiqueta) {
-                return await Review.find({Etiquetas: Etiqueta}); 
-            } else{
-                return await Review.find();
-            }
-        }
+        return await Review.find();
     }
+}
+  
+export async function obtenerReviewDatos(identificador) {
+    return await Review.findOne({ IdPublicacion: identificador });
 }
