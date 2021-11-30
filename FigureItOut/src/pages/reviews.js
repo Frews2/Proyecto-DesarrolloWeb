@@ -2,20 +2,20 @@ import React from "react";
 import "./home.css"
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Noticias from '../components/noticias/noticias';
+import ListaReviews from "../components/reviews/listaReviews";
 
-function PaginaNoticias() {
+function PaginaListaReviews() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout title="Noticias">
+    <Layout title="Reviews">
     <main>
-      <h1 className="tituloSolo">Ultimas noticias</h1>
+      <h1 className="tituloSolo">Ultimas reviews agregadas</h1>
       <div className="contenedorGeneral">
-        <Noticias></Noticias>
+        <ListaReviews></ListaReviews>
       </div>
     </main>
   </Layout>
   );
 }
 
-export default PaginaNoticias;
+export default PaginaListaReviews;

@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+const NUMERO=/^[0-9]+$/;
 
 export class VerificacionCorreo extends Component {
     state={
@@ -16,12 +17,14 @@ export class VerificacionCorreo extends Component {
                 
             },
         });
-        console.log(e.target.value);
-        if(this.state.form.codigoVer.length == 5){
+        if(this.state.form.codigoVer.length == 5 && this.state.form.codigoVer.replace(/\s/g,"").length > 0
+        && this.state.form.codigoVer.match(NUMERO))
+        {
             this.setState({
                 disabled: false
             });
-        }else
+        }
+        else
         {
             this.setState({
                 disabled: true
@@ -31,31 +34,42 @@ export class VerificacionCorreo extends Component {
     
     async verificar(e) {
         e.preventDefault();
+        
         console.log((sessionStorage.getItem('correo')).value);
-        fetch("http://localhost:4000/codigos/Verificar", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            
-            body: JSON.stringify({
-                Correo: (sessionStorage.getItem('correo')),
-                Numero: this.state.form.codigoVer
+        if(this.state.form.codigoVer.length == 5 && this.state.form.codigoVer.replace(/\s/g,"").length > 0
+        && this.state.form.codigoVer.match(NUMERO))
+        {
+            fetch("http://localhost:4000/codigos/Verificar", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                
+                body: JSON.stringify({
+                    Correo: (sessionStorage.getItem('correo')),
+                    Numero: this.state.form.codigoVer
+                })
             })
-        })
-        .then(response=> response.json())
-        .then(data=>{
-            if(data.exito){
-                sessionStorage.setItem('token',data.resultado);
-                alert(data.mensaje);
-                window.location.pathname = '/';
-            }
-            else{
-                alert(data.mensaje);
-            }
-        }).catch(error => {
-            console.log(error)
-        })
+            .then(response=> response.json())
+            .then(data=>{
+                if(data.exito)
+                {
+                    sessionStorage.setItem('token',data.resultado);
+                    alert(data.mensaje);
+                    window.location.pathname = '/';
+                }
+                else
+                {
+                    alert(data.mensaje);
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+        else
+        {
+            alert("Error en el campo, verifique que solo sean 5 numeros sin espacios");
+        }
     }
 
     
@@ -78,7 +92,7 @@ export class VerificacionCorreo extends Component {
         return (
 
             <form onSubmit={(e)=>this.verificar(e)}>
-                <div className="login">
+                <div className="formGeneral">
                     <h2>Valida Correo</h2>
 
                     <div className="form-group">
@@ -88,7 +102,7 @@ export class VerificacionCorreo extends Component {
                     </div>
 
                     <div className="form-end">
-                        <button type="submit" className="loginBtn" disabled={this.state.disabled}>Acceder</button>
+                        <button type="submit" className="botonNormal" disabled={this.state.disabled}>Acceder</button>
                         <p>Para terminar tu registro ingresa el codigo de 5 digitos que se te envio a tu correo</p>
                         <p> ¿No te llego ningun codigo?<a >Reenvia el correo</a> </p>
                     </div>

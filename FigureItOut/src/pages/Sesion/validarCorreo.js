@@ -1,6 +1,6 @@
 import React from "react";
-import '../css/figureItOutStyle.css';
-import { VerificacionCorreo } from "../components/login";
+import '../../css/figureItOutStyle.css';
+import { VerificacionCorreo } from "../../components/sesion";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 

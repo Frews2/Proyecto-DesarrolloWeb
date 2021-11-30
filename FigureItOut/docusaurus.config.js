@@ -46,6 +46,11 @@ const config = {
         items: [
           
           {
+            to: '/Sesion/login', 
+            label: 'Perfil', 
+            position: 'left'
+          },
+          {
             to: '/noticias', 
             label: 'Noticias', 
             position: 'left'
@@ -53,6 +58,11 @@ const config = {
           {
             to: '/reviews', 
             label: 'Reviews', 
+            position: 'left'
+          },
+          {
+            to: '/figuras', 
+            label: 'Figuras', 
             position: 'left'
           },
         ],
