@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken';
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
 import Cuenta from "../modelos/cuenta.js";
-import { existeCuenta, guardarCuenta } from "../controladores/cuentaControlador.js";
+import { existeCuenta, guardarCuenta, existePeriodistaActivo } from "../controladores/cuentaControlador.js";
 import esSchemaCuentaValido from '../utilidades/cuentaValidador.js'; 
+import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
 
 const router = express.Router();
@@ -116,6 +117,28 @@ router.post("/Login", async (req, res) => {
       resultado: null
     })
   });
+})
+
+router.get("/VerificarPeriodista", 
+ChecarTokenActivo,
+ async (req, res) => {
+  var correo = req.query.email;
+
+  var respuestaJSON = {
+      exito: true,
+      origen: "cuentas/VerificarPeriodista",
+      mensaje: "EXITO: Es Periodista",
+      resultado: null
+  };
+  
+  if (existePeriodistaActivo(correo)) {
+    respuestaJSON.resultado = true;
+    return res.status(200).send(respuestaJSON);
+  } else {
+    respuestaJSON.exito = false;
+    respuestaJSON.mensaje = "Error: No es Periodista.";
+    return res.status(405).send(respuestaJSON);
+  }
 })
 
 export default router;
