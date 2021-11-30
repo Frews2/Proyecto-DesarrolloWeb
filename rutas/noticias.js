@@ -33,7 +33,7 @@ async (req, res) => {
     nuevaNoticia.Foto = req.files.Foto;
   }
   
-    guardarNoticia(nuevaNoticia.IdCuenta, nuevaNoticia)
+    guardarNoticia(nuevaNoticia)
     .then(resultadoCreacion => {
         if (resultadoCreacion.exito) {
             respuestaJSON.mensaje = resultadoCreacion.mensaje;

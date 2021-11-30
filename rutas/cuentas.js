@@ -101,7 +101,7 @@ router.post("/Login", async (req, res) => {
           return res.status(401).json({
             exito: false,
             origen: "cuentas/Login",
-            mensaje: cuentaEncontrada.Password + " ERROR: Autentificación falliida. No se pudo iniciar sesión " + usuario.Password,
+            mensaje: "ERROR: Autentificación falliida. No se pudo iniciar sesión ",
             resultado: null
           });
         }
