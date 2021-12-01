@@ -15,6 +15,22 @@ const comentarioSchema = new Schema({
         required: true,
         unique: true
     },
+    IdCuenta: { 
+        type: String,
+        required: true,
+        unique: true
+    },
+    FechaRegistro: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    Estatus: {
+        type: String,
+        required: false,
+        enum: ["Activo", "Baneado", "Reportado"],
+        default: "Activo"
+    }
 });
 
 const Comentario = mongoose.model('comentarios', comentarioSchema);

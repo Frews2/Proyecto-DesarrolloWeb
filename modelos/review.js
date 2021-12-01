@@ -24,7 +24,8 @@ const reviewSchema = new mongoose.Schema({
     },
     Calificacion: {
         type: Number,
-        required: true
+        required: true,
+        match: /^[0-9]+$/
     },
     Foto: {
         type: String,
@@ -54,6 +55,12 @@ const reviewSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    Estatus: {
+        type: String,
+        required: false,
+        enum: ["Activo", "Baneado", "Reportado"],
+        default: "Activo"
     }
 });
 

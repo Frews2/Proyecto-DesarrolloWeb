@@ -1,6 +1,7 @@
 import { Guid } from "js-guid";;
 import Noticia from "../modelos/noticia.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
+import { BANEADO, REPORTADO } from "../utilidades/constantes.js";
 
 export async function guardarNoticia(nuevaNoticia) {
     const CARPETA = "noticias";
@@ -70,6 +71,70 @@ export async function guardarNoticia(nuevaNoticia) {
     })
 }
 
+export async function agregarComentarioANoticia(idPublicacion, idComentario) {
+    var seAgregoComentario = false
+
+    if(Noticia.exists({IdPublicacion: idPublicacion})){
+        return Noticia.updateOne(
+            {IdPublicacion: idPublicacion},
+            { $push: {comentarios: idComentario} } 
+        )
+        .then(seGuardo => {
+            console.log(seGuardo)
+            if(seGuardo){
+                seAgregoComentario = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seAgregoComentario;
+}
+
+export async function reportarNoticia(idPublicacion) {
+    var seReporto = false
+    
+    if(Noticia.exists({IdPublicacion: idPublicacion})){
+        return Noticia.updateOne(
+            {IdPublicacion: idPublicacion},
+            {Estatus: REPORTADO}
+        )
+        .then(seActualizo => {
+            if(seActualizo){
+                seReporto = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seReporto;
+}
+
+export async function banearNoticia(idPublicacion) {
+    var seBaneo = false
+    
+    if(Noticia.exists({IdPublicacion: idPublicacion})){
+        return Noticia.updateOne(
+            {IdPublicacion: idPublicacion},
+            {Estatus: BANEADO}
+        )
+        .then(seActualizo => {
+            if(seActualizo){
+                seBaneo = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seBaneo;
+}
+
 export async function eliminarNoticia(id) {
     return Noticia.deleteOne({IdPublicacion: id})
     .then(exito => {
@@ -82,10 +147,9 @@ export async function eliminarNoticia(id) {
 }
 
 export async function obtenerNoticiasReportadas() {
-    const BANEADO = "BANEADO";
     var filtro = {};
     filtro.$or = [
-        { Estatus: { $regex: BANEADO } }
+        { Estatus: REPORTADO }
     ];
 
     return await Noticia.find(filtro)
@@ -122,4 +186,26 @@ export async function obtenerNoticias(texto) {
   
 export async function obtenerNoticiaDatos(identificador) {
     return await Noticia.find({ IdPublicacion: identificador });
+}
+
+export async function noEsNoticiaBaneada(idPublicacion) {
+    return Noticia.exists({ IdPublicacion: idPublicacion, Estatus: { $ne: BANEADO } })
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
+export async function esNoticiaActiva(id) {
+    return Noticia.exists({ IdPublicacion: id, Estatus: ACTIVO })
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
 }

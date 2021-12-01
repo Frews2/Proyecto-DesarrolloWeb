@@ -1,6 +1,7 @@
 import { Guid } from "js-guid";
 import Review from "../modelos/review.js";
 import { guardarImagen } from "../utilidades/servicioImagen.js";
+import { BANEADO, REPORTADO } from "../utilidades/constantes.js";
 
 export async function guardarReview(nuevaCritica) {
     const CARPETA = "reviews";
@@ -83,10 +84,9 @@ export async function eliminarReview(id) {
 }
 
 export async function obtenerReviewsReportados() {
-    const BANEADO = "BANEADO";
     var filtro = {};
     filtro.$or = [
-        { Estatus: { $regex: BANEADO } }
+        { Estatus: { $regex: REPORTADO } }
     ];
 
     return await Review.find(filtro)
@@ -103,11 +103,14 @@ export async function obtenerReviewsReportados() {
 export async function obtenerReviews(texto) {
     var filtro = {};
     if (texto) {
-        filtro.$or = [
-            { Titulo: { $regex: texto, $options: "i" } },
-            { Etiquetas: { $regex: texto, $options: "i" } },
-        ];
-
+        filtro.$and = [
+            {$or: [
+                { Titulo: { $regex: texto, $options: "i" } },
+                { Etiquetas: { $regex: texto, $options: "i" } },
+            ]},
+            { Estatus: { $ne: BANEADO } }
+        ]
+        
         return Review.find(filtro)
         .sort({ FechaRegistro: 'descending'})
         .then((criticias) => {
@@ -124,4 +127,90 @@ export async function obtenerReviews(texto) {
   
 export async function obtenerReviewDatos(identificador) {
     return await Review.find({ IdPublicacion: identificador });
+}
+
+export async function noEsReviewBaneado(idPublicacion) {
+    return Review.exists({ IdPublicacion: idPublicacion, Estatus: { $ne: BANEADO } })
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
+export async function esReviewActivo(idPublicacion) {
+    return Review.exists({ IdPublicacion: idPublicacion, Estatus: ACTIVO })
+    .then((existe) => {
+      return existe;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
+export async function agregarComentarioAReview(idPublicacion, idComentario) {
+    var seAgregoComentario = false
+    
+    if(Review.exists({IdPublicacion: idPublicacion})){
+        return Noticia.updateOne(
+            {IdPublicacion: idPublicacion},
+            { $push: {comentarios: idComentario} } 
+        )
+        .then(seGuardo => {
+            console.log(seGuardo)
+            if(seGuardo){
+                seAgregoComentario = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seAgregoComentario;
+}
+
+export async function reportarReview(idPublicacion) {
+    var seReporto = false
+    
+    if(Review.exists({IdPublicacion: idPublicacion})){
+        return Review.updateOne(
+            {IdPublicacion: idPublicacion},
+            {Estatus: REPORTADO}
+        )
+        .then(seActualizo => {
+            if(seActualizo){
+                seReporto = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seReporto;
+}
+
+export async function banearReview(idPublicacion) {
+    var seBaneo = false
+    
+    if(Review.exists({IdPublicacion: idPublicacion})){
+        return Review.updateOne(
+            {IdPublicacion: idPublicacion},
+            {Estatus: BANEADO}
+        )
+        .then(seActualizo => {
+            if(seActualizo){
+                seBaneo = true;
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    return seBaneo;
 }

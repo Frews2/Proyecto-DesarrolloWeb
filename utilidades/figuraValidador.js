@@ -11,8 +11,8 @@ const checkSchemaFigura = {
   Altura: {
     isLength: {
       errorMessage:
-        "El texto de altura de la figura debe tener minimo de 3 caracteres y máximo 25",
-      options: { min: 3, max: 25 },
+        "El texto de altura de la figura debe tener entre 1 y 3 caracteres",
+      options: { min: 1, max: 3 },
     },
   },
   Material: {

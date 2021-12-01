@@ -4,10 +4,10 @@ import { esFormatoValido, existeImagen } from "../utilidades/imagenValidador.js"
 
 function esCalificacionValida(valor) {
   const MIN = 0;
-  const MAX = 10;
+  const MAX = 5;
   if (valor < MIN || valor > MAX ) {
     throw new Error(
-      "ERROR: La calificacion debe ser un valor entre 0 y 10."
+      "ERROR: La calificacion debe ser un valor entre 0 y 5."
     );
   } else{
     return true;

@@ -1,10 +1,10 @@
 import { Guid } from "js-guid";
-
 import Cuenta from "../modelos/cuenta.js";
 import { guardarCodigoConfirmacion } from "../controladores/codigoControlador.js";
 import mandarCodigoConfirmacion from "../utilidades/servicioEmail.js";
 import generarCodigoAzar from "../utilidades/generadorCodigo.js";
 import { encriptar } from "../utilidades/generadorBcrypt.js";
+import { BANEADO, ACTIVO } from "../utilidades/constantes.js";
 
 export function existeCuenta(email) {
   return Cuenta.findOne({ Email: email })
@@ -20,7 +20,7 @@ export function existeCuenta(email) {
 }
 
 export async function existeCuentaActiva(idCuenta) {
-  return Cuenta.exists({ IdCuenta: idCuenta, Estatus: "Activo"})
+  return Cuenta.exists({ IdCuenta: idCuenta, Estatus: ACTIVO})
     .then((existe) => {
       return existe;
     })
@@ -106,4 +106,25 @@ export async function activarCuenta(correo) {
     console.error(error);
       return false;
     })
+}
+
+export async function banearCuenta(idCuenta) {
+  var seBaneo = false
+  
+  if(Cuenta.exists({IdCuenta: idCuenta})){
+    return Cuenta.updateOne(
+        {IdCuenta: idCuenta},
+        {Estatus: BANEADO}
+      )
+      .then(seActualizo => {
+        if(seActualizo){
+          seBaneo = true;
+        } 
+      })
+      .catch(error => {
+          console.error(error);
+      })
+  }
+
+  return seBaneo;
 }

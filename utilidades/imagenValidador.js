@@ -1,3 +1,4 @@
+//validar los campos de la imagen en si por si se guarda un archivo no imagen no png no jpg
 export async function esFormatoValido(formato) {
   const JPG = ".jpg";
   const JPEG = ".jpeg";

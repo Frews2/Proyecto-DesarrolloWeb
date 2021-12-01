@@ -12,7 +12,8 @@ const figuraSchema = new mongoose.Schema({
     },
     Altura: {
         type: String,
-        required: true
+        required: true,
+        match: /^[0-9]+$/
     },
     Material: {
         type: String,

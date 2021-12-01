@@ -50,6 +50,12 @@ const noticiaSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    Estatus: {
+        type: String,
+        required: false,
+        enum: ["Activo", "Baneado", "Reportado"],
+        default: "Activo"
     }
 });
 

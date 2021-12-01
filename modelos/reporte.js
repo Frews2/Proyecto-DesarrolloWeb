@@ -27,7 +27,12 @@ const reporteSchema = new mongoose.Schema({
     IdAcusado: {
         type: String,
         required: true
-    }
+    },
+    FechaRegistro: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
 });
 
 const Reporte = mongoose.model('reportes', reporteSchema);
