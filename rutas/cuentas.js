@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
 import Cuenta from "../modelos/cuenta.js";
-import { existeCuenta, guardarCuenta, existePeriodistaActivo } from "../controladores/cuentaControlador.js";
+import { existeCuenta, guardarCuenta, existePeriodistaActivo, existeColeccionistaActivo } from "../controladores/cuentaControlador.js";
 import esSchemaCuentaValido from '../utilidades/cuentaValidador.js'; 
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
@@ -127,7 +127,7 @@ ChecarTokenActivo,
   var respuestaJSON = {
       exito: true,
       origen: "cuentas/VerificarPeriodista",
-      mensaje: "EXITO: Es Periodista",
+      mensaje: "EXITO: Es Periodista activo",
       resultado: null
   };
   
@@ -136,7 +136,29 @@ ChecarTokenActivo,
     return res.status(200).send(respuestaJSON);
   } else {
     respuestaJSON.exito = false;
-    respuestaJSON.mensaje = "Error: No es Periodista.";
+    respuestaJSON.mensaje = "Error: No es Periodista activo.";
+    return res.status(405).send(respuestaJSON);
+  }
+})
+
+router.get("/VerificarColeccionista", 
+ChecarTokenActivo,
+ async (req, res) => {
+  var correo = req.query.email;
+
+  var respuestaJSON = {
+      exito: true,
+      origen: "cuentas/VerificarColeccionista",
+      mensaje: "EXITO: Es Coleccionista activo",
+      resultado: null
+  };
+  
+  if (existeColeccionistaActivo(correo)) {
+    respuestaJSON.resultado = true;
+    return res.status(200).send(respuestaJSON);
+  } else {
+    respuestaJSON.exito = false;
+    respuestaJSON.mensaje = "Error: No es Coleccionista activo.";
     return res.status(405).send(respuestaJSON);
   }
 })

@@ -1,6 +1,5 @@
 import express from "express";
-
-import { checarCodigoConfirmacion, eliminarCodigoGuardado } from "../controladores/codigoControlador.js";
+import { checarCodigoConfirmacion, eliminarCodigoGuardado, enviarCorreo } from "../controladores/codigoControlador.js";
 import { activarCuenta } from "../controladores/cuentaControlador.js";
 
 const router = express.Router();
@@ -50,8 +49,32 @@ router.post("/Verificar", async (req, res) => {
 });
 
 router.post("/EnviarCorreo", async (req, res) => {
-  const { Correo } = req.body;
-  res.status(200).send({ exito: true})
-})
+  const { Correo, TipoCuenta } = req.body;
+
+  var respuestaJSON = {
+    exito: true,
+    origen: "codigos/EnviarCorreo",
+    mensaje: "EXITO: Correo Enviado",
+    resultado: null
+  };
+
+  enviarCorreo(Correo, TipoCuenta)
+    .then((resultado) => {
+      if (resultado.exito) {
+        return res.status(200).send(respuestaJSON);
+        } else {
+          resultado.exito = false;
+          resultado.mensaje = "ERROR: No se mandó el correo. Intente más tarde.";
+          return res.status(500).send(respuestaJSON);
+        }
+    })
+    .catch((error) => {
+      console.error(error);
+      respuestaJSON.exito = false;
+      respuestaJSON.mensaje = "ERROR: Ocurrió un error al intentar mandar el código. Intenté más tarde.";
+      respuestaJSON.resultado = error;
+      return res.status(500).send(respuestaJSON);
+    });
+});
 
 export default router;

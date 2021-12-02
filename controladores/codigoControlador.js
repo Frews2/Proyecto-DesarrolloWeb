@@ -1,4 +1,30 @@
 import Codigo from "../modelos/codigo.js";
+import mandarCodigoConfirmacion from "../utilidades/servicioEmail.js";
+
+export async function enviarCorreo(email, tipoCuenta) {
+  var resultadoJSON = {
+    exito: false,
+    origen: "codigo/EnviarCorreo",
+    mensaje: "EXITO: Correo mandado",
+    resultado: null
+  };
+  Codigo.find({ Correo: email })
+  .then(codigoObtenido => {
+    if(codigoObtenido){
+      resultadoJSON.exito = mandarCodigoConfirmacion(
+        codigoObtenido.email, 
+        tipoCuenta, 
+        codigoObtenido.Numero)
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    resultadoJSON.exito =  false;
+    resultadoJSON.mensaje = "ERRROR: No se pudo mandar el correo en este momento.";
+  })
+
+  return resultadoJSON;
+}
 
 export async function guardarCodigoConfirmacion(email, codigoActual) {
     const nuevoCodigo = new Codigo({

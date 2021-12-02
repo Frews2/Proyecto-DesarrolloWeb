@@ -30,6 +30,20 @@ export async function existeCuentaActiva(idCuenta) {
     });
 }
 
+export async function existeApodo(idCuenta, apodo) {
+  return Cuenta.findOne({ IdCuenta: idCuenta, Apodo: apodo })
+    .then((cuenta) => {
+      if (cuenta) return true;
+
+      return false;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+}
+
+
 export async function existePeriodistaActivo(idCuenta) {
   return Cuenta.exists({ IdCuenta: idCuenta, TipoCuenta: "Periodista", Estatus: "Activo"})
     .then((existe) => {
@@ -70,6 +84,7 @@ export async function guardarCuenta(usuario) {
         return guardarCodigoConfirmacion(Email, numeroConfirmacion)
           .then((creado) => {
             if (creado) {
+              console.log("ENVIANDO CORREO DE CONFIRMACION...")
               mandarCodigoConfirmacion(
                 Email,
                 TipoCuenta,
@@ -127,4 +142,39 @@ export async function banearCuenta(idCuenta) {
   }
 
   return seBaneo;
+}
+
+export function existeCuentaActivaPorEmail(email) {
+  return Cuenta.findOne({ Email: email, Estatus: ACTIVO })
+    .then((cuenta) => {
+      if (cuenta) return true;
+
+      return false;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+}
+
+export async function obtenerCuentaActivaPorEmail(email) {
+  var cuenta = new Cuenta();
+  
+  Cuenta.find({Email: email, Estatus: ACTIVO })
+  .then(cuentaObtenida => {
+    if(cuentaObtenida.length > 0){
+      console.log("CUENTA OBTENIDA: " + cuentaObtenida);
+      cuenta.IdCuenta = cuentaObtenida.IdCuenta;
+      cuenta.Email = cuentaObtenida.Email;
+      cuenta.Apodo = cuentaObtenida.Apodo;
+      console.log("CUENTA A MOSTRAR: "+ cuenta);
+    } else{
+      cuenta = null;
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  })
+
+  return cuenta;
 }

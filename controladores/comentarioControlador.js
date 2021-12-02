@@ -1,5 +1,6 @@
 import { Guid } from "js-guid";
 import Comentario from "../modelos/comentario.js";
+import { obtenerCuentaActivaPorEmail } from "../controladores/cuentaControlador.js";
 import { agregarComentarioANoticia, noEsNoticiaBaneada } from "../controladores/noticiaControlador.js";
 import { agregarComentarioAReview, noEsReviewBaneado } from "../controladores/reviewControlador.js";
 import { BANEADO, REPORTADO } from "../utilidades/constantes.js";
@@ -16,11 +17,12 @@ export async function guardarComentario(nuevoComentario) {
         mensaje: "EXITO: Comentario guardado",
         resultado: null
     };
-
+const cuenta = obtenerCuentaActivaPorEmail(nuevoComentario.Email);
     const comentario = {
         IdComentario: GUID,
         IdPublicacionOriginal: nuevoComentario.IdPublicacionOriginal,
-        IdCuenta: nuevoComentario.IdCuenta,
+        IdCuenta: cuenta.IdCuenta,
+        Apodo: cuenta.Apodo,
         Texto: nuevoComentario.Texto
     }
 

@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+const { model, Schema } = mongoose;
+
 const comentarioSchema = new Schema({
     IdComentario: { 
         type: String,
@@ -16,6 +18,11 @@ const comentarioSchema = new Schema({
         unique: true
     },
     IdCuenta: { 
+        type: String,
+        required: true,
+        unique: true
+    },
+    Apodo: { 
         type: String,
         required: true,
         unique: true
