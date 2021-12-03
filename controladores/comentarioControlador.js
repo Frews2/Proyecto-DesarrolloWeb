@@ -10,6 +10,7 @@ export async function guardarComentario(nuevoComentario) {
     var esNoticia = false;
     var esReview = false;
     var seAgrego = false;
+    var cuenta = {};
 
     var resultadoJSON = {
         exito: true,
@@ -17,14 +18,28 @@ export async function guardarComentario(nuevoComentario) {
         mensaje: "EXITO: Comentario guardado",
         resultado: null
     };
-const cuenta = obtenerCuentaActivaPorEmail(nuevoComentario.Email);
-    const comentario = {
-        IdComentario: GUID,
-        IdPublicacionOriginal: nuevoComentario.IdPublicacionOriginal,
-        IdCuenta: cuenta.IdCuenta,
-        Apodo: cuenta.Apodo,
-        Texto: nuevoComentario.Texto
-    }
+    obtenerCuentaActivaPorEmail(nuevoComentario.Email)
+    .then((respuesta) => {
+        if(respuesta.exito){
+            console.log("COMENT CUENTAOBTENIDA " + respuesta);
+            cuenta = respuesta.resultado;
+        }
+        else{
+            resultadoJSON.exito = false;
+            resultadoJSON.mensaje = respuesta.mensaje;
+            return resultadoJSON;
+        }
+    });
+    
+    console.log("COMENT CUENTA " + cuenta);
+
+        const comentario = {
+            IdComentario: GUID,
+            IdPublicacionOriginal: nuevoComentario.IdPublicacionOriginal,
+            IdCuenta: cuenta.IdCuenta,
+            Apodo: cuenta.Apodo,
+            Texto: nuevoComentario.Texto
+        }
 
     esNoticia = noEsNoticiaBaneada(comentario.IdPublicacionOriginal);
     

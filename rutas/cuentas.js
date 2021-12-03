@@ -84,7 +84,6 @@ router.post("/Login", async (req, res) => {
             {
               Email: cuentaEncontrada.Email,
               TipoCuenta: cuentaEncontrada.TipoCuenta,
-              Apodo: cuentaEncontrada.Apodo,
               IdCuenta: cuentaEncontrada.IdCuenta
             },
             process.env.JWT_KEY, 

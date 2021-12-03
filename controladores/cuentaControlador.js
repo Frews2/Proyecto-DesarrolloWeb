@@ -158,23 +158,26 @@ export function existeCuentaActivaPorEmail(email) {
 }
 
 export async function obtenerCuentaActivaPorEmail(email) {
-  var cuenta = new Cuenta();
-  
+  var resultadoJSON = {
+    exito: true,
+    origen: "figura/guardar",
+    mensaje: "EXITO: Figura guardada",
+    resultado: ""
+  };
+
   Cuenta.find({Email: email, Estatus: ACTIVO })
   .then(cuentaObtenida => {
     if(cuentaObtenida.length > 0){
       console.log("CUENTA OBTENIDA: " + cuentaObtenida);
-      cuenta.IdCuenta = cuentaObtenida.IdCuenta;
-      cuenta.Email = cuentaObtenida.Email;
-      cuenta.Apodo = cuentaObtenida.Apodo;
-      console.log("CUENTA A MOSTRAR: "+ cuenta);
+      resultadoJSON.resultado = cuentaObtenida;
     } else{
-      cuenta = null;
+      resultadoJSON.exito = false;
+      resultadoJSON.mensaje = "ERROR: No se encuentra una cuenta para el correo ingresado";
     }
   })
   .catch(error => {
     console.error(error);
+    resultadoJSON.exito = false;
+    resultadoJSON.mensaje = "ERROR: Ocurrió un error inesperado al buscar la cuenta activa.";
   })
-
-  return cuenta;
 }

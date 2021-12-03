@@ -15,6 +15,8 @@ export function ChecarTokenActivo(req, res, next) {
             }
           )
         }else{
+          req.body.IdCuenta = authData.IdCuenta;
+          console.log("TOKEN " + req.body.IdCuenta);
           next();
         }
       })

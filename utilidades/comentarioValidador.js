@@ -1,5 +1,4 @@
 import { existeCuentaActivaPorEmail } from "../controladores/cuentaControlador.js";
-import { existeApodo } from "../controladores/cuentaControlador.js";
 import { noEsNoticiaBaneada } from "../controladores/noticiaControlador.js";
 import { noEsReviewBaneado } from "../controladores/reviewControlador.js";
 
@@ -40,21 +39,6 @@ const checkSchemaFigura = {
           if (!existe) {
             return Promise.reject(
               "La cuenta creadora del comentario no esta activada. Solo cuentas activas pueden comentar."
-            );
-          }
-
-          return existe;
-        });
-      },
-    },
-  },
-  Apodo: {
-    custom: {
-      options: async (value, { req }) => {
-        return existeApodo(req.body.Apodo, value).then((existe) => {
-          if (!existe) {
-            return Promise.reject(
-              "El apodo de cuenta no coincide con la id de cuenta. Debe ser un usuario registrado para crear comentarios."
             );
           }
 
