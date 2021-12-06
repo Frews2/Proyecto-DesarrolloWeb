@@ -1,183 +1,136 @@
-import { Guid } from "js-guid";
-import Cuenta from "../modelos/cuenta.js";
-import { guardarCodigoConfirmacion } from "../controladores/codigoControlador.js";
-import mandarCodigoConfirmacion from "../utilidades/servicioEmail.js";
-import generarCodigoAzar from "../utilidades/generadorCodigo.js";
-import { encriptar } from "../utilidades/generadorBcrypt.js";
-import { BANEADO, ACTIVO } from "../utilidades/constantes.js";
+import { Guid } from 'js-guid';
+import Cuenta from '../modelos/cuenta.js';
+import { guardarCodigoConfirmacion } from '../controladores/codigoControlador.js';
+import mandarCodigoConfirmacion from '../utilidades/servicioEmail.js';
+import generarCodigoAzar from '../utilidades/generadorCodigo.js';
+import { encriptar } from '../utilidades/generadorBcrypt.js';
+import { REPORTADO, ACTIVO, PENDIENTE, PERIODISTA, COLECCIONISTA } from '../utilidades/constantes.js';
 
 export function existeCuenta(email) {
-  return Cuenta.findOne({ Email: email })
-    .then((cuenta) => {
-      if (cuenta) return true;
-
-      return false;
-    })
-    .catch((error) => {
-      console.error(error);
-      return error;
-    });
+  return Cuenta.exists({ Email: email })
+  .then((existe) => {
+    return existe;
+  })
+  .catch((error) => {
+    console.error(error);
+    return error;
+  });
 }
 
 export async function existeCuentaActiva(idCuenta) {
   return Cuenta.exists({ IdCuenta: idCuenta, Estatus: ACTIVO})
-    .then((existe) => {
-      return existe;
-    })
-    .catch((err) => {
-      console.error(err);
-      return false;
-    });
+  .then((existe) => {
+    return existe;
+  })
+  .catch((err) => {
+    console.error(err);
+    return false;
+  });
 }
-
-export async function existeApodo(idCuenta, apodo) {
-  return Cuenta.findOne({ IdCuenta: idCuenta, Apodo: apodo })
-    .then((cuenta) => {
-      if (cuenta) return true;
-
-      return false;
-    })
-    .catch((error) => {
-      console.error(error);
-      return error;
-    });
-}
-
 
 export async function existePeriodistaActivo(idCuenta) {
-  return Cuenta.exists({ IdCuenta: idCuenta, TipoCuenta: "Periodista", Estatus: "Activo"})
-    .then((existe) => {
-      return existe;
-    })
-    .catch((err) => {
-      console.error(err);
-      return false;
-    });
+  return Cuenta.exists({ 
+    IdCuenta: idCuenta, 
+    TipoCuenta: PERIODISTA, 
+    Estatus: ACTIVO})
+  .then((existe) => {
+    return existe;
+  })
+  .catch((err) => {
+    console.error(err);
+    return false;
+  });
 }
 
 export async function existeColeccionistaActivo(idCuenta) {
-  return Cuenta.exists({ IdCuenta: idCuenta, TipoCuenta: "Coleccionista", Estatus: "Activo"})
-    .then((existe) => {
-      return existe;
-    })
-    .catch((err) => {
-      console.error(err);
-      return false;
-    });
+  return Cuenta.exists({ 
+    IdCuenta: idCuenta,
+    TipoCuenta: COLECCIONISTA,
+    Estatus: ACTIVO})
+  .then((existe) => {
+    return existe;
+  })
+  .catch((err) => {
+    console.error(err);
+    return false;
+  });
 }
 
 export async function guardarCuenta(usuario) {
   const GUID = Guid.newGuid();
-  usuario.IdCuenta = GUID;
-  const passwordEncriptado = encriptar(usuario.Password);
-  usuario.Password = passwordEncriptado;
-  usuario.Estatus = "Pendiente";
+  var passwordEncriptado = encriptar(usuario.Password);
 
-  const nuevaCuenta = new Cuenta(usuario);
+  usuario.IdCuenta = GUID;
+  usuario.Password = passwordEncriptado;
+  usuario.Estatus = PENDIENTE;
+
+  var nuevaCuenta = new Cuenta(usuario);
 
   return nuevaCuenta.save()
-    .then((cuentaGuardada) => {
-      if (cuentaGuardada) {
-        const { Email, TipoCuenta } = cuentaGuardada;
-        const numeroConfirmacion = generarCodigoAzar();
+  .then((cuentaGuardada) => {
+    if (cuentaGuardada) {
+      const { Email, TipoCuenta } = cuentaGuardada;
+      var numeroConfirmacion = generarCodigoAzar();
 
-        return guardarCodigoConfirmacion(Email, numeroConfirmacion)
-          .then((creado) => {
-            if (creado) {
-              console.log("ENVIANDO CORREO DE CONFIRMACION...")
-              mandarCodigoConfirmacion(
-                Email,
-                TipoCuenta,
-                numeroConfirmacion
-              );
-            }
-
-            return creado;
-          })
-          .catch((error) => {
-            console.error(error);
-            return false;
-          });
-      }
-
-      return false;
-    })
-    .catch((error) => {
-      console.error(error);
-      return false;
-    });
+      return guardarCodigoConfirmacion(Email, numeroConfirmacion)
+      .then((creado) => {
+        if (creado) {
+          console.log('ENVIANDO CORREO DE CONFIRMACION...')
+          mandarCodigoConfirmacion(Email,TipoCuenta, numeroConfirmacion);
+        }
+        return creado;
+      })
+      .catch((error) => {
+        console.error(error);
+        return false;
+      });
+    }
+    return false;
+  })
+  .catch((error) => {
+    console.error(error);
+    return false;
+  });
 }
 
 export async function activarCuenta(correo) {
   const CUENTA_ACTIVA = {
-    Estatus: 'Activo'
+    Estatus: ACTIVO
   }
   
+  var seActivo = false;
+  
   return Cuenta.updateOne({Email: correo}, CUENTA_ACTIVA)
-    .then(exito => {
-      return exito.ok == 1;
-    })
-    .catch(error => {
-    console.error(error);
-      return false;
-    })
+  .then(resultadoActivacion => {
+    if(resultadoActivacion){
+      seActivo = true;
+    }
+    return seActivo;
+  })
+  .catch(error => {
+  console.error(error);
+    return seActivo;
+  })
 }
 
-export async function banearCuenta(idCuenta) {
-  var seBaneo = false
+export async function reportarCuenta(idCuenta) {
+  var seReporto = false;
   
   if(Cuenta.exists({IdCuenta: idCuenta})){
     return Cuenta.updateOne(
-        {IdCuenta: idCuenta},
-        {Estatus: BANEADO}
-      )
-      .then(seActualizo => {
-        if(seActualizo){
-          seBaneo = true;
-        } 
-      })
-      .catch(error => {
-          console.error(error);
-      })
-  }
-
-  return seBaneo;
-}
-
-export function existeCuentaActivaPorEmail(email) {
-  return Cuenta.findOne({ Email: email, Estatus: ACTIVO })
-    .then((cuenta) => {
-      if (cuenta) return true;
-
-      return false;
+      {IdCuenta: idCuenta},
+      {Estatus: REPORTADO}
+    )
+    .then(seActualizo => {
+      if(seActualizo){
+        seReporto = true;
+      }
+      return seReporto;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
-      return error;
-    });
-}
-
-export async function obtenerCuentaActivaPorEmail(email) {
-  var resultadoJSON = {
-    exito: true,
-    origen: "figura/guardar",
-    mensaje: "EXITO: Figura guardada",
-    resultado: ""
-  };
-
-  Cuenta.find({Email: email, Estatus: ACTIVO })
-  .then(cuentaObtenida => {
-    if(cuentaObtenida.length > 0){
-      console.log("CUENTA OBTENIDA: " + cuentaObtenida);
-      resultadoJSON.resultado = cuentaObtenida;
-    } else{
-      resultadoJSON.exito = false;
-      resultadoJSON.mensaje = "ERROR: No se encuentra una cuenta para el correo ingresado";
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    resultadoJSON.exito = false;
-    resultadoJSON.mensaje = "ERROR: Ocurrió un error inesperado al buscar la cuenta activa.";
-  })
+      return seReporto;
+    })
+  }
+  return seReporto;
 }

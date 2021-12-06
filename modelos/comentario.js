@@ -35,10 +35,10 @@ const comentarioSchema = new Schema({
     Estatus: {
         type: String,
         required: false,
-        enum: ["Activo", "Baneado", "Reportado"],
-        default: "Activo"
+        enum: ['Activo', 'Reportado'],
+        default: 'Activo'
     }
 });
 
-const Comentario = mongoose.model('comentarios', comentarioSchema);
+const Comentario = model('comentarios', comentarioSchema);
 export default Comentario;

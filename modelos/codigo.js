@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { model, Schema } = mongoose;
 
@@ -20,5 +20,5 @@ const codigoSchema = new Schema({
   }
 });
 
-const Codigo = model("codigos", codigoSchema);
+const Codigo = model('codigos', codigoSchema);
 export default Codigo;

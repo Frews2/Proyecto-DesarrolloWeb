@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const reporteSchema = new mongoose.Schema({
+const { model, Schema } = mongoose;
+
+const reporteSchema = new Schema({
     IdReporte: {
         type: String,
         required: true,
@@ -14,7 +16,7 @@ const reporteSchema = new mongoose.Schema({
     TipoPublicacion: {
         type: String,
         required: true,
-        enum: ["Noticia", "Review", "Comentario"]
+        enum: ['Noticia', 'Review', 'Comentario']
     },
     IdAcusador: {
         type: String,
@@ -35,5 +37,5 @@ const reporteSchema = new mongoose.Schema({
     },
 });
 
-const Reporte = mongoose.model('reportes', reporteSchema);
+const Reporte = model('reportes', reporteSchema);
 export default Reporte;

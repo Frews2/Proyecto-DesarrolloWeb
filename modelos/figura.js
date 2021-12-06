@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const figuraSchema = new mongoose.Schema({
+const { model, Schema } = mongoose;
+
+const figuraSchema = new Schema({
     IdFigura: {
         type: String,
         required: true,
@@ -41,5 +43,5 @@ const figuraSchema = new mongoose.Schema({
     }
 });
 
-const Figura = mongoose.model('figuras', figuraSchema);
+const Figura = model('figuras', figuraSchema);
 export default Figura;

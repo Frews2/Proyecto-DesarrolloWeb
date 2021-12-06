@@ -4,7 +4,7 @@ const USUARIO = process.env.EMAIL_SERVICE_SENDER
 const CONTRASENIA = process.env.EMAIL_SERVICE_PASSWORD
 
 const transporteDeCorreo = createTransport({
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
   port: 465,
   secure: true,
   auth: {
@@ -20,7 +20,7 @@ export default async function mandarCodigoConfirmacion(email, tipoCuenta, codigo
   const CORREO = {
     from: ENVIADOR_CORREO,
     to: email,
-    subject: "Email de Confirmación para registro de cuenta",
+    subject: 'Email de Confirmación para registro de cuenta',
     html: `<h1>Estimado ${tipoCuenta}<h1/>
     <p>¡Estas a un paso de formar parte de nuestra comunidad!</p>
     <p>Tu código de confirmación es <strong>${codigoVerificacion}</strong>.</p>`,

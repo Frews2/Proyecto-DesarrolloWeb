@@ -1,12 +1,12 @@
-import express from "express";
-import { validationResult, checkSchema } from "express-validator";
+import express from 'express';
+import { validationResult, checkSchema } from 'express-validator';
 import { guardarFigura, obtenerFiguras, obtenerFiguraDatos } from '../controladores/figuraControlador.js';
-import checkSchemaFigura from "../utilidades/figuraValidador.js";
-import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
+import checkSchemaFigura from '../utilidades/figuraValidador.js';
+import { ChecarTokenActivo } from '../utilidades/tokenValidador.js';
 
 const router = express.Router();
 
-router.post("/registrar", 
+router.post('/registrar', 
 ChecarTokenActivo,
 checkSchema(checkSchemaFigura),
 async (req, res) => {
@@ -15,14 +15,14 @@ async (req, res) => {
 
     var respuestaJSON = {
         exito: true,
-        origen: "figuras/registrar",
-        mensaje: "EXITO: Figura guardada",
+        origen: 'figuras/registrar',
+        mensaje: 'EXITO: Figura guardada',
         resultado: null
     };
 
     if (errors.length > 0) {
         respuestaJSON.exito = false;
-        respuestaJSON.mensaje = "Se encontaron errores al validar la figura. Corrijalos por favor.";
+        respuestaJSON.mensaje = 'Se encontaron errores al validar la figura. Corrijalos por favor.';
         respuestaJSON.resultado = errors;
         return res.status(400).send(respuestaJSON).end();
     }
@@ -49,7 +49,7 @@ async (req, res) => {
         console.error(error);
 
         respuestaJSON.exito = false;
-        respuestaJSON.mensaje = "Ocurrió un error al intentar registrar la figura. Intente más tarde."
+        respuestaJSON.mensaje = 'Ocurrió un error al intentar registrar la figura. Intente más tarde.'
         respuestaJSON.resultado = error;
 
         return res.status(500).send(respuestaJSON);
@@ -57,15 +57,15 @@ async (req, res) => {
 })
 
 
-router.get("/buscar",
+router.get('/buscar',
 ChecarTokenActivo,
 async (req, res) => {
   const TEXTO_BUSQUEDA = req.query.filtro;
 
     var respuestaJSON = {
         exito: true,
-        origen: "figuras/buscar",
-        mensaje: "EXITO: Figura(s) encontradas",
+        origen: 'figuras/buscar',
+        mensaje: 'EXITO: Figura(s) encontradas',
         resultado: null
     };
 
@@ -77,7 +77,7 @@ async (req, res) => {
             return res.status(200).send(respuestaJSON);
         } else {
             respuestaJSON.exito = false;
-            respuestaJSON.mensaje = "No se encontraron figuras. Ingrese un filtro diferente.";
+            respuestaJSON.mensaje = 'No se encontraron figuras. Ingrese un filtro diferente.';
             return res.status(405).send(respuestaJSON);
         }
       })
@@ -91,15 +91,15 @@ async (req, res) => {
       });
 })
 
-router.get("/obtenerPorId", 
+router.get('/obtenerPorId', 
 ChecarTokenActivo,
 async (req, res) => {
     const ID_FIGURA = req.query.id;
 
     var respuestaJSON = {
         exito: true,
-        origen: "figuras/obtenerPorId",
-        mensaje: "EXITO: Figura encontrada",
+        origen: 'figuras/obtenerPorId',
+        mensaje: 'EXITO: Figura encontrada',
         resultado: null
     };
 
@@ -111,7 +111,7 @@ async (req, res) => {
             return res.status(200).send(respuestaJSON);
         } else {
             respuestaJSON.exito = false;
-            respuestaJSON.mensaje = "No se encontró una figura. Ingrese una Id válida.";
+            respuestaJSON.mensaje = 'No se encontró una figura. Ingrese una Id válida.';
             return res.status(405).send(respuestaJSON);
         }
       })

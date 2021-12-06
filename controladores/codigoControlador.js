@@ -1,87 +1,94 @@
-import Codigo from "../modelos/codigo.js";
-import mandarCodigoConfirmacion from "../utilidades/servicioEmail.js";
+import Codigo from '../modelos/codigo.js';
+import mandarCodigoConfirmacion from '../utilidades/servicioEmail.js';
 
 export async function enviarCorreo(email, tipoCuenta) {
-  var resultadoJSON = {
+  var resultadoJson = {
     exito: false,
-    origen: "codigo/EnviarCorreo",
-    mensaje: "EXITO: Correo mandado",
+    origen: 'codigo/EnviarCorreo',
+    mensaje: 'EXITO: Correo mandado',
     resultado: null
   };
-  Codigo.find({ Correo: email })
+
+  return Codigo.find({ Correo: email })
   .then(codigoObtenido => {
     if(codigoObtenido){
-      resultadoJSON.exito = mandarCodigoConfirmacion(
+      resultadoJson.exito = mandarCodigoConfirmacion(
         codigoObtenido.email, 
         tipoCuenta, 
         codigoObtenido.Numero)
     }
+    return resultadoJson;
   })
   .catch(error => {
     console.error(error);
-    resultadoJSON.exito =  false;
-    resultadoJSON.mensaje = "ERRROR: No se pudo mandar el correo en este momento.";
+    resultadoJson.exito =  false;
+    resultadoJson.mensaje = 'ERROR: No se pudo mandar el correo ' +
+    'en este momento.';
+    return resultadoJson;
   })
-
-  return resultadoJSON;
 }
 
 export async function guardarCodigoConfirmacion(email, codigoActual) {
-    const nuevoCodigo = new Codigo({
-      Correo: email,
-      Numero: codigoActual,
-    });
-
-    return nuevoCodigo.save()
-        .then(codigoGuardado => {
-            if(codigoGuardado){
-              return true
-            } else {
-              return false
-            }
-        })
-        .catch(error => {
-          console.error(error);
-          return false;
-        })
+  var nuevoCodigo = new Codigo({
+    Correo: email,
+    Numero: codigoActual,
+  });
+  
+  return nuevoCodigo.save()
+  .then(codigoGuardado => {
+    if(codigoGuardado){
+      return true;
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    return false;
+  })
 }
 
 export async function checarCodigoConfirmacion(email, codigoActual) {
-    return Codigo.findOne({Correo: email})
-        .then(codigo => {
-            var resultado = {
-              esCorrecto: true,
-              mensaje: "Código de confirmación de cuenta correcto.",
-            };
-            if (!codigo) {
-              resultado.esCorrecto = false
-              resultado.mensaje = "Autentificación fallida. Verifique que ingresaste el email correspondiente y el código de confirmación no ha expirado."
-            }
-            else if (codigo.Numero != codigoActual) {
-              resultado.esCorrecto = false
-              resultado.mensaje = "El código de confirmación de cuenta es incorrecto."
-            }
-            return resultado
-        })
-        .catch(error => {
-          console.error(error);
-          return {
-            esCorrecto: false,
-            mensaje: error.message
-          }
-        })
+  var resultadoJson = {
+    esCorrecto: true,
+    mensaje: 'EXITO: Código de confirmación de cuenta correcto.',
+  };
+
+  return Codigo.findOne({Correo: email})
+  .then(codigo => {
+    if (!codigo) {
+      resultadoJson.esCorrecto = false;
+      resultadoJson.mensaje = 'Autentificación fallida. ' +
+      'Verifique que ingresaste el email correspondiente ' +
+      'y el código de confirmación no ha expirado.';
+    }
+    else {
+      if (codigo.Numero != codigoActual) {
+        resultadoJson.esCorrecto = false;
+        resultadoJson.mensaje = 'El código de confirmación ' +
+        'de cuenta es incorrecto.';
+      }
+    }
+    return resultadoJson;
+  })
+  .catch(error => {
+    console.error(error);
+    resultadoJson.esCorrecto = false;
+    resultadoJson.mensaje = error;
+    return resultadoJson;
+  })
 }
 
 export async function eliminarCodigoGuardado(email, codigoActual) {
-  return Codigo.deleteOne({
-    Correo: email,
-    Numero: codigoActual,
+  var seElimino = false;
+
+  return Codigo.deleteOne({ Correo: email, Numero: codigoActual })
+  .then((resultadoEliminacion) => {
+    if(resultadoEliminacion){
+      seElimino = true;
+    }
+    return seElimino;
   })
-    .then((resultadoEliminacion) => {
-      return resultadoEliminacion.ok == 1;
-    })
-    .catch((error) => {
-      console.error(error);
-      return false;
-    });
+  .catch((error) => {
+    console.error(error);
+    return seElimino;
+  });
 }

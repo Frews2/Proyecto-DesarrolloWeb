@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const cuentaSchema = new mongoose.Schema({
+const { model, Schema } = mongoose;
+
+const cuentaSchema = new Schema({
     IdCuenta: {
         type: String,
         required: true,
@@ -15,7 +17,7 @@ const cuentaSchema = new mongoose.Schema({
     TipoCuenta: {
         type: String,
         required: true,
-        enum: ["Periodista", "Coleccionista"]
+        enum: ['Periodista', 'Coleccionista']
     },
     Apodo: {
         type: String,
@@ -55,14 +57,14 @@ const cuentaSchema = new mongoose.Schema({
     Sexo: {
         type: String,
         required: true,
-        enum: ["Masculino", "Femenino", "Otro"]
+        enum: ['Masculino', 'Femenino', 'Otro']
     },
     Estatus: {
         type: String,
         required: false,
-        enum: ["Activo", "Baneado", "Pendiente"],
+        enum: ['Activo', 'Reportado', 'Pendiente'],
     }
 });
 
-const Cuenta = mongoose.model('cuentas', cuentaSchema);
+const Cuenta = model('cuentas', cuentaSchema);
 export default Cuenta;

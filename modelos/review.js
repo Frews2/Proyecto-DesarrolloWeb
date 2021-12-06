@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const reviewSchema = new mongoose.Schema({
+const { model, Schema } = mongoose;
+
+const reviewSchema = new Schema({
     IdPublicacion: {
         type: String,
         required: true,
@@ -59,10 +61,10 @@ const reviewSchema = new mongoose.Schema({
     Estatus: {
         type: String,
         required: false,
-        enum: ["Activo", "Baneado", "Reportado"],
-        default: "Activo"
+        enum: ['Activo', 'Reportado'],
+        default: 'Activo'
     }
 });
 
-const Review = mongoose.model('reviews', reviewSchema);
+const Review = model('reviews', reviewSchema);
 export default Review;
