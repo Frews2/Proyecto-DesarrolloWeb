@@ -12,7 +12,6 @@ checkSchema(checkSchemaNoticia),
 async (req, res) => {
 
   const { errors } = validationResult(req);
-  console.log("DATO DE CUENTA registrar" + req.body.IdCuenta);
     var respuestaJSON = {
         exito: true,
         origen: "noticias/Registrar",
