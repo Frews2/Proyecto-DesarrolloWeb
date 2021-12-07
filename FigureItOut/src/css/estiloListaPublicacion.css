@@ -1,0 +1,102 @@
+.tituloContenedor{
+    color: #824bb9;
+    font-size: 140%;
+  }
+  
+  .textoContenedor{
+    padding-left: 10%;
+    font-size: 100%;
+    float: left;
+  }
+  
+  .fotoColumnaContenedor{
+    border: 2px black;
+    width: 275px;
+    height: 275px;
+    float: right;
+    padding-right: 25px;
+    padding-top: 25px;
+  }
+  
+  .columnasDivContenedor {
+    width: 50%;
+    float: left;
+    word-break: break-all;
+  }
+  
+  .tituloSolo{
+    justify-content: center;
+    align-items: center;
+    padding-top: 2%;
+    padding-left: 40%;
+  
+  }
+  .contenedorGeneral{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding-left: 20%;
+    padding-right: 20%;
+  }
+  
+  .contenedorPadrePublicacion{
+    width:100%;
+    height: 100%;
+    border: 10%;
+    padding: 2.5%;
+  }
+  
+  
+  .contenedorPadreFiguras{
+    width:100%;
+    top: 10px;
+    height: 30%;
+    padding: 5%;
+  }
+  
+  .tituloPublicacion{
+    font-weight: bold;
+    padding-left: 35%;
+    padding-top: 2%;
+  }
+  
+  .textoPublicacion{
+    font-weight: normal;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    color: #ffffff;
+  }
+  
+  .fotoPublicacion{
+    border: 1px black;
+    width: 100%;
+    height: 50%;
+    padding-left: 30%;
+    padding-right: 30%;
+    padding-bottom: 5%;
+  }
+  .contenedorBusqueda{
+    width: 80%;
+    padding: 1%;
+    padding-left: 30%;
+  }
+  
+  .inputBusqueda {
+      width: 70%;
+      display:inline-block;
+  }
+  #botonBusqueda{
+      width: 10%;
+      display:inline-block;
+  }
+
+  .paginacionBoton{
+  text-align: center;
+  }
+  
+  .paginacionDesabilitada{
+  color:black;
+	background: #432561;
+	transition: all 0.4s ease 0s;
+  text-align: center;
+  }

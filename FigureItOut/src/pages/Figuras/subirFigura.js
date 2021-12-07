@@ -1,5 +1,5 @@
 import React from "react";
-import '../../css/figureItOutStyle.css';
+import '../../css/estiloForm.css';
 import { SubirFigura } from "../../components/figuras/aniadirFigura";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';

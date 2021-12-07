@@ -1,18 +1,19 @@
 import React from "react";
 import '../../css/estiloForm.css';
-import { VerificacionCorreo } from "../../components/sesion";
+import '../../css/estiloListaPublicacion.css';
+import VistaReview from "../../components/reviews/vistaReview";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-function PaginaValidarCorreo() {
+function PaginaVerReview() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout title="Validar Correo">
+    <Layout title="Revisa la review">
     <main>
-      <VerificacionCorreo></VerificacionCorreo>
+      <VistaReview></VistaReview>
     </main>
   </Layout>
   );
 }
 
-export default PaginaValidarCorreo;
+export default PaginaVerReview;
