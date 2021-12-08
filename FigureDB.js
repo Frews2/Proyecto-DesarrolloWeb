@@ -77,14 +77,6 @@ db.figuras.insert([
     }
 ])
 
-db.colecciones.insert([
-    {
-        "IdColeccion": "b763f4b3-f67a-498e-917d-f74b4affb19e",
-        "IdCuenta": "Batman 2021 edicion especial",
-        "Figuras": ["b763f4b3-f67a-498e-917d-f74b4affb19e"]
-    }
-])
-
 db.noticias.insert([
     {
         "IdPublicacion": "a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
@@ -189,11 +181,11 @@ db.comentarios.insert([
 
 db.reportes.insert([
     {
-        "Id": "7e15a339-c2b0-4210-b82c-a79f6db5f7ee",
+        "IdReporte": "7e15a339-c2b0-4210-b82c-a79f6db5f7ee",
         "IdPublicacion": "296586c3-f036-49f8-b6c0-4f051de6c90a",
         "TipoPublicacion": "Review",
         "IdAcusador": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
-        "Razon": "No es un review, es un video de hitler",
+        "Razon": "No es un review, es una foto de hitler",
         "IdAcusado": "6f2850f9-b82f-451d-baf2-26fd93874418"
     }
 ])
