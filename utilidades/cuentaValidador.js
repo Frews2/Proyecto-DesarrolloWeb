@@ -2,8 +2,17 @@ import { PERIODISTA, COLECCIONISTA } from '../utilidades/constantes.js';
 
 const MIN_CUENTA = 4;
 const MAX_CUENTA = 50;
-const MENSAJE_ERROR = 'ERROR: El campo debe tener entre ' + MIN_CUENTA + 
-  ' y ' + MAX_CUENTA + ' caracteres.';
+
+function esStringValido(texto) {
+  texto = texto.replace(/\s/g,"");
+  
+  if (texto.lenth < MIN_CUENTA || texto.length > MAX_CUENTA) {
+    throw new Error(`ERROR: La cadena de caracteres debe ser entre 
+    ${MIN_CUENTA} y ${MAX_CUENTA} de largo.`);
+  } else{
+    return true;
+  }
+}
 
 function esCorreoValido(email) {
   const PLANTILLA_EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -67,27 +76,31 @@ const esSchemaCuentaValido = {
     },
   },
   Apodo: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   Password: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   Nombre: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   Ocupacion: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   FechaNacimiento: {
@@ -98,9 +111,10 @@ const esSchemaCuentaValido = {
     },
   },
   Pais: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   Sexo: {

@@ -6,8 +6,17 @@ import { esComentarioActivo } from '../controladores/comentarioControlador.js';
 
 const MIN_RAZON = 10;
 const MAX_RAZON = 500;
-const ERROR_RAZON = 'ERROR: El campo debe tener entre ' + MIN_RAZON + 
-  ' y ' + MAX_RAZON + ' caracteres.';
+
+function esStringValido(texto) {
+  texto = texto.replace(/\s/g,"");
+  
+  if (texto.lenth < MIN_RAZON || texto.length > MAX_RAZON) {
+    throw new Error(`ERROR: La cadena de caracteres debe ser entre 
+    ${MIN_RAZON} y ${MAX_RAZON} de largo.`);
+  } else{
+    return true;
+  }
+}
 
 async function esTipoValido(tipo) {
   const NOTICIA = 'Noticia';
@@ -79,9 +88,10 @@ const checkSchemaReporte = {
     },
   },
   Razon: {
-    isLength: {
-      errorMessage: ERROR_RAZON,
-      options: { min: MIN_RAZON, max: MAX_RAZON },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   IdAcusado: {

@@ -1,38 +1,48 @@
-import { MIN_NOMBRE, MAX_NOMBRE, MIN_DESCRIPCION,
-  MAX_DESCRIPCION, ERROR_NOMBRE, ERROR_DESCRIPCION,
+import { MIN_NOMBRE, MAX_NOMBRE, MIN_DESCRIPCION, MAX_DESCRIPCION,
   esFormatoValido, existeImagen } from '../utilidades/imagenValidador.js';
   
 const MIN_ALTURA = 1;
 const MIN_FIGURA = 3;
 const MAX_FIGURA = 30;
-const MENSAJE_ERROR = 'ERROR: El campo debe tener entre ' + MIN_FIGURA + 
-  ' y ' + MAX_FIGURA + ' caracteres.';
+
+function esStringValido(texto, min, max) {
+  texto = texto.replace(/\s/g,"");
+  
+  if (texto.lenth < min || texto.length > max) {
+    throw new Error(`ERROR: La cadena de caracteres debe ser entre 
+    ${min} y ${max} de largo.`);
+  } else{
+    return true;
+  }
+}
 
 const checkSchemaFigura = {
   Nombre: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_FIGURA, max: MAX_FIGURA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_NOMBRE, MAX_NOMBRE);
+      },
     },
   },
   Altura: {
-    isLength: {
-      errorMessage: 'ERROR: El campo debe tener entre ' + MIN_ALTURA + 
-        ' y ' + MIN_FIGURA + ' caracteres.',
-      options: { min: MIN_ALTURA, max: MIN_FIGURA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_ALTURA, MIN_FIGURA);
+      },
     },
   },
   Material: {
-    isLength: {
-      errorMessage: MENSAJE_ERROR,
-      options: { min: MIN_FIGURA, max: MAX_FIGURA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_FIGURA, MAX_FIGURA);
+      },
     },
   },
   Marca: {
-    isLength: {
-      errorMessage: 'ERROR: El campo debe tener entre ' + MIN_ALTURA + 
-        ' y ' + MAX_FIGURA + ' caracteres.',
-      options: { min: MIN_ALTURA, max: MAX_FIGURA },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_ALTURA, MAX_FIGURA);
+      },
     },
   },
   Foto: {
@@ -50,15 +60,17 @@ const checkSchemaFigura = {
     },
   },
   NombreFoto: {
-    isLength: {
-      errorMessage: ERROR_NOMBRE,
-      options: { min: MIN_NOMBRE, max: MAX_NOMBRE },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_NOMBRE, MAX_NOMBRE);
+      },
     },
   },
   DescripcionFoto: {
-    isLength: {
-      errorMessage: ERROR_DESCRIPCION,
-      options: { min: MIN_DESCRIPCION, max: MAX_DESCRIPCION },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_DESCRIPCION, MAX_DESCRIPCION);
+      },
     },
   },
   TipoFoto: {

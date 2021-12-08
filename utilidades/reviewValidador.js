@@ -1,19 +1,24 @@
 import { 
   existeColeccionistaActivo } from '../controladores/cuentaControlador.js';
 import { existeFigura } from '../controladores/figuraControlador.js';
-import { MIN_NOMBRE, MAX_NOMBRE, MIN_DESCRIPCION,
-  MAX_DESCRIPCION, ERROR_NOMBRE, ERROR_DESCRIPCION,
+import { MIN_NOMBRE, MAX_NOMBRE, MIN_DESCRIPCION, MAX_DESCRIPCION,
   esFormatoValido, existeImagen } from '../utilidades/imagenValidador.js';
 
 const MIN_TITULO = 3;
 const MAX_TITULO = 50;
-const ERROR_TITULO = 'ERROR: El campo debe tener entre ' + MIN_TITULO + 
-  ' y ' + MAX_TITULO + ' caracteres.';
-
 const MIN_TEXTO = 10;
 const MAX_TEXTO = 1000;
-const ERROR_TEXTO = 'ERROR: El campo debe tener entre ' + MIN_TEXTO + 
-  ' y ' + MAX_TEXTO + ' caracteres.';
+
+function esStringValido(texto, min, max) {
+  texto = texto.replace(/\s/g,"");
+  
+  if (texto.lenth < min || texto.length > max) {
+    throw new Error(`ERROR: La cadena de caracteres debe ser entre 
+    ${min} y ${max} de largo.`);
+  } else{
+    return true;
+  }
+}
 
 function esCalificacionValida(valor) {
   const MIN = 0;
@@ -29,15 +34,17 @@ function esCalificacionValida(valor) {
 
 const checkSchemaReview = {
   Titulo: {
-    isLength: {
-      errorMessage: ERROR_TITULO,
-      options: { min: MIN_TITULO, max: MAX_TITULO },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_TITULO, MAX_TITULO);
+      },
     },
   },
   Texto: {
-    isLength: {
-      errorMessage: ERROR_TEXTO,
-      options: { min: MIN_TEXTO, max: MAX_TEXTO },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_TEXTO, MAX_TEXTO);
+      },
     },
   },
   Calificacion: {
@@ -62,15 +69,17 @@ const checkSchemaReview = {
     },
   },
   NombreFoto: {
-    isLength: {
-      errorMessage: ERROR_NOMBRE,
-      options: { min: MIN_NOMBRE, max: MAX_NOMBRE },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_NOMBRE, MAX_NOMBRE);
+      },
     },
   },
   DescripcionFoto: {
-    isLength: {
-      errorMessage: ERROR_DESCRIPCION,
-      options: { min: MIN_DESCRIPCION, max: MAX_DESCRIPCION },
+    custom: {
+      options: (value) => {
+        return esStringValido(value, MIN_DESCRIPCION, MAX_DESCRIPCION);
+      },
     },
   },
   TipoFoto: {

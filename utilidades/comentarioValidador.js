@@ -5,14 +5,23 @@ import { esReviewActivo } from '../controladores/reviewControlador.js';
 const MIN_COMENTARIO = 3;
 const MAX_COMENTARIO = 250;
 
+function esStringValido(texto) {
+  texto = texto.replace(/\s/g,"");
+  
+  if (texto.lenth < MIN_COMENTARIO || texto.length > MAX_COMENTARIO) {
+    throw new Error(`ERROR: La cadena de caracteres debe ser entre 
+    ${MIN_COMENTARIO} y ${MAX_COMENTARIO} de largo.`);
+  } else{
+    return true;
+  }
+}
+
 const checkSchemaComentario = {
   Texto: {
-    Texto: Texto.replace(/\s/g,""),
-    isLength: {
-      errorMessage:
-      'El texto del comentario debe tener un ' +
-      'mínimo de 3 caracteres y máximo de 500.',
-      options: { min: MIN_COMENTARIO, max: MAX_COMENTARIO },
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
+      },
     },
   },
   IdPublicacionOriginal: {
