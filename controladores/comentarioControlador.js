@@ -1,8 +1,11 @@
 import { Guid } from 'js-guid';
 import Comentario from '../modelos/comentario.js';
-import { agregarComentarioANoticia, esNoticiaActiva } from '../controladores/noticiaControlador.js';
-import { agregarComentarioAReview, esReviewActivo } from '../controladores/reviewControlador.js';
-import { ACTIVO, REPORTADO, ORDEN_ASCENDIENDO } from '../utilidades/constantes.js';
+import { agregarComentarioANoticia, 
+  esNoticiaActiva } from '../controladores/noticiaControlador.js';
+import { agregarComentarioAReview, 
+  esReviewActivo } from '../controladores/reviewControlador.js';
+import { ACTIVO, REPORTADO, 
+  ORDEN_ASCENDIENDO } from '../utilidades/constantes.js';
 
 export async function guardarComentario(nuevoComentario) {
   const GUID = Guid.newGuid();
@@ -11,9 +14,9 @@ export async function guardarComentario(nuevoComentario) {
   var seAgrego = false;
 
   var resultadoJson = {
-    exito: true,
-    origen: 'comentario/guardar',
-    mensaje: 'EXITO: Comentario guardado',
+    exito: false,
+    origen: 'comentario/Registrar',
+    mensaje: 'ERROR: No pudimos registrar su comentario. Intenté de nuevo.',
     resultado: null
   };
 
@@ -23,7 +26,7 @@ export async function guardarComentario(nuevoComentario) {
     IdCuenta: nuevoComentario.IdCuenta,
     Apodo: nuevoComentario.Apodo,
     Texto: nuevoComentario.Texto
-  }
+  };
 
   esNoticia = await esNoticiaActiva(comentario.IdPublicacionOriginal);
 
@@ -48,37 +51,28 @@ export async function guardarComentario(nuevoComentario) {
   if (seAgrego) {
     return comentarioAGuardar.save()
     .then((seGuardo) => {
-      if (!seGuardo) {
-        resultadoJson.exito = false;
-        resultadoJson.mensaje = 'Error: ' +
-        'No pudimos guardar su comentario. Intenté de nuevo.';
-      } else {
-        resultadoJson.resultado = 'EXTIO: Comentario Guardado: ' +
-        seGuardo.Texto;
+      if (seGuardo) {
+        resultadoJson.exito = true;
+        resultadoJson.mensaje = 'Éxito: Comentario guardado';
       }
       return resultadoJson;
     })
     .catch(error => {
       console.error(error);
-      resultadoJson.exito = false;
       resultadoJson.mensaje = 'ERROR: ' +
-      'Ocurrió un error inesperado al intentar crear el comentario. ' +
-      'Intenté de nuevo.';
+        'Ocurrió un error inesperado al intentar crear el comentario. ' +
+        'Intenté de nuevo.';
       return resultadoJson;
-    })
+    });
   } else {
-    resultadoJson.exito = false;
     resultadoJson.mensaje = 'ERROR: ' +
-    'La id de publicación ingresada no es de un Review ni Noticia activa.';
+      'La id de publicación ingresada no es de un Review ni Noticia activa.';
     return resultadoJson;
   }
 }
 
-export async function obtenerComentarios(idPublicacionOriginal) {
-  return Comentario.find({
-    IdPublicacionOriginal: idPublicacionOriginal,
-    Estatus: ACTIVO
-  })
+export async function obtenerComentarios(id) {
+  return Comentario.find({ IdPublicacionOriginal: id, Estatus: ACTIVO })
     .sort({ FechaRegistro: ORDEN_ASCENDIENDO })
     .then((comentarios) => {
     return comentarios;
@@ -89,14 +83,14 @@ export async function obtenerComentarios(idPublicacionOriginal) {
   });
 }
 
-export async function obtenerComentarioDatos(identificador) {
-  return await Comentario.find({ IdComentario: identificador });
+export async function obtenerComentarioDatos(id) {
+  return await Comentario.find({ IdComentario: id, Estatus: ACTIVO });
 }
 
 export async function reportarComentario(idComentario) {
   var seReporto = false;
 
-  if (Review.exists({ IdComentario: idComentario })) {
+  if (Review.exists({ IdComentario: idComentario, Estatus: ACTIVO })) {
     return Review.updateOne(
       { IdComentario: idComentario },
       { Estatus: REPORTADO })
@@ -109,7 +103,7 @@ export async function reportarComentario(idComentario) {
     .catch(error => {
       console.error(error);
       return seReporto;
-    })
+    });
   }
   return seReporto;
 }

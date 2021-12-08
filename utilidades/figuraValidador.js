@@ -1,44 +1,49 @@
-import { esFormatoValido, existeImagen } from '../utilidades/imagenValidador.js';
+import { MIN_NOMBRE, MAX_NOMBRE, MIN_DESCRIPCION,
+  MAX_DESCRIPCION, ERROR_NOMBRE, ERROR_DESCRIPCION,
+  esFormatoValido, existeImagen } from '../utilidades/imagenValidador.js';
+  
+const MIN_ALTURA = 1;
+const MIN_FIGURA = 3;
+const MAX_FIGURA = 30;
+const MENSAJE_ERROR = 'ERROR: El campo debe tener entre ' + MIN_FIGURA + 
+  ' y ' + MAX_FIGURA + ' caracteres.';
 
 const checkSchemaFigura = {
   Nombre: {
     isLength: {
-      errorMessage:
-        'El nombre de la figura debe tener minimo de 3 caracteres y máximo 30',
-      options: { min: 3, max: 30 },
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_FIGURA, max: MAX_FIGURA },
     },
   },
   Altura: {
     isLength: {
-      errorMessage:
-        'El texto de altura de la figura debe tener entre 1 y 3 caracteres',
-      options: { min: 1, max: 3 },
+      errorMessage: 'ERROR: El campo debe tener entre ' + MIN_ALTURA + 
+        ' y ' + MIN_FIGURA + ' caracteres.',
+      options: { min: MIN_ALTURA, max: MIN_FIGURA },
     },
   },
   Material: {
     isLength: {
-      errorMessage:
-        'El material de la figura debe tener minimo de 3 caracteres y máximo 25',
-      options: { min: 3, max: 25 },
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_FIGURA, max: MAX_FIGURA },
     },
   },
   Marca: {
     isLength: {
-      errorMessage:
-        'La marca de la figura debe tener minimo de 2 caracteres y máximo 50',
-      options: { min: 2, max: 50 },
+      errorMessage: 'ERROR: El campo debe tener entre ' + MIN_ALTURA + 
+        ' y ' + MAX_FIGURA + ' caracteres.',
+      options: { min: MIN_ALTURA, max: MAX_FIGURA },
     },
   },
   Foto: {
     custom: {
       options: async (value, { req }) => {
-        return existeImagen(req.body.Foto, value).then((existe) => {
+        return existeImagen(req.body.Foto, value)
+        .then((existe) => {
           if (!existe) {
-            return Promise.reject(
-              'No existe una foto, por favor agregue una foto.'
-            );
+            return Promise.reject('No existe una foto, ' +
+              'por favor agregue una foto.');
           }
-
           return existe;
         });
       },
@@ -46,28 +51,25 @@ const checkSchemaFigura = {
   },
   NombreFoto: {
     isLength: {
-      errorMessage:
-        'El nombre de la imagen de la noticia debe tener minimo de 5 caracteres y máximo 50',
-      options: { min: 5, max: 50 },
+      errorMessage: ERROR_NOMBRE,
+      options: { min: MIN_NOMBRE, max: MAX_NOMBRE },
     },
   },
   DescripcionFoto: {
     isLength: {
-      errorMessage:
-        'La descripción de la foto de la figura debe tener minimo de 10 caracteres y máximo 5000',
-      options: { min: 10, max: 5000 },
+      errorMessage: ERROR_DESCRIPCION,
+      options: { min: MIN_DESCRIPCION, max: MAX_DESCRIPCION },
     },
   },
   TipoFoto: {
     custom: {
       options: async (value, { req }) => {
-        return esFormatoValido(req.body.TipoFoto, value).then((existe) => {
+        return esFormatoValido(req.body.TipoFoto, value)
+        .then((existe) => {
           if (!existe) {
-            return Promise.reject(
-              'El tipo de foto no es valido. Por favor verifique que la foto tenga extensión correcta.'
-            );
+            return Promise.reject('El tipo de foto no es valido. ' +
+              'Por favor verifique que la foto tenga extensión correcta.');
           }
-
           return existe;
         });
       },

@@ -12,36 +12,33 @@ if (!fs.existsSync(carpeta)) {
 
 const guardarArchivo = (path, data) => {
   return new Promise((resolve, reject) => {
-  fs.writeFile(path, data, function (err) {
-    if (err) {
-    console.error(err);
-    reject(false);
-    }
-
-    resolve(true);
+    fs.writeFile(path, data, function (err) {
+      if (err) {
+        console.error(err);
+        reject(false);
+      }
+      resolve(true);
+    });
   });
-  });
-}
+};
 
 export async function guardarImagen(nuevaImagen, tipoCarpeta) {
   const { name, data } = nuevaImagen;
   const rutaImagen = `${carpeta}/${tipoCarpeta}/${name}`;
 
-  var respuestaJSON = {
+  var resultadoJson = {
     exito: false,
     rutaImagen: ''
-  }
+  };
 
   return guardarArchivo(rutaImagen, data).then(seGuardo => {
     if (seGuardo) {
-    respuestaJSON.exito = seGuardo;
-    respuestaJSON.rutaImagen = rutaImagen;
+      resultadoJson.exito = seGuardo;
+      resultadoJson.rutaImagen = rutaImagen;
     }
-
-    return respuestaJSON;
+    return resultadoJson;
   }).catch(error => {
-    console.log(error);
-  
-    return respuestaJSON;
+    console.log('ERROR: No se pudo guardar la imagen. ' + error);
+    return resultadoJson;
   });
 }

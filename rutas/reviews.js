@@ -1,128 +1,113 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarReview, obtenerReviews } from '../controladores/reviewControlador.js';
+import { guardarReview, obtenerReviewDatos, obtenerReviews } from '../controladores/reviewControlador.js';
 import checkSchemaReview from "../utilidades/reviewValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
 const router = express.Router();
 
-router.post("/Registrar", 
+router.post("/registrar", 
 ChecarTokenActivo,
 checkSchema(checkSchemaReview),
 async (req, res) => {
-
   const { errors } = validationResult(req);
 
-  var respuestaJSON = {
-    exito: true,
-    origen: "reviews/registrar",
-    mensaje: "EXITO: Crítica guardada",
-    resultado: null
+  var respuestaJson = {
+    exito: false,
+    origen: 'reviews/registrar',
+    mensaje: 'ERROR: No pudimos registrar el review',
+    resultado: null,
+    tokenValido: true
   };
 
   if (errors.length > 0) {
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = "Se encontaron errores al validar la crítica. Corrijalos por favor.";
-    respuestaJSON.resultado = errors;
-    return res.status(400).send(respuestaJSON).end();
+    respuestaJson.mensaje = 'Se encontaron errores al validar el review. ' +
+      'Corrijalos por favor.';
+    respuestaJson.resultado = errors;
+    return res.status(400).send(respuestaJson).end();
   }
 
-  var nuevaCritica = req.body;
+  var nuevoReview = req.body;
 
-  if(req.files && req.files.Foto) {
-    nuevaCritica.Foto = req.files.Foto;
-  }
-  
-  guardarReview(nuevaCritica)
-  .then(resultadoCreacion => {
-    if (resultadoCreacion.exito) {
-      respuestaJSON.mensaje = resultadoCreacion.mensaje;
-      respuestaJSON.resultado = resultadoCreacion.resultado;
-      return res.status(200).send(respuestaJSON);
+  Review.exists({ Titulo: nuevoReview.Titulo })
+  .then((existe) => {
+    if (existe) {
+      respuestaJson.mensaje = 'ERROR: El titulo: ' + nuevoReview.Titulo + 
+        ', ya pertenece a un review. Cambielo por favor.';
+      return res.status(422).send(respuestaJson);
     } else {
-      respuestaJSON.exitoso = false;
-      respuestaJSON.mensaje = resultadoCreacion.mensaje;
-      res.status(400).send(respuestaJSON);
+      if (req.files && req.files.Foto) {
+        nuevoReview.Foto = req.files.Foto;
+      }
+      
+      guardarReview(nuevoReview)
+      .then(resultadoCreacion => {
+        respuestaJson.mensaje = resultadoCreacion.mensaje;
+        respuestaJson.resultado = resultadoCreacion.resultado;
+
+        if (resultadoCreacion.exito) {
+          respuestaJson.exito = true;
+          return res.status(200).send(respuestaJson);
+        } else {
+          return res.status(400).send(respuestaJson);
+        }
+      });
     }
   })
   .catch(error => {
-    console.error(error);
+    console.error('ERROR: ' + error);
+    respuestaJson.mensaje = 'ERROR: ' +
+      'Ocurrió un error inesperado al registrar el review.';
+    respuestaJson.resultado = error;
+    return res.status(500).send(respuestaJson);
+  });
+});
 
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = "Ocurrió un error al intentar registrar la crítica. Intente más tarde."
-    respuestaJSON.resultado = error;
-
-    return res.status(500).send(respuestaJSON);
-  })
-})
-
-
-router.get("/buscar",
-ChecarTokenActivo,
+router.get('/buscar',
 async (req, res) => {
-  const TEXTO_BUSQUEDA = req.query.filtro;
-
-  var respuestaJSON = {
-    exito: true,
-    origen: "reviews/buscar",
-    mensaje: "EXITO: Críticas encontradas",
+  const { filtro, id } = req.query;
+  
+  var respuestaJson = {
+    exito: false,
+    origen: 'reviews/buscar',
+    mensaje: 'ERROR: ' +
+      'No pudimos encontrar un review con el filtro ingresado.',
     resultado: null
   };
 
-  obtenerReviews(TEXTO_BUSQUEDA)
-    .then((reviews) => {
-    if (reviews && reviews.length > 0) {
-      respuestaJSON.resultado = reviews;
-
-      return res.status(200).send(respuestaJSON);
-    } else {
-      respuestaJSON.exito = false;
-      respuestaJSON.mensaje = "No se encontraron críticas. Ingrese un filtro diferente.";
-      return res.status(405).send(respuestaJSON);
-    }
+  if (id) {
+    return obtenerReviewDatos(id)
+    .then((reviewEncontrado) => {
+      if (reviewEncontrado && reviewEncontrado.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = reviewEncontrado;
+      } 
+      return res.status(200).send(respuestaJson);
     })
     .catch((error) => {
-    console.error(error);
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = error.message;
-    respuestaJSON.resultado = error;
-
-    return res.status(500).send(respuestaJSON);
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar un review. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
     });
-})
-
-router.get("/obtenerPorId",
-ChecarTokenActivo,
-async (req, res) => {
-  const ID_REVIEW = req.query.id;
-
-  var respuestaJSON = {
-    exito: true,
-    origen: "reviews/obtenerPorId",
-    mensaje: "EXITO: Críticas encontradas",
-    resultado: null
-  };
-
-  obtenerReviews(ID_REVIEW)
+  } else{
+    obtenerReviews(filtro)
     .then((reviews) => {
-    if (reviews && reviews.length > 0) {
-      respuestaJSON.resultado = reviews;
-
-      return res.status(200).send(respuestaJSON);
-    } else {
-      respuestaJSON.exito = false;
-      respuestaJSON.mensaje = "No se encontró una crítica. Ingrese una Id válida.";
-      return res.status(405).send(respuestaJSON);
-    }
+      if (reviews && reviews.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = reviews;
+      } 
+      return res.status(200).send(respuestaJson);
     })
     .catch((error) => {
-    console.error(error);
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = error.message;
-    respuestaJSON.resultado = error;
-
-    return res.status(500).send(respuestaJSON);
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar reviews. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
     });
-})
+  }
+});
 
 export default router;

@@ -6,121 +6,108 @@ import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
 const router = express.Router();
 
-router.post("/Registrar", 
+router.post("/registrar", 
 ChecarTokenActivo,
 checkSchema(checkSchemaNoticia),
 async (req, res) => {
-
   const { errors } = validationResult(req);
-    var respuestaJSON = {
-        exito: true,
-        origen: "noticias/Registrar",
-        mensaje: "EXITO: Noticia guardada",
-        resultado: null
-    };
+
+  var respuestaJson = {
+    exito: false,
+    origen: 'noticias/registrar',
+    mensaje: 'ERROR: No pudimos registrar la noticia',
+    resultado: null,
+    tokenValido: true
+  };
 
   if (errors.length > 0) {
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = "Se encontaron errores al validar la noticia. Corrijalos por favor.";
-    respuestaJSON.resultado = errors;
-    return res.status(400).send(respuestaJSON).end();
+    respuestaJson.mensaje = 'Se encontaron errores al validar la noticia. ' +
+      'Corrijalos por favor.';
+    respuestaJson.resultado = errors;
+    return res.status(400).send(respuestaJson).end();
   }
 
   var nuevaNoticia = req.body;
 
-  if(req.files && req.files.Foto) {
-    nuevaNoticia.Foto = req.files.Foto;
-  }
-  
-    guardarNoticia(nuevaNoticia)
-    .then(resultadoCreacion => {
-        if (resultadoCreacion.exito) {
-            respuestaJSON.mensaje = resultadoCreacion.mensaje;
-            respuestaJSON.resultado = resultadoCreacion.resultado;
-          return res.status(200).send(respuestaJSON);
-        } else {
-            respuestaJSON.exitoso = false;
-            respuestaJSON.mensaje = resultadoCreacion.mensaje;
-            res.status(400).send(respuestaJSON);
-        }
-    })
-    .catch(error => {
-        console.error(error);
-
-        respuestaJSON.exito = false;
-        respuestaJSON.mensaje = "Ocurrió un error al intentar crear la noticia. Intente más tarde."
-        respuestaJSON.resultado = error;
-
-        return res.status(500).send(respuestaJSON);
-    })
-})
-
-
-router.get("/buscar", 
-ChecarTokenActivo,
-async (req, res) => {
-    const TEXTO_BUSQUEDA = req.query.filtro;
-
-    var respuestaJSON = {
-        exito: true,
-        origen: "noticias/buscar",
-        mensaje: "EXITO: Noticias encontradas",
-        resultado: null
-    };
-
-    obtenerNoticias(TEXTO_BUSQUEDA)
-      .then((noticias) => {
-        if (noticias && noticias.length > 0) {
-            respuestaJSON.resultado = noticias;
-
-            return res.status(200).send(respuestaJSON);
-        } else {
-            respuestaJSON.exito = false;
-            respuestaJSON.mensaje = "No se encontraron noticias";
-            return res.status(405).send(respuestaJSON);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        respuestaJSON.exito = false;
-        respuestaJSON.mensaje = error.message;
-        respuestaJSON.resultado = error;
-
-        return res.status(500).send(respuestaJSON);
-      });
-})
-
-router.get("/obtenerPorId", 
-ChecarTokenActivo,
- async (req, res) => {
-  const ID_NOTICIA= req.query.id;
-
-  var respuestaJSON = {
-      exito: true,
-      origen: "noticias/obtenerPorId",
-      mensaje: "EXITO: Noticias encontradas",
-      resultado: null
-  };
-  obtenerNoticiaDatos(ID_NOTICIA)
-    .then((noticia) => {
-      if (noticia && noticia.length > 0) {
-          respuestaJSON.resultado = noticia;
-
-          return res.status(200).send(respuestaJSON);
-      } else {
-          respuestaJSON.exito = false;
-          respuestaJSON.mensaje = "No se encontró una noticia. Ingrese una Id válida.";
-          return res.status(405).send(respuestaJSON);
+  Noticia.exists({ Titulo: nuevaNoticia.Titulo })
+  .then((existe) => {
+    if (existe) {
+      respuestaJson.mensaje = 'ERROR: El titulo: ' + nuevaNoticia.Titulo + 
+        ', ya pertenece a una noticia. Cambielo por favor.';
+      return res.status(422).send(respuestaJson);
+    } else {
+      if (req.files && req.files.Foto) {
+        nuevaNoticia.Foto = req.files.Foto;
       }
+      
+      guardarNoticia(nuevaNoticia)
+      .then(resultadoCreacion => {
+        respuestaJson.mensaje = resultadoCreacion.mensaje;
+        respuestaJson.resultado = resultadoCreacion.resultado;
+
+        if (resultadoCreacion.exito) {
+          respuestaJson.exito = true;
+          return res.status(200).send(respuestaJson);
+        } else {
+          return res.status(400).send(respuestaJson);
+        }
+      });
+    }
+  })
+  .catch(error => {
+    console.error('ERROR: ' + error);
+    respuestaJson.mensaje = 'ERROR: ' +
+      'Ocurrió un error inesperado al registrar la noticia.';
+    respuestaJson.resultado = error;
+    return res.status(500).send(respuestaJson);
+  });
+});
+
+router.get('/buscar',
+async (req, res) => {
+  const { filtro, id } = req.query;
+  
+  var respuestaJson = {
+    exito: false,
+    origen: 'noticias/buscar',
+    mensaje: 'ERROR: ' +
+      'No pudimos encontrar una noticia con el filtro ingresado.',
+    resultado: null
+  };
+
+  if (id) {
+    return obtenerNoticiaDatos(id)
+    .then((noticiaEncontrada) => {
+      if (noticiaEncontrada && noticiaEncontrada.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = noticiaEncontrada;
+      } 
+      return res.status(200).send(respuestaJson);
     })
     .catch((error) => {
-      console.error(error);
-      respuestaJSON.exito = false;
-      respuestaJSON.mensaje = error.message;
-      respuestaJSON.resultado = error;
-
-      return res.status(500).send(respuestaJSON);
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar una noticia. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
     });
-})
+  } else{
+    obtenerNoticias(filtro)
+    .then((noticias) => {
+      if (noticias && noticias.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = noticias;
+      } 
+      return res.status(200).send(respuestaJson);
+    })
+    .catch((error) => {
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar noticias. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
+    });
+  }
+});
 
 export default router;

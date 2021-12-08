@@ -1,6 +1,6 @@
 /*
- Date: 04/10/2021
- Author(s): Ricardo Moguel Sanchez
+ Fecha: 04/10/2021
+ Autor(s): Ricardo Moguel Sánchez
 */
 import express from 'express';
 import cuentaRouter from './rutas/cuentas.js';
@@ -10,6 +10,7 @@ import codigosRouter from './rutas/codigos.js';
 import noticiasRouter from './rutas/noticias.js';
 import figurasRouter from './rutas/figuras.js';
 import comentariosRouter from './rutas/comentarios.js';
+import reportesRouter from './rutas/reportes.js';
 import cors from 'cors';
 import fileupload from 'express-fileupload';
 import mongoose from 'mongoose';
@@ -26,7 +27,7 @@ mongoose.connect(URL_BASE_DE_DATOS,{
   user: USUARIO_BASE_DE_DATOS,
   pass: CONTRASENIA_BASE_DE_DATOS
 }).then(() => {
-  console.log('EXITO: Conectado a la base de datos de FigureItOut');
+  console.log('ÉXITO: Conectado a la base de datos de FigureItOut');
 }).catch(eror => {
   console.log(eror);
   process.exit();
@@ -34,17 +35,17 @@ mongoose.connect(URL_BASE_DE_DATOS,{
 
 const rutasDisponibles = [
   'http://localhost:27017'
-]
+];
 
 var corsOptionsDelegate = function (req, callback) {
-  var corsOptions;
+  var opcionesCors;
   if (rutasDisponibles.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true }
+    opcionesCors = { origin: true };
   } else {
-    corsOptions = { origin: false } 
+    opcionesCors = { origin: false } ;
   }
-  callback(null, corsOptions)
-}
+  callback(null, opcionesCors);
+};
  
 app.use(cors());
 app.use(fileupload());
@@ -61,11 +62,12 @@ app.use('/imagenes', cors(corsOptionsDelegate), imagenRouter);
 app.use('/noticias', cors(corsOptionsDelegate), noticiasRouter);
 app.use('/figuras', cors(corsOptionsDelegate), figurasRouter);
 app.use('/comentarios', cors(corsOptionsDelegate), comentariosRouter);
+app.use('/reportes', cors(corsOptionsDelegate), reportesRouter);
 
 app.all('*', cors(corsOptionsDelegate), (req, res) => res.status(404).send({
-  success: false,
-  msg: 'ERROR: Ruta ingresada no existe'}));
+  exito: false,
+  mensaje: 'ERROR: Ruta ingresada no existe'}));
 
 const server = app.listen(PORT, () => 
-console.log(`EXITO: SERVIDOR CORRIENDO EN PUERTO: ${PORT}`));
+console.log(`ÉXITO: SERVIDOR CORRIENDO EN PUERTO: ${PORT}`));
 export { app, server };

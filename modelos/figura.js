@@ -10,36 +10,45 @@ const figuraSchema = new Schema({
     },
     Nombre: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        trim: true
     },
     Altura: {
         type: String,
         required: true,
-        match: /^[0-9]+$/
+        match: /^[0-9]+$/,
+        trim: true
     },
     Material: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Marca: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Foto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     NombreFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     TipoFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     DescripcionFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 });
 

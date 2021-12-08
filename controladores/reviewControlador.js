@@ -1,7 +1,8 @@
 import { Guid } from 'js-guid';
 import Review from '../modelos/review.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
-import { ACTIVO, REPORTADO, ORDEN_DESCENDIENDO } from '../utilidades/constantes.js';
+import { ACTIVO, REPORTADO,
+  ORDEN_DESCENDIENDO, FILTRO_INCLUIR } from '../utilidades/constantes.js';
 
 export async function guardarReview(nuevaCritica) {
   const CARPETA = 'reviews';
@@ -12,9 +13,9 @@ export async function guardarReview(nuevaCritica) {
   var rutaImagen = '';
 
   var resultadoJson = {
-    exito: true,
-    origen: 'review/guardar',
-    mensaje: 'EXITO: Publicación guardada',
+    exito: false,
+    origen: 'review/Registrar',
+    mensaje: 'ERROR: No pudimos registrar el review. Intenté de nuevo.',
     resultado: null
   };
 
@@ -55,40 +56,72 @@ export async function guardarReview(nuevaCritica) {
     TipoFoto: nuevaCritica.TipoFoto,
     DescripcionFoto: nuevaCritica.DescripcionFoto,
     Etiquetas: nuevaCritica.Etiquetas
-  }
+  };
 
   var reviewAGuardar = new Review(review);
 
   return reviewAGuardar.save()
   .then((seGuardo) => {
-    console.log('CRITICA GUARDADA: ' + seGuardo);
+    console.log('REVIEW GUARDADO: ' + seGuardo);
 
-    if(!seGuardo) {
-      resultadoJson.exito = false;
-      resultadoJson.mensaje = 'Error: Ocurrió un error al intentar crear la crítica. Intenté de nuevo.'
-    } else {
+    if(seGuardo) {
+      resultadoJson.exito = true;
+      resultadoJson.mensaje = 'ÉXITO: Review guardado.';
       resultadoJson.resultado = 'Ruta de imagen es: ' + seGuardo.Foto;
     }
-    
     return resultadoJson;
   })
   .catch(error => {
     console.error(error);
-    resultadoJson.exito = false;
-    resultadoJson.mensaje = 'ERROR: Ocurrió un error al intentar crear la crítica. Intenté de nuevo.';
+    resultadoJson.mensaje = 'ERROR: ' +
+      'Ocurrió un error al intentar crear la crítica. Intenté de nuevo.';
     return resultadoJson;
-  })
+  });
 }
 
-export async function eliminarReview(id) {
-  return Review.deleteOne({IdPublicacion: id})
-  .then(exito => {
-    return exito.ok == 1;
-  })
-  .catch(error => {
-    console.error(error);
-  return false;
-  })
+export async function agregarComentarioAReview(idPublicacion, idComentario) {
+  var seAgregoComentario = false;
+  
+  if(Review.exists({IdPublicacion: idPublicacion, Estatus: ACTIVO})){
+    return Noticia.updateOne(
+      {IdPublicacion: idPublicacion},
+      { $push: {comentarios: idComentario} } 
+    )
+    .then(seGuardo => {
+      console.log(seGuardo);
+      if(seGuardo){
+        seAgregoComentario = true;
+      } 
+      return seAgregoComentario;
+    })
+    .catch(error => {
+      console.error(error);
+      return seAgregoComentario;
+    });
+  }
+  return seAgregoComentario;
+}
+
+export async function reportarReview(idPublicacion) {
+  var seReporto = false;
+  
+  if(Review.exists({IdPublicacion: idPublicacion, Estatus: ACTIVO })){
+    return Review.updateOne(
+      {IdPublicacion: idPublicacion},
+      {Estatus: REPORTADO}
+    )
+    .then(seActualizo => {
+      if(seActualizo){
+        seReporto = true;
+      } 
+      return seReporto;
+    })
+    .catch(error => {
+      console.error(error);
+      return seReporto;
+    });
+  }
+  return seReporto;
 }
 
 export async function obtenerReviews(texto) {
@@ -96,12 +129,12 @@ export async function obtenerReviews(texto) {
   if (texto) {
     filtro.$and = [
       {$or: [
-        { Titulo: { $regex: texto, $options: 'i' } },
-        { Etiquetas: { $regex: texto, $options: 'i' } },
+        { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
+        { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
       ]},
-      { Estatus: { $ne: BANEADO } }
-    ]
-    
+      { Estatus: ACTIVO}
+    ];
+
     return Review.find(filtro)
     .sort({ FechaRegistro: ORDEN_DESCENDIENDO })
     .then((criticias) => {
@@ -112,16 +145,16 @@ export async function obtenerReviews(texto) {
       return [];
     });
   } else {
-    return await Review.find();
+    return await Review.find({ Estatus: ACTIVO });
   }
 }
   
-export async function obtenerReviewDatos(identificador) {
-  return await Review.find({ IdPublicacion: identificador });
+export async function obtenerReviewDatos(id) {
+  return await Review.find({ IdPublicacion: id, Estatus: ACTIVO });
 }
 
-export async function esReviewActivo(idPublicacion) {
-  return Review.exists({ IdPublicacion: idPublicacion, Estatus: ACTIVO })
+export async function esReviewActivo(id) {
+  return Review.exists({ IdPublicacion: id, Estatus: ACTIVO })
   .then((existe) => {
     return existe;
   })
@@ -129,47 +162,4 @@ export async function esReviewActivo(idPublicacion) {
     console.error(err);
     return false;
   });
-}
-
-export async function agregarComentarioAReview(idPublicacion, idComentario) {
-  var seAgregoComentario = false
-  
-  if(Review.exists({IdPublicacion: idPublicacion})){
-    return Noticia.updateOne(
-      {IdPublicacion: idPublicacion},
-      { $push: {comentarios: idComentario} } 
-    )
-    .then(seGuardo => {
-      console.log(seGuardo)
-      if(seGuardo){
-        seAgregoComentario = true;
-      } 
-    })
-    .catch(error => {
-      console.error(error);
-    })
-  }
-
-  return seAgregoComentario;
-}
-
-export async function reportarReview(idPublicacion) {
-  var seReporto = false
-  
-  if(Review.exists({IdPublicacion: idPublicacion})){
-    return Review.updateOne(
-      {IdPublicacion: idPublicacion},
-      {Estatus: REPORTADO}
-    )
-    .then(seActualizo => {
-      if(seActualizo){
-        seReporto = true;
-      } 
-    })
-    .catch(error => {
-      console.error(error);
-    })
-  }
-
-  return seReporto;
 }

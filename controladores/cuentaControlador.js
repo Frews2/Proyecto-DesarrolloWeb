@@ -1,10 +1,12 @@
 import { Guid } from 'js-guid';
 import Cuenta from '../modelos/cuenta.js';
-import { guardarCodigoConfirmacion } from '../controladores/codigoControlador.js';
+import { 
+  guardarCodigoConfirmacion } from '../controladores/codigoControlador.js';
 import mandarCodigoConfirmacion from '../utilidades/servicioEmail.js';
 import generarCodigoAzar from '../utilidades/generadorCodigo.js';
 import { encriptar } from '../utilidades/generadorBcrypt.js';
-import { REPORTADO, ACTIVO, PENDIENTE, PERIODISTA, COLECCIONISTA } from '../utilidades/constantes.js';
+import { REPORTADO, ACTIVO, PENDIENTE,
+  PERIODISTA, COLECCIONISTA } from '../utilidades/constantes.js';
 
 export function existeCuenta(email) {
   return Cuenta.exists({ Email: email })
@@ -12,8 +14,8 @@ export function existeCuenta(email) {
     return existe;
   })
   .catch((error) => {
-    console.error(error);
-    return error;
+    console.error('ERROR: ' + error);
+    return false;
   });
 }
 
@@ -60,6 +62,12 @@ export async function guardarCuenta(usuario) {
   const GUID = Guid.newGuid();
   var passwordEncriptado = encriptar(usuario.Password);
 
+  var resultadoJson = {
+    exito: false,
+    origen: 'cuenta/Registrar',
+    mensaje: 'ERROR: No pudimos registrar su cuenta. Intenté de nuevo.',
+  };
+
   usuario.IdCuenta = GUID;
   usuario.Password = passwordEncriptado;
   usuario.Estatus = PENDIENTE;
@@ -75,28 +83,56 @@ export async function guardarCuenta(usuario) {
       return guardarCodigoConfirmacion(Email, numeroConfirmacion)
       .then((creado) => {
         if (creado) {
-          console.log('ENVIANDO CORREO DE CONFIRMACION...')
-          mandarCodigoConfirmacion(Email,TipoCuenta, numeroConfirmacion);
+          console.log('ENVIANDO CORREO DE CONFIRMACION...');
+          return mandarCodigoConfirmacion(Email,TipoCuenta, numeroConfirmacion)
+          .then((mandado) => {
+            if (mandado) {
+              resultadoJson.exito = true;
+              resultadoJson.mensaje = 'ÉXITO: Cuenta creada y correo mandado';
+            } else{
+              resultadoJson.mensaje = 'ERROR: No se envió el correo con código' +
+              '. Intente de nuevo.';
+            }
+            return resultadoJson;
+          })
+          .catch((error) => {
+            console.error('ERROR: ' + error);
+            resultadoJson.mensaje = 'ERROR: Ocurrió un error inesperado  y no' +
+              'pudimos generar un código de confirmación. Intente de nuevo.';
+              resultadoJson.resultado = error;
+            return resultadoJson;
+          });
+        } else{
+          resultadoJson.mensaje = 'ERROR: No pudimos crear un código ' +
+            'de verificación. Intente de nuevo';
+          return resultadoJson;
         }
-        return creado;
       })
       .catch((error) => {
-        console.error(error);
-        return false;
+        console.error('ERRROR: ' + error);
+        resultadoJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error inesperado al intentar registrar la cuenta. ' +
+        'Intenté de nuevo.';
+        resultadoJson.resultado = error;
+        return resultadoJson;
       });
     }
-    return false;
+    return resultadoJson;
   })
   .catch((error) => {
-    console.error(error);
-    return false;
+    console.error('ERRROR: ' + error);
+    resultadoJson.mensaje = 'ERROR: ' +
+      'Ocurrió un error inesperado al intentar registrar la cuenta. ' +
+      'Intenté de nuevo.';
+      resultadoJson.resultado = error;
+    return resultadoJson;
   });
 }
 
 export async function activarCuenta(correo) {
   const CUENTA_ACTIVA = {
     Estatus: ACTIVO
-  }
+  };
   
   var seActivo = false;
   
@@ -110,7 +146,7 @@ export async function activarCuenta(correo) {
   .catch(error => {
   console.error(error);
     return seActivo;
-  })
+  });
 }
 
 export async function reportarCuenta(idCuenta) {
@@ -130,7 +166,7 @@ export async function reportarCuenta(idCuenta) {
     .catch(error => {
       console.error(error);
       return seReporto;
-    })
+    });
   }
   return seReporto;
 }

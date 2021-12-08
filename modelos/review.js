@@ -18,32 +18,40 @@ const reviewSchema = new Schema({
     },
     Titulo: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        trim: true
     },
     Texto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Calificacion: {
         type: Number,
         required: true,
-        match: /^[0-9]+$/
+        match: /^[0-9]+$/,
+        trim: true
     },
     Foto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     NombreFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     TipoFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     DescripcionFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Etiquetas: {
         type: [String],
@@ -60,7 +68,7 @@ const reviewSchema = new Schema({
     },
     Estatus: {
         type: String,
-        required: false,
+        required: true,
         enum: ['Activo', 'Reportado'],
         default: 'Activo'
     }

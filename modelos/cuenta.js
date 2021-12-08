@@ -21,7 +21,8 @@ const cuentaSchema = new Schema({
     },
     Apodo: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Password: {
         type: String,
@@ -30,16 +31,18 @@ const cuentaSchema = new Schema({
     },
     Nombre: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Ocupacion: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     FechaRegistro: {
-        type: String,
+        type: Date,
         required: true,
-        match: /^\d{1,2}\/\d{1,2}\/\d{4}$/
+        default: Date.now
     },
     FechaNacimiento: {
         type: String,
@@ -48,11 +51,13 @@ const cuentaSchema = new Schema({
     },
     Foto: {
         type: String,
-        required: false
+        required: false,
+        trim: true
     },
     Pais: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Sexo: {
         type: String,
@@ -63,6 +68,7 @@ const cuentaSchema = new Schema({
         type: String,
         required: false,
         enum: ['Activo', 'Reportado', 'Pendiente'],
+        default: 'Pendiente'
     }
 });
 

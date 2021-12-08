@@ -1,7 +1,7 @@
-const MIN = 10000;
-const MAX = 99999;
+import { MIN_CODIGO, MAX_CODIGO } from '../utilidades/constantes.js';
 
 export default function generarCodigoAzar() {
-  var codigo = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
+  var codigo = 
+    Math.floor(Math.random() * (MAX_CODIGO - MIN_CODIGO + 1)) + MIN_CODIGO;
   return codigo;
 }

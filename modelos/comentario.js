@@ -10,7 +10,8 @@ const comentarioSchema = new Schema({
     },
     Texto: { 
         type: String,
-        required: true 
+        required: true ,
+        trim: true
     },
     IdPublicacionOriginal: { 
         type: String,
@@ -25,7 +26,8 @@ const comentarioSchema = new Schema({
     Apodo: { 
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     FechaRegistro: {
         type: Date,

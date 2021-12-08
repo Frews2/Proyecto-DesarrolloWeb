@@ -14,7 +14,9 @@ const noticiaSchema = new Schema({
     },
     Titulo: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        trim: true
     },
     IdFigura: {
         type: String,
@@ -22,23 +24,28 @@ const noticiaSchema = new Schema({
     },
     Texto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Foto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     NombreFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     TipoFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     DescripcionFoto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     Etiquetas: {
         type: [String],
@@ -55,7 +62,7 @@ const noticiaSchema = new Schema({
     },
     Estatus: {
         type: String,
-        required: false,
+        required: true,
         enum: ['Activo', 'Reportado'],
         default: 'Activo'
     }

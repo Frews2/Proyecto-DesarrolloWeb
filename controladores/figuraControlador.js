@@ -1,6 +1,7 @@
 import { Guid } from 'js-guid';
 import Figura from '../modelos/figura.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
+import { FILTRO_INCLUIR } from '../utilidades/constantes.js';
 
 export async function existeFigura(idFigura) {
   return Figura.exists({ IdFigura: idFigura})
@@ -21,15 +22,14 @@ export async function guardarFigura(nuevaFigura) {
   var rutaImagen = '';
 
   var resultadoJson = {
-    exito: true,
+    exito: false,
     origen: 'figura/Registrar',
-    mensaje: 'EXITO: Figura guardada',
+    mensaje: 'ERROR: No pudimos registrar la figura. Intenté de nuevo.',
   };
 
   if(Foto.name != null){
     Foto.name = nombreArchivo;
   } else{
-    resultadoJson.exito = false;
     resultadoJson.mensaje = 'ERROR: No se tiene una foto adjuntada.';
     return resultadoJson;
   }
@@ -44,7 +44,6 @@ export async function guardarFigura(nuevaFigura) {
   });
 
   if (!respuestaGuardado.exito) {
-    resultadoJson.exito = false;
     resultadoJson.mensaje = respuestaGuardado.mensaje;
     return resultadoJson;
   }
@@ -61,7 +60,7 @@ export async function guardarFigura(nuevaFigura) {
     NombreFoto: archivoSinExtension,
     TipoFoto: nuevaFigura.TipoFoto,
     DescripcionFoto: nuevaFigura.DescripcionFoto,
-  }
+  };
 
   var figuraAGuardar = new Figura(figura);
 
@@ -69,28 +68,27 @@ export async function guardarFigura(nuevaFigura) {
   .then((seGuardo) => {
     console.log('FIGURA GUARDADA: ' + seGuardo);
 
-    if(!seGuardo) {
-      resultadoJson.exito = false;
-      resultadoJson.mensaje = 'Error: ' +
-      'Ocurrió un error al intentar guardar la figura. Intenté de nuevo.';
+    if(seGuardo) {
+      resultadoJson.exito = true;
+      resultadoJson.mensaje = 'ÉXITO: Figura guardada.';
+      resultadoJson.resultado = 'Ruta de imagen es: ' + seGuardo.Foto;
     }
     return resultadoJson;
   })
   .catch(error => {
     console.error(error);
-    resultadoJson.exito = false;
     resultadoJson.mensaje = 'ERROR: ' +
-    'Ocurrió un error al intentar crear la figura. Intenté de nuevo.';
+      'Ocurrió un error al intentar crear la figura. Intenté de nuevo.';
     return resultadoJson;
-  })
+  });
 }
 
 export async function obtenerFiguras(texto) {
   var filtro = {};
   if (texto) {
     filtro.$or = [
-      { Nombre: { $regex: texto, $options: 'i' } },
-      { Marca: { $regex: texto, $options: 'i' } },
+      { Nombre: { $regex: texto, $options: FILTRO_INCLUIR } },
+      { Marca: { $regex: texto, $options: FILTRO_INCLUIR } },
     ];
 
     return Figura.find(filtro)

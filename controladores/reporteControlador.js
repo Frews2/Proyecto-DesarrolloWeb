@@ -1,16 +1,22 @@
 import { Guid } from 'js-guid';
 import Reporte from '../modelos/reporte.js';
-import { ORDEN_ASCENDIENDO } from '../utilidades/constantes.js';
+import { reportarNoticia } from '../controladores/noticiaControlador.js';
+import { reportarReview } from '../controladores/reviewControlador.js';
+import { reportarComentario } from '../controladores/comentarioControlador.js';
 
 export async function guardarReporte(nuevoReporte) {
+  const NOTICIA = 'Noticia';
+  const REVIEW = 'Review';
+  const COMENTARIO = 'Comentario';
   const GUID = Guid.newGuid();
 
   var resultadoJson = {
-    exito: true,
-    origen: 'reporte/guardar',
-    mensaje: 'EXITO: Reporte guardado',
+    exito: false,
+    origen: 'reporte/Registrar',
+    mensaje: 'Error: No pudimos registrar el reporte. Intenté de nuevo.',
     resultado: null
   };
+
   var reporte = {
     IdReporte: GUID,
     IdPublicacion: nuevoReporte.IdPublicacion,
@@ -18,7 +24,7 @@ export async function guardarReporte(nuevoReporte) {
     IdAcusador: nuevoReporte.IdAcusador,
     Razon: nuevoReporte.Razon,
     IdAcusado: nuevoReporte.IdAcusado
-  }
+  };
 
   var reporteAGuardar = new Reporte(reporte);
 
@@ -26,32 +32,35 @@ export async function guardarReporte(nuevoReporte) {
   .then((seGuardo) => {
     console.log('REPORTE GUARDADO: ' + seGuardo);
 
-    if(!seGuardo) {
-      resultadoJson.exito = false;
-      resultadoJson.mensaje = 'Error: Ocurrió un error al intentar registrar el reporte. Intenté de nuevo.'
+    if(seGuardo) {
+      var seActualizo = false;
+
+      switch(reporteAGuardar.TipoPublicacion){
+        case NOTICIA: 
+          seActualizo = reportarNoticia(reporteAGuardar.IdPublicacion);
+          break;
+        case REVIEW: 
+          seActualizo = reportarReview(reporteAGuardar.IdPublicacion);
+          break;
+        case COMENTARIO: 
+          seActualizo = reportarComentario(reporteAGuardar.IdPublicacion);
+          break;  
+      }
+
+      if(seActualizo){
+        resultadoJson.exito = true;
+        resultadoJson.mensaje = 'ÉXITO: Reporte Guardado.';
+      } else{
+        resultadoJson.mensaje = 'ERROR: No se logró reportar la publicación. ' +
+        'Intente otra vez';
+      }
     }
     return resultadoJson;
   })
   .catch(error => {
-    console.error(error);
-    resultadoJson.exito = false;
-    resultadoJson.mensaje = 'ERROR: Ocurrió un error al intentar crear el reporte. Intenté de nuevo.';
+    console.error('ERROR: ' + error);
+    resultadoJson.mensaje = 'ERROR: ' +
+      'Ocurrió un error al intentar registrar el reporte. Intenté de nuevo.';
     return resultadoJson;
-  })
-}
-
-export async function obtenerReportes() {
-  return await Reporte.find()
-    .sort({ FechaRegistro: ORDEN_ASCENDIENDO })
-    .then((reportes) => {
-      return reportes;
-    })
-    .catch((err) => {
-      console.error(err);
-      return [];
-    });
-}
-  
-export async function obtenerReporteDatos(identificador) {
-  return await Reporte.find({ IdReporte: identificador });
+  });
 }

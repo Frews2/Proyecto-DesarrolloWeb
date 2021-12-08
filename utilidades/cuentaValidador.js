@@ -1,21 +1,22 @@
+import { PERIODISTA, COLECCIONISTA } from '../utilidades/constantes.js';
+
+const MIN_CUENTA = 4;
+const MAX_CUENTA = 50;
+const MENSAJE_ERROR = 'ERROR: El campo debe tener entre ' + MIN_CUENTA + 
+  ' y ' + MAX_CUENTA + ' caracteres.';
+
 function esCorreoValido(email) {
   const PLANTILLA_EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
   var esValido = PLANTILLA_EMAIL.test(email);
   
   if (!esValido) {
-    throw new Error(
-    'ERROR: El correo recibido es invalido.'
-    );
+    throw new Error('ERROR: El correo recibido es invalido.');
   } else{
     return true;
   }
 }
 
 function esTipoValido(tipo) {
-  const PERIODISTA = 'Periodista';
-  const COLECCIONISTA = 'Coleccionista';
-  
   if (!(tipo == PERIODISTA || tipo == COLECCIONISTA)) {
     throw new Error(
     'ERROR: El tipo de cuenta es invalido.'
@@ -25,23 +26,8 @@ function esTipoValido(tipo) {
   }
 }
 
-function esEstatusValido(estatus) {
-  const ACTIVO = 'Activo';
-  const PENDIENTE = 'Pendiente';
-  const BANEADO = 'Baneado';
-
-  if (!(estatus == ACTIVO || estatus == PENDIENTE || estatus == BANEADO)) {
-  throw new Error(
-    'ERROR: El estatus de cuenta es invalido.'
-  )
-  } else{
-  return true;
-  }
-}
-
 function esFechaValida(fecha) {
   const PLANTILLA_FECHA = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-
   var esValido = PLANTILLA_FECHA.test(fecha);
 
   if (!esValido) {
@@ -59,86 +45,70 @@ function esSexoValido(sexo) {
   const OTRO = 'Otro';
 
   if (!(sexo === FEMENINO || sexo === MASCULINO || sexo === OTRO)) {
-  throw new Error(
-    'ERROR: El sexo es invalido.'
-  );
+    throw new Error('ERROR: El sexo es invalido.');
   } else{
-  return true;
+    return true;
   }
 }
   
 const esSchemaCuentaValido = {
   TipoCuenta: {
-  custom: {
-    options: (value) => {
-    return esTipoValido(value);
+    custom: {
+      options: (value) => {
+        return esTipoValido(value);
+      },
     },
-  },
-  },
-  Estatus: {
-  custom: {
-    options: (value) => {
-    return esEstatusValido(value);
-    },
-  },
   },
   Email: {
-  custom: {
-    options: (value) => {
-    return esCorreoValido(value);
+    custom: {
+      options: (value) => {
+        return esCorreoValido(value);
+      },
     },
-  },
   },
   Apodo: {
-  isLength: {
-    errorMessage: 'El apodo debe tener al menos tres caracteres.',
-    options: { min: 3 },
-  },
+    isLength: {
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    },
   },
   Password: {
-  isLength: {
-    errorMessage: 'La contraseña debe tener al menos 6 caracteres.',
-    options: { min: 6 },
-  },
+    isLength: {
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    },
   },
   Nombre: {
-  isLength: {
-    errorMessage: 'Los nombres debe tener al menos tres caracteres.',
-    options: { min: 3 },
-  },
+    isLength: {
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_CUENTA, max: MAX_CUENTA },
+    },
   },
   Ocupacion: {
-  isLength: {
-    errorMessage: 'La ocupación debe tener al menos tres caracteres.',
-    options: { min: 3 },
-  },
-  },
-  FechaRegistro: {
-  custom: {
-    options: (value) => {
-    return esFechaValida(value);
+    isLength: {
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_CUENTA, max: MAX_CUENTA },
     },
-  },
   },
   FechaNacimiento: {
-  custom: {
-    options: (value) => {
-    return esFechaValida(value);
+    custom: {
+      options: (value) => {
+        return esFechaValida(value);
+      },
     },
-  },
   },
   Pais: {
-  isLength: {
-    errorMessage: 'El país debe tener al menos tres caracteres.',
-    options: { min: 3 },
-  },
-  },
-  Sexo: {
-  custom: {
-    options: (value) => {
-    return esSexoValido(value);
+    isLength: {
+      errorMessage: MENSAJE_ERROR,
+      options: { min: MIN_CUENTA, max: MAX_CUENTA },
     },
   },
+  Sexo: {
+    custom: {
+      options: (value) => {
+        return esSexoValido(value);
+      },
+    },
   },
 };
   

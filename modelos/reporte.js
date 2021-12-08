@@ -24,7 +24,8 @@ const reporteSchema = new Schema({
     },
     Razon: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     IdAcusado: {
         type: String,

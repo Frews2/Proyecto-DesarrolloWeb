@@ -1,90 +1,107 @@
-import express, { Router } from 'express';
+import express from 'express';
 import { validationResult, checkSchema } from 'express-validator';
-import { guardarComentario, obtenerComentarios } from '../controladores/comentarioControlador.js';
-import checkSchemaReview from '../utilidades/comentarioValidador.js';
+import { guardarComentario,
+  obtenerComentarioDatos,
+  obtenerComentarios } from '../controladores/comentarioControlador.js';
+import checkSchemaComentario from '../utilidades/comentarioValidador.js';
 import { ChecarTokenActivo } from '../utilidades/tokenValidador.js';
 
 const router = express.Router();
 
-router.post('/Registrar', 
+router.post('/registrar', 
 ChecarTokenActivo,
-checkSchema(checkSchemaReview),
+checkSchema(checkSchemaComentario),
 async (req, res) => {
-
   const { errors } = validationResult(req);
 
-  var respuestaJSON = {
-    exito: true,
-    origen: 'comentario/Registrar',
-    mensaje: 'EXITO: Comentario guardado',
-    resultado: null
+  var respuestaJson = {
+    exito: false,
+    origen: 'comentarios/registrar',
+    mensaje: 'ERROR: No pudimos registrar su comentario',
+    resultado: null,
+    tokenValido: true
   };
 
   if (errors.length > 0) {
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = 'Se encontaron errores al validar el comentario. Corrijalos por favor.';
-    respuestaJSON.resultado = errors;
-    return res.status(400).send(respuestaJSON).end();
+    respuestaJson.mensaje = 'Se encontaron errores al validar el comentario. ' +
+      'Corrijalos por favor.';
+    respuestaJson.resultado = errors;
+    return res.status(500).send(respuestaJson).end();
   }
 
   var nuevoComentario = req.body;
   
   guardarComentario(nuevoComentario)
   .then(resultadoCreacion => {
+    respuestaJson.mensaje = resultadoCreacion.mensaje;
+    respuestaJson.resultado = resultadoCreacion.resultado;
+
     if (resultadoCreacion.exito) {
-      respuestaJSON.mensaje = resultadoCreacion.mensaje;
-      respuestaJSON.resultado = resultadoCreacion.resultado;
-      return res.status(200).send(respuestaJSON);
+      respuestaJson.exito = true;
+      return res.status(200).send(respuestaJson);
     } else {
-      respuestaJSON.exitoso = false;
-      respuestaJSON.mensaje = resultadoCreacion.mensaje;
-      res.status(400).send(respuestaJSON);
+      res.status(400).send(respuestaJson);
     }
   })
   .catch(error => {
-    console.error(error);
-
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = 'Ocurrió un error al intentar registrar el comentario. Intente más tarde.'
-    respuestaJSON.resultado = error;
-
-    return res.status(500).send(respuestaJSON);
-  })
-})
-
+    console.error('ERROR: ' + error);
+    respuestaJson.mensaje = 'ERROR: ' +
+    'Ocurrió un error al intentar registrar el comentario. Intente más tarde.';
+    respuestaJson.resultado = error;
+    return res.status(500).send(respuestaJson);
+  });
+});
 
 router.get('/buscar',
-ChecarTokenActivo,
 async (req, res) => {
-  var IdPublicacion = req.query.IdPublicacion;
+  const {idPublicacion, idComentario} = req.query;
 
-  var respuestaJSON = {
-    exito: true,
+  var respuestaJson = {
+    exito: false,
     origen: 'comentarios/buscar',
-    mensaje: 'EXITO: Comentarios encontrados',
+    mensaje: 'ERROR: ' +
+      'No pudimos encontrar una publicación con el filtro ingresado',
     resultado: null
   };
 
-  obtenerComentarios(IdPublicacion)
+  if(!idPublicacion && !idComentario){
+    respuestaJson.mensaje = 'ERROR: ' +
+      'Debe ingresar una id de publicación o una id de comentario.';
+    return res.status(400).send(respuestaJson);
+  }
+  if (idComentario) {
+    return obtenerComentarioDatos(idComentario)
     .then((comentarios) => {
-    if (comentarios && comentarios.length > 0) {
-      respuestaJSON.resultado = comentarios;
-
-      return res.status(200).send(respuestaJSON);
-    } else {
-      respuestaJSON.exito = false;
-      respuestaJSON.mensaje = 'No se encuentran comentarios para esta publicacion.';
-      return res.status(405).send(respuestaJSON);
-    }
+      if (comentarios && comentarios.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = comentarios;
+      } 
+      return res.status(200).send(respuestaJson);
     })
     .catch((error) => {
-    console.error(error);
-    respuestaJSON.exito = false;
-    respuestaJSON.mensaje = error.message;
-    respuestaJSON.resultado = error;
-
-    return res.status(500).send(respuestaJSON);
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar el comentario. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
     });
-})
+  } else{
+    obtenerComentarios(idPublicacion)
+    .then((comentarios) => {
+      if (comentarios && comentarios.length > 0) {
+        respuestaJson.exito = true;
+        respuestaJson.resultado = comentarios;
+      } 
+      return res.status(200).send(respuestaJson);
+    })
+    .catch((error) => {
+      console.error('ERROR: ' + error);
+      respuestaJson.mensaje = 'ERROR: ' +
+        'Ocurrió un error al intentar buscar el comentario. Intente más tarde.';
+      respuestaJson.resultado = error;
+      return res.status(500).send(respuestaJson);
+    });
+  }
+});
 
 export default router;
