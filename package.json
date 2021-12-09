@@ -1,5 +1,5 @@
 {
-  "name": "Api FigureItOut",
+  "name": "API",
   "version": "1.0.0",
   "description": "Servidor para consumir recursos del sistema FigureItOut",
   "main": "server.js",
