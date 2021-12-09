@@ -162,12 +162,14 @@ db.comentarios.insert([
     {
         "IdComentario": "e0335ad4-828a-42c1-990d-0ced7d3592ef",
         "Texto": "Buen review",
-        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76"
+        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
+        "Estatus": "Activo"
     },
     {
         "IdComentario": "a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
         "Texto": "Buena noticia",
-        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76"
+        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
+        "Estatus": "Activo"
     }
 ]);
 
