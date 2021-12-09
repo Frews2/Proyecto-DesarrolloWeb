@@ -7,6 +7,7 @@ import { existeCuenta, guardarCuenta, existePeriodistaActivo,
   existeColeccionistaActivo } from '../controladores/cuentaControlador.js';
 import esSchemaCuentaValido from '../utilidades/cuentaValidador.js'; 
 import { ChecarTokenActivo } from '../utilidades/tokenValidador.js';
+import { PENDIENTE, REPORTADO } from '../utilidades/constantes.js';
 
 const router = express.Router();
 
@@ -77,6 +78,18 @@ router.post('/login', async (req, res) => {
     if (cuentaEncontrada == null) {
       return res.status(401).send(respuestaJson);    
     } else {
+      if(cuentaEncontrada.Estatus == REPORTADO){
+        respuestaJson.mensaje = 'Su cuenta esta baneada. ' + 
+          'No puede accesar el sistema';
+          return res.status(201).send(respuestaJson).end();  
+      }
+
+      if(cuentaEncontrada.Estatus == PENDIENTE){
+        respuestaJson.mensaje = 'Su cuenta necesita ser verificada. ' + 
+          'Solicita correo de verificación para dar de alta su cuenta';
+          return res.status(201).send(respuestaJson).end(); 
+      }
+
       bcrypt.compare(req.body.Password,
         cuentaEncontrada.Password,
         (err, respuesta) => {
