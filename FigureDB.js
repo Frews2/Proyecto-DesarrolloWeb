@@ -76,7 +76,8 @@ db.noticias.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara.",
         "Etiquetas": ["DC","Batman","Metal"],
-        "Comentarios": ["296586c3-f036-49f8-b6c0-4f051de6c10a"]
+        "Comentarios": ["296586c3-f036-49f8-b6c0-4f051de6c10a"],
+        "Estatus": "Activo"
     },
     {
         "IdPublicacion": "8b840e73-7dae-4650-b0c9-6c2609c734e2",
@@ -89,7 +90,8 @@ db.noticias.insert([
         "NombreFoto": "batman2021diamante",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara vestido de colores claros.",
-        "Etiquetas": ["Ikea","Batman","Diamante"]
+        "Etiquetas": ["Ikea","Batman","Diamante"],
+        "Estatus": "Activo"
     },
     {
         "IdPublicacion": "3a6a452d-1d67-45b8-8955-a32c015228bf",
@@ -102,7 +104,8 @@ db.noticias.insert([
         "NombreFoto": "noticia-superman-sol-rojo",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de una caja transparante con un hombre alto con una capa adentro.",
-        "Etiquetas": ["DC","Superman","nuevo"]
+        "Etiquetas": ["DC","Superman","nuevo"],
+        "Estatus": "Activo"
     }
 ]);
 
@@ -120,7 +123,8 @@ db.reviews.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de una figura de hombre alto con una capa y mascara vestido de negro.",
         "Etiquetas": ["DC","Batman"],
-        "Comentarios": ["e0345ad4-828a-42c1-990d-0ced7d3592ef"]
+        "Comentarios": ["e0345ad4-828a-42c1-990d-0ced7d3592ef"],
+        "Estatus": "Activo"
     },
     {
         "IdPublicacion": "0c485062-d4b7-4df9-901a-04986ac36266",
@@ -134,7 +138,8 @@ db.reviews.insert([
         "NombreFoto": "img12120101",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de una figura de un hombre alto con una capa y una mascara en su mano izquierda.",
-        "Etiquetas": ["Ikea","Batman","Diamante"]
+        "Etiquetas": ["Ikea","Batman","Diamante"],
+        "Estatus": "Activo"
     },
     {
         "IdPublicacion": "f890d08a-5fcd-4fbd-995a-8f64c6db2998",
@@ -148,7 +153,8 @@ db.reviews.insert([
         "NombreFoto": "foto-review-chida",
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de la cara de un hombre con barba con una figura junto de su mejilla.",
-        "Etiquetas": ["Noticia","Superman","Sol"]
+        "Etiquetas": ["Noticia","Superman","Sol"],
+        "Estatus": "Activo"
     }
 ]);
 
