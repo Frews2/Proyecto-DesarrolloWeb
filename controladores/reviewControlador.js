@@ -128,12 +128,11 @@ export async function obtenerReviews(texto) {
   var filtro = {};
   if (texto) {
     filtro.$or = [
-      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR }, Estatus: ACTIVO },
-      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR },
-       Estatus: ACTIVO },
+      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
+      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
     ];
 
-    return Review.find(filtro)
+    return Review.find({ filtro, Estatus: ACTIVO })
     .sort({ FechaRegistro: ORDEN_DESCENDIENDO })
     .then((criticias) => {
       return criticias;
