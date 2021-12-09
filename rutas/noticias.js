@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarNoticia, obtenerNoticias, obtenerNoticiaDatos } from '../controladores/noticiaControlador.js';
+import { guardarNoticia, obtenerNoticias, 
+  obtenerNoticiaDatos } from '../controladores/noticiaControlador.js';
 import checkSchemaNoticia from "../utilidades/noticiaValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
@@ -81,6 +82,7 @@ async (req, res) => {
       if (noticiaEncontrada && noticiaEncontrada.length > 0) {
         respuestaJson.exito = true;
         respuestaJson.resultado = noticiaEncontrada;
+        respuestaJson.mensaje = 'ÉXITO: Noticia encontrada.';
       } 
       return res.status(200).send(respuestaJson);
     })
@@ -97,6 +99,7 @@ async (req, res) => {
       if (noticias && noticias.length > 0) {
         respuestaJson.exito = true;
         respuestaJson.resultado = noticias;
+        respuestaJson.mensaje = 'ÉXITO: Noticias encontradas.';
       } 
       return res.status(200).send(respuestaJson);
     })

@@ -105,5 +105,5 @@ export async function obtenerFiguras(texto) {
 }
 
 export async function obtenerFiguraDatos(identificador) {
-  return await Figura.findOne({ IdFigura: identificador });
+  return await Figura.find({ IdFigura: identificador });
 }

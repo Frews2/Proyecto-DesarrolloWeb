@@ -82,6 +82,7 @@ async (req, res) => {
       if (figuraEncontrada && figuraEncontrada.length > 0) {
         respuestaJson.exito = true;
         respuestaJson.resultado = figuraEncontrada;
+        respuestaJson.mensaje = 'ÉXITO: Figura encontrada.';
       } 
       return res.status(200).send(respuestaJson);
     })
@@ -97,6 +98,7 @@ async (req, res) => {
     .then((figuras) => {
       if (figuras && figuras.length > 0) {
         respuestaJson.exito = true;
+        respuestaJson.mensaje = 'ÉXITO: Figuras encontradas.';
         respuestaJson.resultado = figuras;
       } 
       return res.status(200).send(respuestaJson);

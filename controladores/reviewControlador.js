@@ -127,12 +127,10 @@ export async function reportarReview(idPublicacion) {
 export async function obtenerReviews(texto) {
   var filtro = {};
   if (texto) {
-    filtro.$and = [
-      {$or: [
-        { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
-        { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
-      ]},
-      { Estatus: ACTIVO}
+    filtro.$or = [
+      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR }, Estatus: ACTIVO },
+      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR },
+       Estatus: ACTIVO },
     ];
 
     return Review.find(filtro)

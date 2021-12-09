@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
-import { guardarReview, obtenerReviewDatos, obtenerReviews } from '../controladores/reviewControlador.js';
+import { guardarReview, obtenerReviewDatos,
+  obtenerReviews } from '../controladores/reviewControlador.js';
 import checkSchemaReview from "../utilidades/reviewValidador.js";
 import { ChecarTokenActivo } from "../utilidades/tokenValidador.js";
 
@@ -81,6 +82,7 @@ async (req, res) => {
       if (reviewEncontrado && reviewEncontrado.length > 0) {
         respuestaJson.exito = true;
         respuestaJson.resultado = reviewEncontrado;
+        respuestaJson.mensaje = 'ÉXITO: Review encontrado.';
       } 
       return res.status(200).send(respuestaJson);
     })
@@ -97,6 +99,7 @@ async (req, res) => {
       if (reviews && reviews.length > 0) {
         respuestaJson.exito = true;
         respuestaJson.resultado = reviews;
+        respuestaJson.mensaje = 'ÉXITO: Reviews encontrados.';
       } 
       return res.status(200).send(respuestaJson);
     })

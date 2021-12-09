@@ -122,12 +122,10 @@ export async function reportarNoticia(id) {
 export async function obtenerNoticias(texto) {
   var filtro = {};
   if (texto) {
-    filtro.$and = [
-      {$or: [
-        { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
-        { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
-      ]},
-      { Estatus: ACTIVO}
+    filtro.$or = [
+      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR }, Estatus: ACTIVO },
+      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR },
+       Estatus: ACTIVO },
     ];
     
     return Noticia.find(filtro)
