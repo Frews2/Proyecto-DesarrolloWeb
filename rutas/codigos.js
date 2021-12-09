@@ -49,7 +49,7 @@ router.post('/verificar', async (req, res) => {
 });
 
 router.post('/enviarCorreo', async (req, res) => {
-  const { Correo, TipoCuenta } = req.body;
+  const { Correo } = req.body;
 
   var respuestaJson = {
     exito: false,
@@ -58,7 +58,7 @@ router.post('/enviarCorreo', async (req, res) => {
     resultado: null
   };
 
-  enviarCorreo(Correo, TipoCuenta)
+  enviarCorreo(Correo)
   .then((resultado) => {
     respuestaJson.mensaje = resultado.mensaje;
       

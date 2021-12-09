@@ -1,7 +1,7 @@
 import Codigo from '../modelos/codigo.js';
 import mandarCodigoConfirmacion from '../utilidades/servicioEmail.js';
 
-export async function enviarCorreo(email, tipoCuenta) {
+export async function enviarCorreo(email) {
   var resultadoJson = {
     exito: false,
     origen: 'codigo/EnviarCorreo',
@@ -14,7 +14,6 @@ export async function enviarCorreo(email, tipoCuenta) {
     if (codigoObtenido) {
       resultadoJson.exito = mandarCodigoConfirmacion(
         codigoObtenido.email,
-        tipoCuenta,
         codigoObtenido.Numero);
         if(resultadoJson.exito){
           resultadoJson.mensaje = 'ÉXITO: Correo mandado';

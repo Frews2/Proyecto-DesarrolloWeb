@@ -18,13 +18,12 @@ const ENVIADOR_CORREO = '"FigureItOut Team" <figureitoutpage@gmail.com>';
 
 export default async function mandarCodigoConfirmacion(
   email,
-  tipoCuenta,
   codigoVerificacion) {
   const CORREO = {
     from: ENVIADOR_CORREO,
     to: email,
     subject: 'Email de Confirmación para registro de cuenta',
-    html: `<h1>Estimado ${tipoCuenta}<h1/>
+    html: `<h1>Estimado Usuario<h1/>
     <p>¡Estas a un paso de formar parte de nuestra comunidad!</p>
     <p>Tu código de confirmación es <strong>${codigoVerificacion}</strong>.</p>`
   };

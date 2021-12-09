@@ -77,14 +77,14 @@ export async function guardarCuenta(usuario) {
   return nuevaCuenta.save()
   .then((cuentaGuardada) => {
     if (cuentaGuardada) {
-      const { Email, TipoCuenta } = cuentaGuardada;
+      const { Email } = cuentaGuardada;
       var numeroConfirmacion = generarCodigoAzar();
 
       return guardarCodigoConfirmacion(Email, numeroConfirmacion)
       .then((creado) => {
         if (creado) {
           console.log('ENVIANDO CORREO DE CONFIRMACION...');
-          return mandarCodigoConfirmacion(Email,TipoCuenta, numeroConfirmacion)
+          return mandarCodigoConfirmacion(Email,numeroConfirmacion)
           .then((mandado) => {
             if (mandado) {
               resultadoJson.exito = true;
