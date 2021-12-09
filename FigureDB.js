@@ -1,5 +1,5 @@
 var connection = connect("mongodb://figureAdmin:proyectoweb@localhost/admin");
-db = connection.getSiblingDB('FigureDB')
+db = connection.getSiblingDB('FigureDB');
 db.cuentas.insertMany([
     {
         "IdCuenta": "39c2d6c5-cdaa-48e8-a231-8a60f59391c5",
@@ -25,21 +25,7 @@ db.cuentas.insertMany([
         "Apodo": "Marco Polo",
         "Estatus": "Activo"
     },
-    {
-        "IdCuenta": "2fda76ac-6382-41d4-8208-2e4324c495fc",
-        "Email": "pklove@gmail.com",
-        "TipoCuenta": "Administrador",
-        "Password": "$2a$10$p3587jEEAustpjOtyp6QNusUWtf/4dWzSApNA.vr9wEBqCXcd8DqW",
-        "Apodo": "El Admin",
-        "Estatus": "Activo"
-    }
-])
-
-db.administradores.insert([
-    {
-        "IdCuenta": "2fda76ac-6382-41d4-8208-2e4324c495fc"
-    }
-])
+]);
 
 db.figuras.insert([
     {
@@ -75,7 +61,7 @@ db.figuras.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de un hombre alto con una capa y mascara vestido de colores oscuros."
     }
-])
+]);
 
 db.noticias.insert([
     {
@@ -118,7 +104,7 @@ db.noticias.insert([
         "DescripcionFoto": "Imagen de una caja transparante con un hombre alto con una capa adentro.",
         "Etiquetas": ["DC","Superman","nuevo"]
     }
-])
+]);
 
 db.reviews.insert([
     {
@@ -164,7 +150,7 @@ db.reviews.insert([
         "DescripcionFoto": "Imagen de la cara de un hombre con barba con una figura junto de su mejilla.",
         "Etiquetas": ["Noticia","Superman","Sol"]
     }
-])
+]);
 
 db.comentarios.insert([
     {
@@ -177,7 +163,7 @@ db.comentarios.insert([
         "Texto": "Buena noticia",
         "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76"
     }
-])
+]);
 
 db.reportes.insert([
     {
@@ -188,4 +174,4 @@ db.reportes.insert([
         "Razon": "No es un review, es una foto de hitler",
         "IdAcusado": "6f2850f9-b82f-451d-baf2-26fd93874418"
     }
-])
+]);
