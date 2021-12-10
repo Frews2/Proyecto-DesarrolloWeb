@@ -44,7 +44,6 @@ async (req, res) => {
       .then(resultadoCreacion => {
         respuestaJson.mensaje = resultadoCreacion.mensaje;
         respuestaJson.resultado = resultadoCreacion.resultado;
-        respuestaJson.mensaje = 'EXITO: Cuenta guardada en sistema.';
           
         if (resultadoCreacion.exito) {
           respuestaJson.exito = true;

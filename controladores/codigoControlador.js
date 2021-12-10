@@ -60,14 +60,16 @@ export async function checarCodigoConfirmacion(email, codigoActual) {
 
   return Codigo.findOne({Correo: email})
   .then(codigo => {
-    if (codigo) {
-      resultadoJson.exito = true;
-      resultadoJson.mensaje = 'ÉXITO: Código de confirmación correcto.';
-    }
-    else {
+    if (!codigo) {
+      resultadoJson.mensaje = 'ERROR: Email ingresado no pertenece ' +
+        'a cuenta pendiente.';
+    } else {
       if (codigo.Numero != codigoActual) {
         resultadoJson.mensaje = 'ERROR: El código de confirmación ' +
           'de cuenta es incorrecto.';
+      } else {
+        resultadoJson.exito = true;
+        resultadoJson.mensaje = 'ÉXITO: Código verificado';
       }
     }
     return resultadoJson;
