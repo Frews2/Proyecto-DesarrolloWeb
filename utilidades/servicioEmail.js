@@ -28,7 +28,17 @@ export default async function mandarCodigoConfirmacion(
     <p>Tu código de confirmación es <strong>${codigoVerificacion}</strong>.</p>`
   };
 
-  await transporteDeCorreo.sendMail(CORREO)
-  .then(respuesta => console.log('ÉXITO: Correo mandado. ' + respuesta))
-  .catch(error => console.error('ERROR: No se mandó correo. ' + error));
+  return transporteDeCorreo.sendMail(CORREO)
+  .then((respuesta) => {
+    if (respuesta.accepted) {
+      console.log('ÉXITO: Correo mandado. ' + respuesta);
+      return true;
+    } else{
+      return false;
+    }
+  })
+  .catch((error) => {
+    console.error('ERROR: No se mandó correo. ' + error);
+    return false;
+  });
 }
