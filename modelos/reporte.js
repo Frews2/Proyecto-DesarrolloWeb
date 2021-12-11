@@ -27,10 +27,6 @@ const reporteSchema = new Schema({
         required: true,
         trim: true
     },
-    IdAcusado: {
-        type: String,
-        required: true
-    },
     FechaRegistro: {
         type: Date,
         required: true,

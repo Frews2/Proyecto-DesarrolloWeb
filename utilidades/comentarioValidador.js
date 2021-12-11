@@ -60,13 +60,6 @@ const checkSchemaComentario = {
       },
     },
   },
-  Apodo: {
-    custom: {
-      options: (value) => {
-        return esStringValido(value);
-      },
-    },
-  },
 };
 
 export default checkSchemaComentario;

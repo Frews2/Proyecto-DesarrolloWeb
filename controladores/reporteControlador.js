@@ -21,7 +21,7 @@ export async function guardarReporte(nuevoReporte) {
     IdReporte: GUID,
     IdPublicacion: nuevoReporte.IdPublicacion,
     TipoPublicacion: nuevoReporte.TipoPublicacion,
-    IdAcusador: nuevoReporte.IdAcusador,
+    IdAcusador: nuevoReporte.IdCuenta,
     Razon: nuevoReporte.Razon,
     IdAcusado: nuevoReporte.IdAcusado
   };

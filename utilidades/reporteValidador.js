@@ -1,5 +1,4 @@
-import { existeCuentaActiva,
-  existeCuenta } from '../controladores/cuentaControlador.js';
+import { existeCuentaActiva } from '../controladores/cuentaControlador.js';
 import { esNoticiaActiva } from '../controladores/noticiaControlador.js';
 import { esReviewActivo } from '../controladores/reviewControlador.js';
 import { esComentarioActivo } from '../controladores/comentarioControlador.js';
@@ -72,7 +71,7 @@ const checkSchemaReporte = {
       },
     },
   },
-  IdAcusador: {
+  IdCuenta: {
     custom: {
       options: async (value, { req }) => {
         return existeCuentaActiva(req.body.IdAcusador, value)
@@ -91,20 +90,6 @@ const checkSchemaReporte = {
     custom: {
       options: (value) => {
         return esStringValido(value);
-      },
-    },
-  },
-  IdAcusado: {
-    custom: {
-      options: async (value, { req }) => {
-        return existeCuenta(req.body.IdAcusado, value)
-        .then((existe) => {
-          if (!existe) {
-            return Promise.reject('La cuenta del acusado no se encuentra ' +
-              'en el sistema. Verifique la cuenta de acusado.');
-          }
-          return existe;
-        });
       },
     },
   },
