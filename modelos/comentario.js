@@ -10,24 +10,20 @@ const comentarioSchema = new Schema({
     },
     Texto: { 
         type: String,
-        required: true ,
+        required: true,
         trim: true
     },
     IdPublicacionOriginal: { 
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     IdCuenta: { 
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     Apodo: { 
         type: String,
-        required: true,
-        unique: true,
-        trim: true
+        required: true
     },
     FechaRegistro: {
         type: Date,
@@ -36,7 +32,7 @@ const comentarioSchema = new Schema({
     },
     Estatus: {
         type: String,
-        required: false,
+        required: true,
         enum: ['Activo', 'Reportado'],
         default: 'Activo'
     }

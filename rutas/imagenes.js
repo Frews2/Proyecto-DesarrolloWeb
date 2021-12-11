@@ -37,7 +37,7 @@ router.get('/Ver', async (req, res) => {
     });
   }
   catch (error) {
-    console.error('Error al buscar imagen de perfil', error);
+    console.error('ERRPR: Al buscar imagen', error);
     return res.status(400).json({
       exito: false,
       origen: 'imagenes/Ver',

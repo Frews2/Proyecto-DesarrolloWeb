@@ -45,7 +45,7 @@ const checkSchemaComentario = {
       },
     },
   },
-  Email: {
+  IdCuenta: {
     custom: {
       options: async (value, { req }) => {
         return existeCuentaActiva(req.body.IdCuenta, value)
@@ -57,6 +57,13 @@ const checkSchemaComentario = {
           }
           return existe;
         });
+      },
+    },
+  },
+  Apodo: {
+    custom: {
+      options: (value) => {
+        return esStringValido(value);
       },
     },
   },
