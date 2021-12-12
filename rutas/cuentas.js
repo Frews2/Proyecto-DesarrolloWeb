@@ -132,8 +132,6 @@ router.post('/login', async (req, res) => {
 router.get('/verificarPeriodista', 
 ChecarTokenActivo,
 async (req, res) => {
-  const {Email} = req.query;
-
   var respuestaJson = {
     exito: false,
     origen: 'cuentas/verificarPeriodista',
@@ -155,8 +153,6 @@ async (req, res) => {
 router.get('/verificarColeccionista', 
 ChecarTokenActivo,
 async (req, res) => {
-  const {Email} = req.query;
-
   var respuestaJson = {
     exito: false,
     origen: 'cuentas/verificarColeccionista',
