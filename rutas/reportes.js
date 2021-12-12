@@ -35,6 +35,7 @@ async (req, res) => {
     respuestaJson.resultado = resultadoCreacion.resultado;
 
     if (resultadoCreacion.exito) {
+      
       respuestaJson.exito = true;
       return res.status(200).send(respuestaJson);
     } else {

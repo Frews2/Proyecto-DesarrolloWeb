@@ -30,7 +30,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar la cuenta. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(500).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   existeCuenta(usuario.Email)
@@ -80,14 +80,14 @@ router.post('/login', async (req, res) => {
       if(cuentaEncontrada.Estatus == REPORTADO){
         respuestaJson.mensaje = 'Su cuenta esta baneada. ' + 
           'No puede accesar el sistema';
-          return res.status(401).send(respuestaJson).end();  
+          return res.status(423).send(respuestaJson).end();  
       }
 
       if(cuentaEncontrada.Estatus == PENDIENTE){
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'Su cuenta necesita ser verificada. ' + 
           'Solicita correo de verificación para dar de alta su cuenta';
-          return res.status(405).send(respuestaJson).end(); 
+          return res.status(425).send(respuestaJson).end(); 
       }
 
       bcrypt.compare(req.body.Password,

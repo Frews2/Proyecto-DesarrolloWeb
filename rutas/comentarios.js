@@ -74,6 +74,7 @@ async (req, res) => {
     .then((comentarios) => {
       if (comentarios && comentarios.length > 0) {
         respuestaJson.exito = true;
+        respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
       } 
       return res.status(200).send(respuestaJson);
@@ -90,6 +91,7 @@ async (req, res) => {
     .then((comentarios) => {
       if (comentarios && comentarios.length > 0) {
         respuestaJson.exito = true;
+        respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
       } 
       return res.status(200).send(respuestaJson);
