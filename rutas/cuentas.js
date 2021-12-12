@@ -132,8 +132,6 @@ router.post('/login', async (req, res) => {
 router.get('/verificarPeriodista', 
 ChecarTokenActivo,
 async (req, res) => {
-  const {Email} = req.query;
-
   var respuestaJson = {
     exito: false,
     origen: 'cuentas/verificarPeriodista',
@@ -142,7 +140,7 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existePeriodistaActivo(Email)) {
+  if (existePeriodistaActivo(req.body.IdCuenta)) {
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
     return res.status(200).send(respuestaJson);
@@ -154,8 +152,6 @@ async (req, res) => {
 router.get('/verificarColeccionista', 
 ChecarTokenActivo,
 async (req, res) => {
-  const {Email} = req.query;
-
   var respuestaJson = {
     exito: false,
     origen: 'cuentas/verificarColeccionista',
@@ -164,7 +160,7 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existeColeccionistaActivo(Email)) {
+  if (existeColeccionistaActivo(req.body.IdCuenta)) {
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';
     return res.status(200).send(respuestaJson);

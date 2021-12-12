@@ -15,14 +15,14 @@ export function ChecarTokenActivo(req, res, next) {
   };
   
   if(!tokenRecibido){
-    res.status(403).send(resultadoJson);
+    res.status(401).send(resultadoJson);
   }
 
   if (typeof tokenRecibido !== INDEFINIDO) {
     jwt.verify(tokenRecibido, KEY, (error, authData) => {
       if (error) {
         resultadoJson.mensaje = 'ERROR: El token es invalido o ha expirado.';
-        res.status(403).send(resultadoJson);
+        res.status(498).send(resultadoJson);
       }else{
         req.body.IdCuenta = authData.IdCuenta;
         req.body.Apodo = authData.Apodo;
@@ -32,6 +32,6 @@ export function ChecarTokenActivo(req, res, next) {
   }else{
     resultadoJson = 'ERROR: ' +
     'El token no tiene el formato necesario. Realice su login nuevamente.';
-    res.status(405).send(resultadoJson);
+    res.status(498).send(resultadoJson);
   }
 }
