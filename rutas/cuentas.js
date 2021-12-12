@@ -143,6 +143,7 @@ async (req, res) => {
   };
   
   if (existePeriodistaActivo(Email)) {
+    respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
     return res.status(200).send(respuestaJson);
@@ -165,6 +166,7 @@ async (req, res) => {
   };
   
   if (existeColeccionistaActivo(Email)) {
+    respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';
     return res.status(200).send(respuestaJson);
