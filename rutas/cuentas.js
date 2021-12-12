@@ -140,7 +140,8 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existePeriodistaActivo(req.body.IdCuenta)) {
+  if (existePeriodistaActivo(Email)) {
+    respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
     return res.status(200).send(respuestaJson);
@@ -160,7 +161,8 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existeColeccionistaActivo(req.body.IdCuenta)) {
+  if (existeColeccionistaActivo(Email)) {
+    respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';
     return res.status(200).send(respuestaJson);
