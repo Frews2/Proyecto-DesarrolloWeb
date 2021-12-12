@@ -51,7 +51,7 @@ async (req, res) => {
 
         if (resultadoCreacion.exito) {
           respuestaJson.exito = true;
-          return res.status(200).send(respuestaJson);
+          return res.status(201).send(respuestaJson);
         } else {
           return res.status(400).send(respuestaJson);
         }

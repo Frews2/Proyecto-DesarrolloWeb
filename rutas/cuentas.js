@@ -140,7 +140,8 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existePeriodistaActivo(Email)) {
+  const EXISTE = await existePeriodistaActivo(req.body.IdCuenta);
+  if (EXISTE) {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
@@ -161,7 +162,8 @@ async (req, res) => {
     tokenValido: true
   };
   
-  if (existeColeccionistaActivo(Email)) {
+  const EXISTE = await existeColeccionistaActivo(req.body.IdCuenta);
+  if (EXISTE) {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';

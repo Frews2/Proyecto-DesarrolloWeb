@@ -32,8 +32,8 @@ export async function existeCuentaActiva(idCuenta) {
 
 export async function existePeriodistaActivo(idCuenta) {
   return Cuenta.exists({ 
-    IdCuenta: idCuenta, 
-    TipoCuenta: PERIODISTA, 
+    IdCuenta: idCuenta,
+    TipoCuenta: PERIODISTA,
     Estatus: ACTIVO})
   .then((existe) => {
     return existe;
