@@ -1,14 +1,12 @@
 import React from 'react';
-import clsx from 'clsx';
 import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import './home.css';
-import HomepageFeatures from '../components/HomepageFeatures';
-import Noticias from '../components/noticias/noticias';
+import '../css/home.css';
+import ListaNoticias from '../components/noticias/listaNoticias';
 
 
 function HomepageHeader() {
+  console.log(sessionStorage.getItem('token'));
   return (    
       <div className="hero-image">
         <div className="hero-text">
@@ -26,9 +24,9 @@ export default function Home() {
       title="Home">
       <HomepageHeader/>
       <main>
-          <HomepageFeatures></HomepageFeatures>
-      <div className="contenedorNoticias">
-          <Noticias></Noticias>
+      <h1 className="tituloSolo">Ultimas noticias</h1>
+      <div className="contenedorGeneral">
+          <ListaNoticias></ListaNoticias>
       </div>
         
       </main>

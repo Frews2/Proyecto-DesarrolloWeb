@@ -1,13 +1,16 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
+import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 import ReactPaginate from "react-paginate";
+import { servicioBuscarNoticias } from '../../servicios/servicioNoticias';
 
 const PAGE_NUMBER = 1;
 const NOTICIAS_POR_PAGINA = 5;
 const API_LINK="http://localhost:4000/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
-const queryString = window.location.search;
-const urlParametros = new URLSearchParams(queryString);
+
+let queryString = window.location.search;
+let urlParametros = new URLSearchParams(queryString);
 const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 
 
@@ -51,12 +54,13 @@ export default function noticias() {
   }, [setNoticias]);
 
   const contadorPagina = noticias===null?0:Math.ceil(noticias.length / NOTICIAS_POR_PAGINA);
-  const changePage = ({ selected }) => {
+  const cambioPagina = ({ selected }) => {
     setNumeroPagina(selected);
   };
 
+  
   return (
-    <div className="App">
+    <div className="App" >
       {
       noticias && noticias.length > 0 ?( noticias
       .slice(paginasVisitadas, paginasVisitadas + NOTICIAS_POR_PAGINA)
@@ -64,12 +68,13 @@ export default function noticias() {
         return(
               <div className="contenedorPadreNoticias" key={noticia.IdPublicacion} >
                   <div className="columnasDivContenedor">
-                      <h2 className="tituloContenedor"><a href={"/noticias/verNoticia/?id="+ noticia.IdPublicacion}>{noticia.Titulo}</a></h2>
+                      <h2 className="tituloContenedor"><a href={"/noticias/verNoticia/?id="+ 
+                      noticia.IdPublicacion}>{noticia.Titulo}</a></h2>
                       <h3 className="textoContenedor">{recortarTexto(noticia.Texto)}</h3>
                   </div>
                   <div className="columnasDivContenedor">
-                    <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ noticia.TipoFoto +"&"+"path=noticias/" + noticia.NombreFoto} 
-                     alt= {noticia.DescripcionFoto}></img>
+                    <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ noticia.TipoFoto +
+                    "&"+"path=noticias/" + noticia.NombreFoto} alt= {noticia.DescripcionFoto}></img>
                   </div>
               </div>
         );}))
@@ -78,12 +83,12 @@ export default function noticias() {
       )
       }
       <ReactPaginate
-        previousLabel={"Anterior"} nextLabel={"Siguiente"}
-        pageCount={contadorPagina} onPageChange={changePage}
+        previousLabel={<BsArrowLeft/>} nextLabel={<BsArrowRight/>}
+        pageCount={contadorPagina} onPageChange={cambioPagina}
         containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
+        previousLinkClassName={"paginacionBoton"}
+        nextLinkClassName={"paginacionBoton"}
+        disabledClassName={"paginacionDesabilitada"}
         activeClassName={"paginationActive"}
       />
     </div>

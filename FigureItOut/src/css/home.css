@@ -1,74 +1,83 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-body, html {
-  height: 100%;
-}
+  body, html {
+    height: 100%;
+  }
 
-.hero-image {
-background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../static/img/headerImage.jpg");
-height: 10%;
-padding-top: 40%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-position: relative;
-}
-
-.hero-text {
-text-align: center;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-color: white;
-}
-
-.paginationBttns {
-  width: 100%;
+  .hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../static/img/headerImage.jpg");
   height: 10%;
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  padding-bottom: 1%;
-}
+  padding-top: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  }
 
-.paginationBttns a {
-  padding: 10px;
-  margin: 8px;
-  cursor: pointer;  
-  color:black;
-	background: #a44aff;
-  height: 50px;
-  width: 200px;
-  border-radius: 20px ; 
-	border: 4px solid #411c66 ;
-	transition: all 0.4s ease 0s;
+  .hero-text {
   text-align: center;
-}
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  }
 
-.paginationBttns a:hover {
-  color: #ffffff;
-	background: #9740ee;
-	transition: all 0.4s ease 0s;
-}
+  .paginationBttns {
+    width: 100%;
+    height: 10%;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1%;
+  }
 
-.paginationActive a {
-  color: #ffffff;
-	background: #b56cff;
-	transition: all 0.4s ease 0s;
-}
+  .paginationBttns a {
+    padding: 10px;
+    margin: 8px;
+    cursor: pointer;  
+    color:black;
+    background: #a44aff;
+    height: 50px;
+    width: 200px;
+    border-radius: 20px ; 
+    border: 4px solid #411c66 ;
+    transition: all 0.4s ease 0s;
+    text-align: center;
+  }
 
-.paginationDisabled a {
-  color:black;
-	background: #39195a;
-}
+  .paginationBttns a:hover {
+    color: #ffffff;
+    background: #9740ee;
+    transition: all 0.4s ease 0s;
+  }
+
+  .inicioBotones
+  {  
+    width: 40%;  
+    overflow: hidden;  
+    margin: auto; 
+    padding-top: 5%;
+    padding-right: 5%;
+    border-radius: 2% ; 
+    align-items: center;
+    justify-content: center;
+  }
+  .inicioCerrarSesion
+  {  
+    width: 40%;  
+    overflow: hidden;  
+    margin: auto; 
+    padding-top: 5%;
+    padding-left: 12.5%;
+    padding-right: 5%;
+    border-radius: 2% ; 
+    align-items: center;
+    justify-content: center;
+  }
 

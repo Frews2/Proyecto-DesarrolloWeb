@@ -1,6 +1,6 @@
 import React from "react";
 import '../../css/estiloForm.css';
-import { SubirFigura } from "../../components/figuras/aniadirFigura";
+import { SubirFigura } from "../../components/figuras/crearFigura";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 

@@ -81,22 +81,25 @@
     padding-left: 30%;
   }
   
-  .inputBusqueda {
-      width: 70%;
-      display:inline-block;
-  }
-  #botonBusqueda{
-      width: 10%;
-      display:inline-block;
-  }
-
-  .paginacionBoton{
-  text-align: center;
-  }
-  
   .paginacionDesabilitada{
   color:black;
 	background: #432561;
 	transition: all 0.4s ease 0s;
   text-align: center;
+  }
+
+  .inputBusqueda {
+    width: 70%;
+    display:inline-block;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  #botonBusqueda{
+      width: 10%;
+      display:inline-block;
+  }
+
+  .labelBusqueda{
+    font-size: 140%;
   }

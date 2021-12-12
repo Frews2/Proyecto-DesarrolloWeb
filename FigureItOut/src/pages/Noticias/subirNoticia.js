@@ -1,5 +1,5 @@
 import React from "react";
-import '../../css/figureItOutStyle.css';
+import '../../css/estiloForm.css';
 import { CrearNoticia } from "../../components/noticias/crearNoticia";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';

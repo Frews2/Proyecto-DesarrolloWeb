@@ -1,6 +1,6 @@
 import React from "react";
 import '../../css/estiloForm.css';
-import { Login } from "../../components/sesion";
+import { Login } from "../../components/sesion/login.js";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 

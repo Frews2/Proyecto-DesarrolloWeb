@@ -59,7 +59,7 @@ const config = {
       footer: {
         style: 'dark',
         
-        copyright: `Copyright © ${new Date().getFullYear()} Figure It Out, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Figure It Out, Inc. Construido con Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,

@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 
-const API_LINK="http://localhost:4000/";
+import { servicioRegistroNoticias } from "../../servicios/servicioNoticias.js";
+import { servicioObtenerFiguras } from "../../servicios/servicioFiguras.js";
 
+
+const LONGITUD_MAXIMA_GENERAL = 50;
+const LONGITUD_MINIMA_GENERAL = 5;
 
 export class CrearNoticia extends Component {
     state={
@@ -20,13 +24,27 @@ export class CrearNoticia extends Component {
 
     validarInput(entradaUsuario)
     { 
-        console.log(entradaUsuario);
-        if(entradaUsuario.replace(/\s/g,"").length > 0 && entradaUsuario.length > 5 
-        && entradaUsuario.length < 50)
+        if(entradaUsuario.replace(/\s/g,"").length > 0 && entradaUsuario.length > LONGITUD_MINIMA_GENERAL 
+        && entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
         {
             return true;
         }
         return false;
+    }
+
+    validacionGeneral()
+    {
+        if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
+        && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
+        && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
+        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(/\s/g,"").length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     handleChange=async e=>{
@@ -38,10 +56,7 @@ export class CrearNoticia extends Component {
                 
             },
         });
-        if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
-        && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
-        && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
-        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(/\s/g,"").length > 0)
+        if(this.validacionGeneral()=== true)
         {
             this.setState({
                 disabled: false
@@ -57,13 +72,10 @@ export class CrearNoticia extends Component {
     
     async registrarNoticia(e) {
         e.preventDefault();
-        if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
-        && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
-        && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
-        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(/\s/g,"").length > 0)
+        if(this.validacionGeneral() === true &&  sessionStorage.getItem('token') !== null)
         {
             const noticiaForm = new FormData();
-            noticiaForm.append("IdFigura", this.state.form.figurasCombox);
+            noticiaForm.append("IdFigura", this.state.form.FigurasCombox);
             noticiaForm.append('Titulo',this.state.form.Titulo.replace(/ +(?= )/g,''));
             noticiaForm.append('Texto',this.state.form.Contenido.replace(/ +(?= )/g,''));
             noticiaForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
@@ -72,18 +84,17 @@ export class CrearNoticia extends Component {
             noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(/ +(?= )/g,''));
             noticiaForm.append('IdCuenta','39c2d6c5-cdaa-48e8-a231-8a60f59391c5');
             noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(/ +(?= )/g,''));
-            fetch(API_LINK+"noticias/Registrar", {
-                method: "POST",
-                body: noticiaForm 
-            })
-            .then(response=> response.json())
+            
+
+            servicioRegistroNoticias(noticiaForm)
             .then(data=>{
-                if(data.exito){
-                    console.log(data);
+                if(data.exito)
+                {
                     alert("Se han guardado la noticia correctamente");
+                    window.location.href="/Noticias"
                 }
-                else{
-                    console.log(data);
+                else
+                {
                     alert(data.mensaje);
                     data.resultado.forEach(error => {
                         alert(error.msg);
@@ -98,6 +109,7 @@ export class CrearNoticia extends Component {
             alert("Uno o mas campos se encuentran erroneos verifica");
         }
     }
+
     fileSelectHandler = event =>{
         if(event.target.files[0] !=null){
             if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < 30){
@@ -115,10 +127,7 @@ export class CrearNoticia extends Component {
                 this.state.form.Imagen = nuevoNombreArchivo;
                 this.state.form.ExtensionImagen = extensionImagen;
 
-                if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
-                && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
-                && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
-                && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(/\s/g,"").length > 0)
+                if(this.validacionGeneral() === true)
                 {
                     this.setState({
                         disabled: false
@@ -151,34 +160,38 @@ export class CrearNoticia extends Component {
         
         window.onload = function()
         {
-            let comboboxHTML = document.getElementById('figurasCombox');
-            comboboxHTML.length = 0;
+            if(sessionStorage.getItem('token') !== null)
+            {
+                let comboboxHTML = document.getElementById('figurasCombox');
+                comboboxHTML.length = 0;
 
-            fetch(API_LINK+"figuras/Buscar",{
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response=> response.json())
-            .then(data=>{
-                if(data.exito){
-                    console.log(data.resultado);
-                        for (let i = 0; i < data.resultado.length; i++) {
-                        var option = document.createElement('option');
-                        option.appendChild(document.createTextNode(data.resultado[i].Nombre));
-                        option.value = data.resultado[i].IdFigura;
-                        comboboxHTML.appendChild(option);
+                servicioObtenerFiguras()
+                .then(data=>{
+                    if(data.exito)
+                    {
+                        for (let i = 0; i < data.resultado.length; i++) 
+                        {
+                            var option = document.createElement('option');
+                            option.appendChild(document.createTextNode(data.resultado[i].Nombre));
+                            option.value = data.resultado[i].IdFigura;
+                            comboboxHTML.appendChild(option);
                         } 
-                }
-                else{
-                    console.log(data);
-                    alert(data.mensaje);
-                }
-            }).catch(error => {
-                console.log(error)
-            });
+                    }
+                    else
+                    {
+                        alert(data.mensaje);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                });
+            }
+            else
+            {
+                window.location.pathname = '/'
+                alert("Porfavor inicie sesion");
+            }
         }
+
         return (
             <div className="formGeneral">
                 <form onSubmit={(e)=>this.registrarNoticia(e)}>
@@ -192,13 +205,13 @@ export class CrearNoticia extends Component {
 
                     <div className="form-group">
                         <label htmlFor="contenido">Contenido *</label>
-                        <textarea type="text" id="contenido" className="textoLargo" maxLength="1500" className="form-control"  minLength={50} placeholder="Escribe tu Contenido" 
+                        <textarea type="text" id="contenido" className="textoLargo" maxLength="1500"  minLength={50} placeholder="Escribe tu Contenido" 
                         onChange={this.handleChange} name="Contenido" required/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="etiquetas" >Etiquetas * (Favor de separarlas con ,)</label>
                         <input id="etiquetas"  className="form-control" placeholder="Figura,Marca,Noticia" minLength={5} 
-                        maxLength="50" name="Etiquetas"  onChange={this.handleChange} required/>
+                        maxLength="49" name="Etiquetas"  onChange={this.handleChange} required/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="foto">Foto: </label>
@@ -208,7 +221,7 @@ export class CrearNoticia extends Component {
                     <div className="form-group">
                         <label htmlFor="descripcionImagen">Descripcion de la imagen *</label>
                         <input id="descripcionImagen" className="form-control" placeholder="Describe la imagen que adjuntaste" minLength={10} 
-                        maxLength="50" name="DescripcionImagen"  onChange={this.handleChange} required/>
+                        maxLength="49" name="DescripcionImagen"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">

@@ -1,17 +1,19 @@
 import React from "react";
-import "./home.css"
+import "../css/home.css";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Noticias from '../components/noticias/noticias';
+import ListaNoticias from '../components/noticias/listaNoticias';
+import BarraBusqueda from "../components/utilidades/barraBusqueda";
 
 function PaginaNoticias() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout title="Noticias">
     <main>
+      <BarraBusqueda></BarraBusqueda>
       <h1 className="tituloSolo">Ultimas noticias</h1>
       <div className="contenedorGeneral">
-        <Noticias></Noticias>
+        <ListaNoticias></ListaNoticias>
       </div>
     </main>
   </Layout>

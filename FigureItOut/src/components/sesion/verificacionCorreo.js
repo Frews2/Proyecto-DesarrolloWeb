@@ -1,5 +1,10 @@
 import React, {Component} from "react";
-const NUMERO=/^[0-9]+$/;
+
+import { servicioValidarCorreo } from "../../servicios/servicioSesion.js";
+
+const REGEX_NUMERO=/^[0-9]+$/;
+const LONGITUD_CODIGO=5;
+const LONGITUD_MINIMA = 4;
 
 export class VerificacionCorreo extends Component {
     state={
@@ -7,6 +12,16 @@ export class VerificacionCorreo extends Component {
         form:{
             codigoVer:''
         }
+    }
+    
+    validacionGeneral(){
+        if(this.state.form.codigoVer.length == LONGITUD_CODIGO && 
+        this.state.form.codigoVer.replace(/\s/g,"").length > LONGITUD_MINIMA
+        && this.state.form.codigoVer.match(REGEX_NUMERO))
+        {
+            return true;
+        }
+        return false;
     }
     
     handleChange=async e=>{
@@ -17,8 +32,7 @@ export class VerificacionCorreo extends Component {
                 
             },
         });
-        if(this.state.form.codigoVer.length == 5 && this.state.form.codigoVer.replace(/\s/g,"").length > 0
-        && this.state.form.codigoVer.match(NUMERO))
+        if(this.validacionGeneral() === true)
         {
             this.setState({
                 disabled: false
@@ -32,39 +46,40 @@ export class VerificacionCorreo extends Component {
         }
     }
     
-    async verificar(e) {
+    async verificar(e)
+    {
         e.preventDefault();
-        
-        console.log((sessionStorage.getItem('correo')).value);
-        if(this.state.form.codigoVer.length == 5 && this.state.form.codigoVer.replace(/\s/g,"").length > 0
-        && this.state.form.codigoVer.match(NUMERO))
+        if(this.validacionGeneral() === true)
         {
-            fetch("http://localhost:4000/codigos/Verificar", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                
-                body: JSON.stringify({
-                    Correo: (sessionStorage.getItem('correo')),
-                    Numero: this.state.form.codigoVer
+            if(sessionStorage.getItem('correo')!= null)
+            {
+               
+                let datosVerificacion = JSON.stringify({
+                        Correo: (sessionStorage.getItem('correo')),
+                        Numero: this.state.form.codigoVer
+                    })
+
+                servicioValidarCorreo(datosVerificacion)
+                .then(data=>{
+                    if(data.exito)
+                    {
+                        alert(data.mensaje);
+                        alert("Favor de iniciar sesion con su cuenta verificada");
+                        sessionStorage.setItem('correo',null);
+                        window.location.pathname = '/';
+                    }
+                    else
+                    {
+                        alert(data.mensaje);
+                    }
+                }).catch(error => {
+                    console.log(error)
                 })
-            })
-            .then(response=> response.json())
-            .then(data=>{
-                if(data.exito)
-                {
-                    sessionStorage.setItem('token',data.resultado);
-                    alert(data.mensaje);
-                    window.location.pathname = '/';
-                }
-                else
-                {
-                    alert(data.mensaje);
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+            }
+            else
+            {
+                alert("Aun no ha echo login para verificar un correo");
+            }
         }
         else
         {
@@ -72,42 +87,35 @@ export class VerificacionCorreo extends Component {
         }
     }
 
-    
-
-    
-    render() {
-        const correo = sessionStorage.getItem('correo')
-
-        window.onload = function()
+    render() 
+    {
+        function checarSesion()
         {
-            if(correo == null)
+            if(sessionStorage.getItem('correo') === null || sessionStorage.getItem('token') !== null)
             {
-            window.location.pathname = '/'
-            }
-            else
-            {
-                console.log(correo);
+                window.location.pathname = '/'
             }
         }
+
         return (
+            <div onLoad={checarSesion()} >
+                <form onSubmit={(e)=>this.verificar(e)}>
+                    <div className="formGeneral">
+                        <h2>Valida Correo</h2>
 
-            <form onSubmit={(e)=>this.verificar(e)}>
-                <div className="formGeneral">
-                    <h2>Valida Correo</h2>
+                        <div className="form-group">
+                            <label>Codigo de verificacion</label>
+                            <input type="number" className="form-control" id="numeroEntrada" placeholder="Introduce el codigo"
+                            name="codigoVer" onChange={this.handleChange} required/>
+                        </div>
 
-                    <div className="form-group">
-                        <label>Codigo de verificacion</label>
-                        <input type="number" className="form-control" id="numeroEntrada" placeholder="Introduce el codigo"
-                        name="codigoVer" onChange={this.handleChange} required/>
+                        <div className="form-end">
+                            <button type="submit" className="botonNormal" disabled={this.state.disabled}>Acceder</button>
+                            <p>Para terminar tu registro ingresa el codigo de 5 digitos que se te envio a tu correo</p>
+                        </div>
                     </div>
-
-                    <div className="form-end">
-                        <button type="submit" className="botonNormal" disabled={this.state.disabled}>Acceder</button>
-                        <p>Para terminar tu registro ingresa el codigo de 5 digitos que se te envio a tu correo</p>
-                        <p> ¿No te llego ningun codigo?<a >Reenvia el correo</a> </p>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         );
     }
 }

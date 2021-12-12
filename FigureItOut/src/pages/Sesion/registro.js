@@ -1,6 +1,6 @@
 import React from "react";
 import '../../css/estiloForm.css';
-import { Registro } from "../../components/sesion";
+import { Registro } from "../../components/sesion/registro.js";
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
