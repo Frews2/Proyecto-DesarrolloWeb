@@ -25,7 +25,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar la figura. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(400).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   var nuevaFigura = req.body;
@@ -37,8 +37,11 @@ async (req, res) => {
         ', ya pertenece a una figura. Cambielo por favor.';
       return res.status(422).send(respuestaJson);
     } else {
-      if (req.files && req.files.Foto) {
+      if (req.files && req.files.Foto ) {
         nuevaFigura.Foto = req.files.Foto;
+      } else{
+        respuestaJson.mensaje = 'ERROR: No se encuentra una foto adjunta';
+        return res.status(406).send(respuestaJson).end();
       }
       
       guardarFigura(nuevaFigura)
@@ -48,7 +51,7 @@ async (req, res) => {
 
         if (resultadoCreacion.exito) {
           respuestaJson.exito = true;
-          return res.status(200).send(respuestaJson);
+          return res.status(201).send(respuestaJson);
         } else {
           return res.status(400).send(respuestaJson);
         }

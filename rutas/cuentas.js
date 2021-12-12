@@ -144,7 +144,7 @@ async (req, res) => {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
-    return res.status(200).send(respuestaJson);
+    return res.status(202).send(respuestaJson);
   } else {
     return res.status(405).send(respuestaJson);
   }
@@ -165,7 +165,7 @@ async (req, res) => {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';
-    return res.status(200).send(respuestaJson);
+    return res.status(202).send(respuestaJson);
   } else {
     return res.status(405).send(respuestaJson);
   }

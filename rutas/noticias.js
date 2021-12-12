@@ -37,8 +37,11 @@ async (req, res) => {
         ', ya pertenece a una noticia. Cambielo por favor.';
       return res.status(422).send(respuestaJson);
     } else {
-      if (req.files && req.files.Foto) {
-        nuevaNoticia.Foto = req.files.Foto;
+      if (req.files && req.files.Foto ) {
+        nuevaFigura.Foto = req.files.Foto;
+      } else{
+        respuestaJson.mensaje = 'ERROR: No se encuentra una foto adjunta';
+        return res.status(406).send(respuestaJson).end();
       }
       
       guardarNoticia(nuevaNoticia)
