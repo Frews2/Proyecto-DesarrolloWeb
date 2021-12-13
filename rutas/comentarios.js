@@ -76,8 +76,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);
@@ -93,8 +95,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);

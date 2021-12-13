@@ -25,7 +25,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar el review. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(400).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   var nuevoReview = req.body;
@@ -51,7 +51,7 @@ async (req, res) => {
 
         if (resultadoCreacion.exito) {
           respuestaJson.exito = true;
-          return res.status(200).send(respuestaJson);
+          return res.status(201).send(respuestaJson);
         } else {
           return res.status(400).send(respuestaJson);
         }
@@ -86,8 +86,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.resultado = reviewEncontrado;
         respuestaJson.mensaje = 'ÉXITO: Review encontrado.';
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);
@@ -103,8 +105,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.resultado = reviews;
         respuestaJson.mensaje = 'ÉXITO: Reviews encontrados.';
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);

@@ -24,7 +24,7 @@ router.get('/Ver', async (req, res) => {
     } 
 
     fileSystem.readFile(directorio, function(err, contenido){
-      if(err) {return res.status(400).json({
+      if(err) {return res.status(404).json({
         exito: false,
         origen: 'imagenes/Ver',
         mensaje: 'ERROR: No se pudo encontrar la imagen en ruta ' + directorio, 
@@ -38,7 +38,7 @@ router.get('/Ver', async (req, res) => {
   }
   catch (error) {
     console.error('ERRPR: Al buscar imagen', error);
-    return res.status(400).json({
+    return res.status(500).json({
       exito: false,
       origen: 'imagenes/Ver',
       mensaje: 'ERROR: Ocurrió un error al mostrar la imagen',

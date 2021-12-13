@@ -25,7 +25,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar la noticia. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(400).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   var nuevaNoticia = req.body;
@@ -86,8 +86,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.resultado = noticiaEncontrada;
         respuestaJson.mensaje = 'ÉXITO: Noticia encontrada.';
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);
@@ -103,8 +105,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.resultado = noticias;
         respuestaJson.mensaje = 'ÉXITO: Noticias encontradas.';
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);

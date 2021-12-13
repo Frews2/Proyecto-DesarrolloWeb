@@ -86,8 +86,10 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.resultado = figuraEncontrada;
         respuestaJson.mensaje = 'ÉXITO: Figura encontrada.';
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
     })
     .catch((error) => {
       console.error('ERROR: ' + error);
@@ -103,8 +105,11 @@ async (req, res) => {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Figuras encontradas.';
         respuestaJson.resultado = figuras;
-      } 
-      return res.status(200).send(respuestaJson);
+        return res.status(200).send(respuestaJson);
+      } else{
+        return res.status(404).send(respuestaJson);
+      }
+      
     })
     .catch((error) => {
       console.error('ERROR: ' + error);
