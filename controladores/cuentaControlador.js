@@ -83,7 +83,6 @@ export async function guardarCuenta(usuario) {
       return guardarCodigoConfirmacion(Email, numeroConfirmacion)
       .then((creado) => {
         if (creado) {
-          console.log('ENVIANDO CORREO DE CONFIRMACION...');
           return mandarCodigoConfirmacion(Email,numeroConfirmacion)
           .then((mandado) => {
             if (mandado) {

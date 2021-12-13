@@ -38,7 +38,7 @@ export async function guardarImagen(nuevaImagen, tipoCarpeta) {
     }
     return resultadoJson;
   }).catch(error => {
-    console.log('ERROR: No se pudo guardar la imagen. ' + error);
+    console.error('ERROR: No se pudo guardar la imagen. ' + error);
     return resultadoJson;
   });
 }

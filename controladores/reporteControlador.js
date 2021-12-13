@@ -29,8 +29,6 @@ export async function guardarReporte(nuevoReporte) {
 
   return reporteAGuardar.save()
   .then((seGuardo) => {
-    console.log('REPORTE GUARDADO: ' + seGuardo);
-
     if(seGuardo) {
       var seActualizo = false;
 

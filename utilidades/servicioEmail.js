@@ -31,7 +31,6 @@ export default async function mandarCodigoConfirmacion(
   return transporteDeCorreo.sendMail(CORREO)
   .then((respuesta) => {
     if (respuesta.accepted) {
-      console.log('ÉXITO: Correo mandado. ' + respuesta);
       return true;
     } else{
       return false;

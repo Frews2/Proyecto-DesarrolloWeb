@@ -1,7 +1,7 @@
 import { Guid } from 'js-guid';
 import Figura from '../modelos/figura.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
-import { FILTRO_INCLUIR } from '../utilidades/constantes.js';
+import { INCLUIR } from '../utilidades/constantes.js';
 
 export async function existeFigura(idFigura) {
   return Figura.exists({ IdFigura: idFigura})
@@ -66,8 +66,6 @@ export async function guardarFigura(nuevaFigura) {
 
   return figuraAGuardar.save()
   .then((seGuardo) => {
-    console.log('FIGURA GUARDADA: ' + seGuardo);
-
     if(seGuardo) {
       resultadoJson.exito = true;
       resultadoJson.mensaje = 'ÉXITO: Figura guardada.';
@@ -87,8 +85,8 @@ export async function obtenerFiguras(texto) {
   var filtro = {};
   if (texto) {
     filtro.$or = [
-      { Nombre: { $regex: texto, $options: FILTRO_INCLUIR } },
-      { Marca: { $regex: texto, $options: FILTRO_INCLUIR } },
+      { Nombre: { $regex: texto, $options: INCLUIR } },
+      { Marca: { $regex: texto, $options: INCLUIR } },
     ];
 
     return Figura.find(filtro)

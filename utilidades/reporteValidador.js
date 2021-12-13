@@ -30,13 +30,14 @@ async function esTipoValido(tipo) {
 }
 
 async function esPublicacionActiva(id) {
-  const NOTICIA = esNoticiaActiva(id);
-  const REVIEW = esReviewActivo(id);
-  const COMENTARIO = esComentarioActivo(id);
+  const NOTICIA = await esNoticiaActiva(id);
+  const REVIEW = await esReviewActivo(id);
+  const COMENTARIO = await esComentarioActivo(id);
   
   if (!(NOTICIA || REVIEW || COMENTARIO)) {
     throw new Error('ERROR: ' +
-      'La publicacion ya se encuentra reportada.');
+      'No encontramos una publicación activa para reportarla. ' + 
+      'Otro usuario pude haberla reportado.');
   } else{
     return true;
   }
@@ -74,7 +75,7 @@ const checkSchemaReporte = {
   IdCuenta: {
     custom: {
       options: async (value, { req }) => {
-        return existeCuentaActiva(req.body.IdAcusador, value)
+        return existeCuentaActiva(req.body.IdCuenta, value)
         .then((existe) => {
           if (!existe) {
             return Promise.reject('La cuenta del acusador, ' +

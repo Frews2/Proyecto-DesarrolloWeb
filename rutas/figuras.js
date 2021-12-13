@@ -1,5 +1,6 @@
 import express from 'express';
 import { validationResult, checkSchema } from 'express-validator';
+import Figura from '../modelos/figura.js';
 import { guardarFigura, obtenerFiguras,
   obtenerFiguraDatos } from '../controladores/figuraControlador.js';
 import checkSchemaFigura from '../utilidades/figuraValidador.js';

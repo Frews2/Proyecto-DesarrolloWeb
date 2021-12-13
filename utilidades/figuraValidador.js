@@ -48,7 +48,7 @@ const checkSchemaFigura = {
   Foto: {
     custom: {
       options: async (value, { req }) => {
-        return existeImagen(req.body.Foto, value)
+        return existeImagen(req.files.Foto, value)
         .then((existe) => {
           if (!existe) {
             return Promise.reject('No existe una foto, ' +

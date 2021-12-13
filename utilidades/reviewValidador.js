@@ -22,11 +22,10 @@ function esStringValido(texto, min, max) {
 
 function esCalificacionValida(valor) {
   const MIN = 0;
-  const MAX = 5;
+  const MAX = 10;
   if (valor < MIN || valor > MAX ) {
   throw new Error(
-    'ERROR: La calificacion debe ser un valor entre 0 y 5.'
-  );
+    `ERROR: La calificacion debe ser un valor entre ${MIN} y ${MAX}.`);
   } else{
   return true;
   }
@@ -57,7 +56,7 @@ const checkSchemaReview = {
   Foto: {
     custom: {
       options: async (value, { req }) => {
-        return existeImagen(req.body.Foto, value)
+        return existeImagen(req.files.Foto, value)
         .then((existe) => {
           if (!existe) {
             return Promise.reject('No existe una foto, ' +

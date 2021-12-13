@@ -1,4 +1,5 @@
 import express from "express";
+import Noticia from '../modelos/noticia.js';
 import { validationResult, checkSchema } from "express-validator";
 import { guardarNoticia, obtenerNoticias, 
   obtenerNoticiaDatos } from '../controladores/noticiaControlador.js';

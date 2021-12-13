@@ -25,8 +25,15 @@ router.post('/verificar', async (req, res) => {
       .then((activado) => {
         if (activado) {
           eliminarCodigoGuardado(Correo, Numero)
-          .then((eliminado) => console.log('ÉXITO: ' +
-            'Código eliminado:' + eliminado))
+          .then((eliminado) => {
+            if(eliminado){
+              respuestaJson.exito = true;
+            } else {
+              respuestaJson.exito = false;
+              respuestaJson.mensaje = 'Cuenta dada de alta pero, ' +
+                'codigo de verificacion persiste en sistema.';
+            }
+          })
           .catch((error) => console.error('ERROR: ' + error));
           return res.status(200).send(respuestaJson);
         } else {

@@ -35,9 +35,7 @@ export async function guardarComentario(nuevoComentario) {
       comentario.IdPublicacionOriginal,
       comentario.IdComentario);
   } else {
-    esReview = await esReviewActivo(
-      comentario.IdPublicacionOriginal,
-      comentario.IdComentario);
+    esReview = await esReviewActivo(comentario.IdPublicacionOriginal);
 
     if (esReview) {
       seAgrego = await agregarComentarioAReview(
@@ -45,7 +43,6 @@ export async function guardarComentario(nuevoComentario) {
         comentario.IdComentario);
     }
   }
-
   var comentarioAGuardar = new Comentario(comentario);
 
   if (seAgrego) {

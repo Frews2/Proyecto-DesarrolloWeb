@@ -2,7 +2,7 @@ import { Guid } from 'js-guid';
 import Review from '../modelos/review.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
 import { ACTIVO, REPORTADO,
-  ORDEN_DESCENDIENDO, FILTRO_INCLUIR } from '../utilidades/constantes.js';
+  ORDEN_DESCENDIENDO, INCLUIR } from '../utilidades/constantes.js';
 
 export async function guardarReview(nuevaCritica) {
   const CARPETA = 'reviews';
@@ -62,8 +62,6 @@ export async function guardarReview(nuevaCritica) {
 
   return reviewAGuardar.save()
   .then((seGuardo) => {
-    console.log('REVIEW GUARDADO: ' + seGuardo);
-
     if(seGuardo) {
       resultadoJson.exito = true;
       resultadoJson.mensaje = 'ÉXITO: Review guardado.';
@@ -83,12 +81,11 @@ export async function agregarComentarioAReview(idPublicacion, idComentario) {
   var seAgregoComentario = false;
   
   if(Review.exists({IdPublicacion: idPublicacion, Estatus: ACTIVO})){
-    return Noticia.updateOne(
+    return Review.updateOne(
       {IdPublicacion: idPublicacion},
       { $push: {comentarios: idComentario} } 
     )
     .then(seGuardo => {
-      console.log(seGuardo);
       if(seGuardo){
         seAgregoComentario = true;
       } 
@@ -126,13 +123,17 @@ export async function reportarReview(idPublicacion) {
 
 export async function obtenerReviews(texto) {
   var filtro = {};
+
   if (texto) {
     filtro.$or = [
-      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
-      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
+      { Titulo: { $regex: texto, $options: INCLUIR } },
+      { Etiquetas: { $regex: texto, $options: INCLUIR } },
+    ];
+    filtro.$and = [
+      { Estatus: ACTIVO }
     ];
 
-    return Review.find({ filtro, Estatus: ACTIVO })
+    return Review.find(filtro)
     .sort({ FechaRegistro: ORDEN_DESCENDIENDO })
     .then((criticias) => {
       return criticias;

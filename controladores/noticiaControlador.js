@@ -2,7 +2,7 @@ import { Guid } from 'js-guid';
 import Noticia from '../modelos/noticia.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
 import { ACTIVO, REPORTADO,
-  ORDEN_DESCENDIENDO, FILTRO_INCLUIR } from '../utilidades/constantes.js';
+  ORDEN_DESCENDIENDO, INCLUIR } from '../utilidades/constantes.js';
 
 export async function guardarNoticia(nuevaNoticia) {
   const CARPETA = 'noticias';
@@ -59,8 +59,6 @@ export async function guardarNoticia(nuevaNoticia) {
 
   return noticiaAGuardar.save()
   .then((seGuardo) => {
-    console.log('NOTICIA GUARDADA: ' + seGuardo);
-
     if(seGuardo) {
       resultadoJson.exito = true;
       resultadoJson.mensaje = 'ÉXITO: Noticia guardada';
@@ -121,13 +119,17 @@ export async function reportarNoticia(id) {
 
 export async function obtenerNoticias(texto) {
   var filtro = {};
+
   if (texto) {
     filtro.$or = [
-      { Titulo: { $regex: texto, $options: FILTRO_INCLUIR } },
-      { Etiquetas: { $regex: texto, $options: FILTRO_INCLUIR } },
+      { Titulo: { $regex: texto, $options: INCLUIR } },
+      { Etiquetas: { $regex: texto, $options: INCLUIR } },
     ];
-    
-    return Noticia.find({ filtro, Estatus: ACTIVO })
+    filtro.$and = [
+      { Estatus: ACTIVO }
+    ];
+
+    return Noticia.find(filtro)
     .sort({ FechaRegistro: ORDEN_DESCENDIENDO})
     .then((noticias) => {
       return noticias;

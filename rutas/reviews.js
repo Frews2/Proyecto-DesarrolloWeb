@@ -1,5 +1,6 @@
 import express from "express";
 import { validationResult, checkSchema } from "express-validator";
+import Review from '../modelos/review.js';
 import { guardarReview, obtenerReviewDatos,
   obtenerReviews } from '../controladores/reviewControlador.js';
 import checkSchemaReview from "../utilidades/reviewValidador.js";

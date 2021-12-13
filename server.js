@@ -29,7 +29,7 @@ mongoose.connect(URL_BASE_DE_DATOS,{
 }).then(() => {
   console.log('ÉXITO: Conectado a la base de datos de FigureItOut');
 }).catch(eror => {
-  console.log(eror);
+  console.error(eror);
   process.exit();
 });
 
