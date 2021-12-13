@@ -79,7 +79,8 @@ export class VerificacionCorreo extends Component
                         alert(data.mensaje);
                     }
                 }).catch(error => {
-                    console.log(error)
+                    alert("Ocurrió un error");
+                    console.error(error)
                 })
             }
             else

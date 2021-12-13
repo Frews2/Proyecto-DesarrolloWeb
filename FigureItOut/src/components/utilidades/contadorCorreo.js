@@ -9,7 +9,7 @@ export class ContadorCorreo extends Component
     async reenviar(e)
     {
         e.preventDefault();
-        
+
         if(sessionStorage.getItem('correo') !== null)
         {
             servicioReenviarCorreo()
@@ -26,7 +26,8 @@ export class ContadorCorreo extends Component
                     alert("Error: "+data.mensaje);
                 }
             }).catch(error => {
-                console.log(error);
+                alert("Ocurrió un error");
+                console.error(error);
             })
         }
         else

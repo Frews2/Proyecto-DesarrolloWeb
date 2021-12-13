@@ -85,8 +85,9 @@ export class Login extends Component
                 {
                     alert("Error de acceso, verifique su correo y/o contraseña");
                 }
-            }).catch(err => {
+            }).catch(error => {
                 alert("Ocurrió un error");
+                console.error(error);
             })
         }
         else

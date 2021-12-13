@@ -112,7 +112,8 @@ export class SubirFigura extends Component
                         }
                     }
                 }).catch(error => {
-                    console.log(error)
+                    alert("Ocurrió un error");
+                    console.error(error);
                 })
         }
         else

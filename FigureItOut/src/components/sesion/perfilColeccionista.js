@@ -14,8 +14,9 @@ export class PerfilColeccionista extends Component{
                     {
                         window.location.pathname = '../';
                     }
-                }).catch(err => {
+                }).catch(error => {
                     alert("Ocurrió un error");
+                    console.error(error);
                     window.location.pathname = '../';
                 }) 
         }
