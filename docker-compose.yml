@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+    # FigureItOut Database
+    db_figureitout:
+        image: mongo:4.4.4
+        ports: 
+            - "27017:27017"
+        restart: unless-stopped
+        volumes:
+            - db_volume_mongo_database:/FigureItOut/database
+            - ../database/FigureDB.js:/docker-entrypoint-initdb.d/FigureDB.js:ro
+        command: mongod --auth
+        environment:
+            MONGO_INITDB_DATABASE: FigureDB
+            MONGO_INITDB_ROOT_USERNAME: figureAdmin
+            MONGO_INITDB_ROOT_PASSWORD: proyectoweb
+        container_name: db_figureitout
+    #Api
+    api_figureitout:
+        image: api
+        depends_on: 
+            - "db_figureitout"
+        ports:
+            - "4000:4000"
+        build: 
+            context: ../api/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: mongodb://db_figureitout:27017/FigureDB?authSource=admin
+            MONGO_USERNAME: figureAdmin
+            MONGO_PASSWORD: proyectoweb
+            JWT_KEY: "mongo"
+            EMAIL_SERVICE_SENDER: figureitoutpage@gmail.com
+            EMAIL_SERVICE_PASSWORD: proyectorevo
+        container_name: api
+volumes:
+    db_volume_mongo_database:
