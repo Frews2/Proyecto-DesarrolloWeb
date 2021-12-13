@@ -28,19 +28,23 @@ export class PerfilPeriodista extends Component{
                 </div>
 
                 <div className="inicioBotones">
-                    <button type="submit" className="botonNormal"  onClick={function(e) 
+                    <button type="submit" className="botonNormal"  onClick=
+                    {function(e) 
                     {
                         window.location.href="../noticias/subirNoticia"    
                     }} >Subir Noticias</button>
 
-                    <button type="submit" className="botonNormal" onClick={function(e) 
+                    <button type="submit" className="botonNormal" onClick=
+                    {function(e) 
                     {
                         window.location.href="../figuras/subirFigura"    
                     }} >Subir Figura</button>
                 </div>
 
                 <div className="inicioCerrarSesion">
-                    <button type="submit" className="botonNormal" onClick={function(e) {
+                    <button type="submit" className="botonNormal" onClick=
+                    {function(e) 
+                    {
                         sessionStorage.setItem('token',null);
                         window.location.href="../"    
                     }} >Cerrar sesion</button>

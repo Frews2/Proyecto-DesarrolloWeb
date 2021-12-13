@@ -3,20 +3,25 @@ import React, {Component} from "react";
 import { servicioValidarCorreo } from "../../servicios/servicioSesion.js";
 
 const REGEX_NUMERO=/^[0-9]+$/;
+const REGEX_ESPACIOBLANCO=/\s/g;
 const LONGITUD_CODIGO=5;
 const LONGITUD_MINIMA = 4;
 
-export class VerificacionCorreo extends Component {
-    state={
+export class VerificacionCorreo extends Component 
+{
+    state=
+    {
         disabled:true,
-        form:{
+        form:
+        {
             codigoVer:''
         }
     }
     
-    validacionGeneral(){
+    validacionGeneral()
+    {
         if(this.state.form.codigoVer.length == LONGITUD_CODIGO && 
-        this.state.form.codigoVer.replace(/\s/g,"").length > LONGITUD_MINIMA
+        this.state.form.codigoVer.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA
         && this.state.form.codigoVer.match(REGEX_NUMERO))
         {
             return true;
@@ -24,7 +29,8 @@ export class VerificacionCorreo extends Component {
         return false;
     }
     
-    handleChange=async e=>{
+    handleChange=async e=>
+    {
        await this.setState({
             form:{
                 ...this.state.form,

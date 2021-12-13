@@ -6,6 +6,8 @@ import { servicioObtenerFiguras } from "../../servicios/servicioFiguras.js";
 
 const LONGITUD_MAXIMA_GENERAL = 50;
 const LONGITUD_MINIMA_GENERAL = 5;
+const REGEX_ESPACIODOBLE=/ +(?= )/g;
+const REGEX_ESPACIOBLANCO=/\s/g;
 
 export class CrearNoticia extends Component {
     state={
@@ -24,8 +26,8 @@ export class CrearNoticia extends Component {
 
     validarInput(entradaUsuario)
     { 
-        if(entradaUsuario.replace(/\s/g,"").length > 0 && entradaUsuario.length > LONGITUD_MINIMA_GENERAL 
-        && entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
+        if(entradaUsuario.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL && 
+        entradaUsuario.length > LONGITUD_MINIMA_GENERAL && entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
         {
             return true;
         }
@@ -37,7 +39,7 @@ export class CrearNoticia extends Component {
         if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
         && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
         && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
-        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(/\s/g,"").length > 0)
+        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL)
         {
             return true;
         }
@@ -70,20 +72,21 @@ export class CrearNoticia extends Component {
         }
     }
     
-    async registrarNoticia(e) {
+    async registrarNoticia(e)
+    {
         e.preventDefault();
         if(this.validacionGeneral() === true &&  sessionStorage.getItem('token') !== null)
         {
             const noticiaForm = new FormData();
             noticiaForm.append("IdFigura", this.state.form.FigurasCombox);
-            noticiaForm.append('Titulo',this.state.form.Titulo.replace(/ +(?= )/g,''));
-            noticiaForm.append('Texto',this.state.form.Contenido.replace(/ +(?= )/g,''));
+            noticiaForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
+            noticiaForm.append('Texto',this.state.form.Contenido.replace(REGEX_ESPACIODOBLE,''));
             noticiaForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
             noticiaForm.append('NombreFoto',this.state.form.Imagen);
             noticiaForm.append('TipoFoto',this.state.form.ExtensionImagen);
-            noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(/ +(?= )/g,''));
+            noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
             noticiaForm.append('IdCuenta','39c2d6c5-cdaa-48e8-a231-8a60f59391c5');
-            noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(/ +(?= )/g,''));
+            noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
             
 
             servicioRegistroNoticias(noticiaForm)
@@ -110,9 +113,12 @@ export class CrearNoticia extends Component {
         }
     }
 
-    fileSelectHandler = event =>{
-        if(event.target.files[0] !=null){
-            if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < 30){
+    fileSelectHandler = event =>
+    {
+        if(event.target.files[0] !=null)
+        {
+            if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < 30)
+            {
                 
                 let archivoTemporal = event.target.files[0];
                 let blob = archivoTemporal.slice(0,archivoTemporal.size, archivoTemporal.type);
@@ -147,7 +153,8 @@ export class CrearNoticia extends Component {
                 this.state.form.Imagen = null;
             }
         }
-        else{
+        else
+        {
             this.setState({
                 archivoImagen: null,
                 disabled: true
@@ -156,7 +163,8 @@ export class CrearNoticia extends Component {
         }
     }
     
-    render() {
+    render() 
+    {
         
         window.onload = function()
         {

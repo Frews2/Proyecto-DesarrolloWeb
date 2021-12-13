@@ -17,13 +17,13 @@ export async function servicioObtenerFiguras() {
         })
 }
 
-export async function servicioRegistroFiguras(formFigura) {
+export async function servicioRegistroFiguras(formFigura)
+{
     return fetch(API_FIGURAS+"Registrar", 
     {
         method: "POST",
         headers: 
         {
-            'Content-Type': 'application/json',
             'Authorization': sessionStorage.getItem('token')
         },
         body:formFigura,

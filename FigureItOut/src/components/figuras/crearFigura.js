@@ -2,12 +2,17 @@ import React, { Component } from "react";
 
 import { servicioRegistroFiguras } from "../../servicios/servicioFiguras.js";
 
-const API_LINK="http://localhost:4000/";
 const LONGITUD_MAXIMA_ARCHIVONOMBRE = 30;
+const REGEX_ESPACIODOBLE=/ +(?= )/g;
+const REGEX_ESPACIOBLANCO=/\s/g;
+const LONGITUD_MINIMA_GENERAL= 0;
+const LONGITUD_MAXIMA_GENERAL=21;
 
-export class SubirFigura extends Component {
+export class SubirFigura extends Component 
+{
     
-    state={
+    state=
+    {
         archivoImagen:null,
         disabled:true,
         form:{
@@ -23,9 +28,8 @@ export class SubirFigura extends Component {
 
     validarInput(entradaUsuario)
     { 
-        console.log(entradaUsuario);
-        if(entradaUsuario.replace(/\s/g,"").length > 0 && entradaUsuario.length > 3 
-        && entradaUsuario.length < 21)
+        if(entradaUsuario.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL && 
+        entradaUsuario.length > LONGITUD_MINIMA_GENERAL && entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
         {
             return true;
         }
@@ -75,14 +79,14 @@ export class SubirFigura extends Component {
         {
             const figuraForm = new FormData();
 
-            figuraForm.append('Nombre',this.state.form.Nombre.replace(/ +(?= )/g,''));
-            figuraForm.append('Altura',this.state.form.Altura.replace(/ +(?= )/g,''));
-            figuraForm.append('Material',this.state.form.Material.replace(/ +(?= )/g,''));
-            figuraForm.append('Marca',this.state.form.Marca.replace(/ +(?= )/g,''));
+            figuraForm.append('Nombre',this.state.form.Nombre.replace(REGEX_ESPACIODOBLE,''));
+            figuraForm.append('Altura',this.state.form.Altura.replace(REGEX_ESPACIODOBLE,''));
+            figuraForm.append('Material',this.state.form.Material.replace(REGEX_ESPACIODOBLE,''));
+            figuraForm.append('Marca',this.state.form.Marca.replace(REGEX_ESPACIODOBLE,''));
             figuraForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
             figuraForm.append('NombreFoto',this.state.form.Imagen);
             figuraForm.append('TipoFoto',this.state.form.ExtensionImagen);
-            figuraForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(/ +(?= )/g,''));
+            figuraForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
 
             servicioRegistroFiguras(figuraForm)
             .then(data=>
@@ -121,7 +125,8 @@ export class SubirFigura extends Component {
     {
         if(event.target.files[0] !=null)
         {
-            if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < LONGITUD_MAXIMA_ARCHIVONOMBRE){
+            if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < LONGITUD_MAXIMA_ARCHIVONOMBRE)
+            {
                 
                 let archivoTemporal = event.target.files[0];
                 let blob = archivoTemporal.slice(0,archivoTemporal.size, archivoTemporal.type);

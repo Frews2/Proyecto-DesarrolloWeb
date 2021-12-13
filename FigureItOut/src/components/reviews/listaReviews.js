@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
-const PAGE_NUMBER = 1;
+let queryString = window.location.search;
+let urlParametros = new URLSearchParams(queryString);
+
+const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const REVIEWS_POR_PAGINA = 5;
 const API_IMAGENES = "http://localhost:4000/imagenes/Ver?";
 const API_LINK="http://localhost:4000/";
 const LONGITUD_MAXIMA_TEXTO = 100;
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 
 
 export default function ListaReviews()

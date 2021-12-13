@@ -1,4 +1,5 @@
 const API_SESIONES = "http://localhost:4000/cuentas/"
+const API_CORREOS = "http://localhost:4000/codigos/enviarCorreo"
 
 export async function servicioLogin(datosDeUsuario) {
     return fetch(API_SESIONES+"Login", 
@@ -84,5 +85,23 @@ export async function servicioValidarColeccionista()
     .then(response => response.json())
     .then(data => {
         return data.exito;
+    })    
+}
+
+export async function servicioReenviarCorreo() 
+{
+    return fetch(API_CORREOS, 
+    {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            Correo: (sessionStorage.getItem('correo')),
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        return data;
     })    
 }

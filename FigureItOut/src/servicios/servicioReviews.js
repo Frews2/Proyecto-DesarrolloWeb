@@ -6,7 +6,6 @@ export async function servicioRegistroReviews(formReview) {
         method: "POST",
         headers: 
         {
-            'Content-Type': 'application/json',
             'Authorization': sessionStorage.getItem('token')
         },
         body:formReview,

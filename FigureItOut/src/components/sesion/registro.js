@@ -4,16 +4,21 @@ import { servicioRegistro } from "../../servicios/servicioSesion.js";
 
 const ESTADO_REGISTRO="Pendiente";
 const REGEX_MAIL=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const REGEX_ESPACIOBLANCO=/\s/g;
+const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const LONGITUD_MINIMA_GENERAL = 3;
 const LONGITUD_MAXIMA_GENERAL = 16;
 const LONGITUD_MINIMA_CORREO_CONTRASEÑA=5;
 const LONGITUD_MAXIMA_CORREO= 50;
 
-export class Registro extends Component {
+export class Registro extends Component 
+{
 
-    state={
+    state=
+    {
         disabled:true,
-        form:{
+        form:
+        {
             email:'',
             apodo:'',
             contraseña:'',
@@ -29,7 +34,7 @@ export class Registro extends Component {
 
     validarInput(entradaUsuario)
     {
-        if(entradaUsuario.replace(/\s/g,"").length > LONGITUD_MINIMA_GENERAL 
+        if(entradaUsuario.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL 
         && entradaUsuario.length > LONGITUD_MINIMA_GENERAL
         && entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
         {
@@ -86,16 +91,16 @@ export class Registro extends Component {
             var nacimientoFecha = (registroFormatoFecha.getDate()+1) + "/" + (registroFormatoFecha.getMonth() + 1) + "/" + registroFormatoFecha.getFullYear();
                     
             let datosRegistro =JSON.stringify({
-                Email: this.state.form.email.replace(/ +(?= )/g,''),
+                Email: this.state.form.email.replace(REGEX_ESPACIODOBLE,''),
                 Password: this.state.form.contraseña,
-                TipoCuenta: this.state.form.tipoCuenta.replace(/ +(?= )/g,''),
-                Apodo: this.state.form.apodo.replace(/ +(?= )/g,''),
-                Nombre: this.state.form.nombre.replace(/ +(?= )/g,''),
-                Ocupacion: this.state.form.ocupacion.replace(/ +(?= )/g,''),
+                TipoCuenta: this.state.form.tipoCuenta.replace(REGEX_ESPACIODOBLE,''),
+                Apodo: this.state.form.apodo.replace(REGEX_ESPACIODOBLE,''),
+                Nombre: this.state.form.nombre.replace(REGEX_ESPACIODOBLE,''),
+                Ocupacion: this.state.form.ocupacion.replace(REGEX_ESPACIODOBLE,''),
                 FechaRegistro: formatoFecha,
                 FechaNacimiento: nacimientoFecha,
-                Pais: this.state.form.pais.replace(/ +(?= )/g,''),
-                Sexo: this.state.form.sexo.replace(/ +(?= )/g,''),
+                Pais: this.state.form.pais.replace(REGEX_ESPACIODOBLE,''),
+                Sexo: this.state.form.sexo.replace(REGEX_ESPACIODOBLE,''),
                 Estatus: ESTADO_REGISTRO
                 })
 
@@ -105,7 +110,7 @@ export class Registro extends Component {
                 if(data.exito)
                 {
                     alert("Se han guardado sus datos, verifique su correo");
-                    sessionStorage.setItem('correo',this.state.form.email);
+                    sessionStorage.setItem('correo',this.state.form.email.replace(REGEX_ESPACIODOBLE,''));
                     window.location.pathname = 'sesion/validarCorreo';
                 }
                 else
@@ -128,11 +133,16 @@ export class Registro extends Component {
         }
     }
 
-    render() {
+    render()
+    {
 
         function checarSesion()
         {
-            if(sessionStorage.getItem('correo') !== null || sessionStorage.getItem('token') !== null)
+            if(sessionStorage.getItem('correo') !== null )
+            {
+                window.location.pathname = 'sesion/validarCorreo';
+            }
+            if(sessionStorage.getItem('token') !== null)
             {
                 window.location.pathname = '/'
             }

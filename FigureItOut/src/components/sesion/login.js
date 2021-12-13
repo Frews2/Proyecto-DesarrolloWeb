@@ -4,6 +4,8 @@ import { servicioValidarPeriodista } from "../../servicios/servicioSesion";
 import { servicioValidarColeccionista } from "../../servicios/servicioSesion";
 
 const REGEX_MAIL=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const REGEX_ESPACIOBLANCO=/\s/g;
+const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const LONGITUD_MINIMA=5;
 const LONGITUD_MAXIMA_CONTRASENIA=20;
 const LONGITUD_MAXIMA_CORREO=50;
@@ -22,8 +24,8 @@ export class Login extends Component
     {
         if(this.state.form.email.length >=LONGITUD_MINIMA && this.state.form.password.length >LONGITUD_MINIMA && 
         this.state.form.email.length < LONGITUD_MAXIMA_CORREO && this.state.form.password.length< LONGITUD_MAXIMA_CONTRASENIA && 
-        REGEX_MAIL.test(this.state.form.email) && this.state.form.email.replace(/\s/g,"").length > LONGITUD_MINIMA && 
-        this.state.form.password.replace(/\s/g,"").length >LONGITUD_MINIMA )
+        REGEX_MAIL.test(this.state.form.email) && this.state.form.email.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA && 
+        this.state.form.password.replace(REGEX_ESPACIOBLANCO,"").length >LONGITUD_MINIMA )
         {
             return true;
         }
@@ -55,10 +57,10 @@ export class Login extends Component
     async login(e) 
     {
         e.preventDefault();
-        /*if(this.validacionGeneral() === true)
-        {*/
+        if(this.validacionGeneral() === true)
+        {
             let datosLogin = JSON.stringify({
-                Email: this.state.form.email.replace(/ +(?= )/g,''),
+                Email: this.state.form.email.replace(REGEX_ESPACIODOBLE,''),
                 Password: this.state.form.password
                 });
 
@@ -68,7 +70,7 @@ export class Login extends Component
                 {
                     if(data.resultado === null)
                     {
-                        sessionStorage.setItem('correo',this.state.form.email);
+                        sessionStorage.setItem('correo',this.state.form.email.replace(REGEX_ESPACIODOBLE,''));
                         alert("Su cuenta aun no ha sido validada, favor de activar su correo");
                         window.location.href ="validarCorreo";
                     }
@@ -76,7 +78,7 @@ export class Login extends Component
                     {
                         sessionStorage.setItem('token',data.resultado);
                         alert("Bienvenido");
-                        window.location.href ="/";
+                        window.location.reload();
                     }
                 }
                 else
@@ -85,7 +87,12 @@ export class Login extends Component
                 }
             }).catch(err => {
                 alert("Ocurrió un error");
-            })  
+            })
+        }
+        else
+        {
+            alert("Verificar Campos porfavor");
+        }
     }
 
     render() 
@@ -114,6 +121,7 @@ export class Login extends Component
                     }
                 }).catch(err => {
                     alert("Ocurrió un error");
+                    console.log(err);
                 }) 
             }
             

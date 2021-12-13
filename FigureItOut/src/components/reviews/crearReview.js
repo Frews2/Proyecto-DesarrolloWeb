@@ -4,7 +4,8 @@ import { servicioObtenerFiguras } from "../../servicios/servicioFiguras.js";
 import { servicioRegistroReviews } from "../../servicios/servicioReviews.js";
 
 const REGEX_NUMERO=/^[0-9]+$/;
-const REGEX_ESPACIODOBLE= / +(?= )/g;
+const REGEX_ESPACIODOBLE=/ +(?= )/g;
+const REGEX_ESPACIOBLANCO=/\s/g;
 const EXTENSION_ARCHIVO = ".jpg";
 const LONGITUD_MINIMA_ARCHIVONOMBRE = 5;
 const LONGITUD_MAXIMA_GENERAL = 31;
@@ -29,7 +30,7 @@ export class CrearReview extends Component {
     }
 
     validarInput(entradaUsuario){ 
-        if(entradaUsuario.replace(/\s/g,"").length > LONGITUD_MINIMA_GENERAL && 
+        if(entradaUsuario.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL && 
         entradaUsuario.length > LONGITUD_MINIMA_GENERAL && 
         entradaUsuario.length < LONGITUD_MAXIMA_GENERAL)
         {
@@ -44,7 +45,7 @@ export class CrearReview extends Component {
         this.state.form.Imagen != null && this.validarInput(this.state.form.DescripcionImagen) === true &&
         this.state.form.ExtensionImagen.length > LOGITUD_MINIMA_VACIA && 
         this.state.form.FigurasCombox.length > LOGITUD_MINIMA_VACIA &&
-        this.state.form.Calificacion.length > LOGITUD_MINIMA_VACIA && this.state.form.Calificacion.length < 4 && 
+        this.state.form.Calificacion.length > LOGITUD_MINIMA_VACIA && this.state.form.Calificacion.length < 3 && 
         this.state.form.Calificacion.match(REGEX_NUMERO))
         {
             return true;
@@ -78,6 +79,7 @@ export class CrearReview extends Component {
         if(this.validacionGeneral() === true && sessionStorage.getItem('token') !== null)
         {
             const reviewForm = new FormData();
+            
             reviewForm.append("IdFigura", this.state.form.FigurasCombox);
             reviewForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
             reviewForm.append('Calificacion',this.state.form.Calificacion.replace(REGEX_ESPACIODOBLE,''));
@@ -171,7 +173,8 @@ export class CrearReview extends Component {
         }
     }
     
-    render() {
+    render() 
+    {
         window.onload = function()
         {
             if(sessionStorage.getItem('token') !== null)

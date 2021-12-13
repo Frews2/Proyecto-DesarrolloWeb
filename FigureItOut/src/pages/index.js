@@ -1,12 +1,13 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+
 import '../css/home.css';
-import ListaNoticias from '../components/noticias/listaNoticias';
+import ListaNoticias from '../components/noticias/listaNoticias.js';
 
 
-function HomepageHeader() {
-  console.log(sessionStorage.getItem('token'));
+function HomepageHeader() 
+{
   return (    
       <div className="hero-image">
         <div className="hero-text">
@@ -20,17 +21,14 @@ function HomepageHeader() {
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout
-      title="Home">
+    <Layout title="Home">
       <HomepageHeader/>
       <main>
-      <h1 className="tituloSolo">Ultimas noticias</h1>
-      <div className="contenedorGeneral">
-          <ListaNoticias></ListaNoticias>
-      </div>
-        
+        <h1 className="tituloSolo">Ultimas noticias</h1>
+        <div className="contenedorGeneral">
+            <ListaNoticias></ListaNoticias>
+        </div>
       </main>
-      
     </Layout>
   );
 }

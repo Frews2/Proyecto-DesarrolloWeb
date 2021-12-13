@@ -1,15 +1,18 @@
-.tituloContenedor{
+  .tituloContenedor
+  {
     color: #824bb9;
     font-size: 140%;
   }
   
-  .textoContenedor{
+  .textoContenedor
+  {
     padding-left: 10%;
     font-size: 100%;
     float: left;
   }
   
-  .fotoColumnaContenedor{
+  .fotoColumnaContenedor
+  {
     border: 2px black;
     width: 275px;
     height: 275px;
@@ -18,20 +21,23 @@
     padding-top: 25px;
   }
   
-  .columnasDivContenedor {
+  .columnasDivContenedor
+  {
     width: 50%;
     float: left;
     word-break: break-all;
   }
   
-  .tituloSolo{
+  .tituloSolo
+  {
     justify-content: center;
     align-items: center;
     padding-top: 2%;
     padding-left: 40%;
   
   }
-  .contenedorGeneral{
+  .contenedorGeneral
+  {
     justify-content: center;
     align-items: center;
     display: flex;
@@ -39,7 +45,8 @@
     padding-right: 20%;
   }
   
-  .contenedorPadrePublicacion{
+  .contenedorPadrePublicacion
+  {
     width:100%;
     height: 100%;
     border: 10%;
@@ -47,59 +54,106 @@
   }
   
   
-  .contenedorPadreFiguras{
+  .contenedorPadreFiguras
+  {
     width:100%;
     top: 10px;
     height: 30%;
     padding: 5%;
   }
   
-  .tituloPublicacion{
+  .tituloPublicacion
+  {
     font-weight: bold;
-    padding-left: 35%;
+    padding-left: 37.5%;
     padding-top: 2%;
   }
   
-  .textoPublicacion{
+  .textoPublicacion
+  {
     font-weight: normal;
-    padding-left: 2.5%;
     padding-right: 2.5%;
     color: #ffffff;
   }
   
-  .fotoPublicacion{
+  .fotoPublicacion
+  {
     border: 1px black;
     width: 100%;
     height: 50%;
-    padding-left: 30%;
+    padding-left: 35%;
     padding-right: 30%;
     padding-bottom: 5%;
   }
-  .contenedorBusqueda{
+  .contenedorBusqueda
+  {
     width: 80%;
     padding: 1%;
     padding-left: 30%;
   }
   
-  .paginacionDesabilitada{
-  color:black;
-	background: #432561;
-	transition: all 0.4s ease 0s;
-  text-align: center;
+  .paginacionDesabilitada
+  {
+    color:black;
+    background: #432561;
+    transition: all 0.4s ease 0s;
+    text-align: center;
   }
 
-  .inputBusqueda {
+  .inputBusqueda 
+  {
     width: 70%;
     display:inline-block;
     margin-left: 2%;
     margin-right: 2%;
   }
 
-  #botonBusqueda{
-      width: 10%;
-      display:inline-block;
+  #botonBusqueda
+  {
+    width: 10%;
+    display:inline-block;
   }
 
-  .labelBusqueda{
+  .labelBusqueda
+  {
     font-size: 140%;
+  }
+
+  .etiquetasPublicacion
+  {
+    padding-left: 35%;
+  }
+  .contenedorComentarios
+  {
+    width:100%;
+    height: 100%;
+    border: 10%;
+    padding-left: 35%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .contenedorComentario
+  {
+    width:50%;
+    height: 100%;
+    border: 10%;
+    padding-left: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-color: rgb(146, 145, 145);
+    border-style: solid;
+  }
+
+  .nombreUsuarioComentario
+  {
+    font-size: 90%;
+  }
+
+  .textoComentario
+  {
+    padding-left: 2%;
+    font-size: 80%;
   }

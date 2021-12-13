@@ -2,16 +2,15 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 import ReactPaginate from "react-paginate";
-import { servicioBuscarNoticias } from '../../servicios/servicioNoticias';
-
-const PAGE_NUMBER = 1;
-const NOTICIAS_POR_PAGINA = 5;
-const API_LINK="http://localhost:4000/";
-const API_IMAGENES = API_LINK+"imagenes/Ver?";
 
 let queryString = window.location.search;
 let urlParametros = new URLSearchParams(queryString);
+
 const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
+const NOTICIAS_POR_PAGINA = 5;
+const LONGITUD_MAXIMA_TEXTO = 150;
+const API_LINK="http://localhost:4000/";
+const API_IMAGENES = API_LINK+"imagenes/Ver?";
 
 
 export default function noticias() {
@@ -33,11 +32,12 @@ export default function noticias() {
   }
 
   function recortarTexto(noticiaTexto){
-    if (noticiaTexto.length > 200) {
+    if (noticiaTexto.length > LONGITUD_MAXIMA_TEXTO) {
       noticiaTexto = noticiaTexto.substring(0, 199) + "...";
     }
     return noticiaTexto;
   }
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +53,7 @@ export default function noticias() {
     fetchData();
   }, [setNoticias]);
 
-  const contadorPagina = noticias===null?0:Math.ceil(noticias.length / NOTICIAS_POR_PAGINA);
+  const contadorPagina = noticias === null?0:Math.ceil(noticias.length / NOTICIAS_POR_PAGINA);
   const cambioPagina = ({ selected }) => {
     setNumeroPagina(selected);
   };
@@ -62,25 +62,25 @@ export default function noticias() {
   return (
     <div className="App" >
       {
-      noticias && noticias.length > 0 ?( noticias
-      .slice(paginasVisitadas, paginasVisitadas + NOTICIAS_POR_PAGINA)
-      .map((noticia) => {
-        return(
-              <div className="contenedorPadreNoticias" key={noticia.IdPublicacion} >
-                  <div className="columnasDivContenedor">
-                      <h2 className="tituloContenedor"><a href={"/noticias/verNoticia/?id="+ 
-                      noticia.IdPublicacion}>{noticia.Titulo}</a></h2>
-                      <h3 className="textoContenedor">{recortarTexto(noticia.Texto)}</h3>
-                  </div>
-                  <div className="columnasDivContenedor">
-                    <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ noticia.TipoFoto +
-                    "&"+"path=noticias/" + noticia.NombreFoto} alt= {noticia.DescripcionFoto}></img>
-                  </div>
-              </div>
-        );}))
-        :(
-          <h2 className='tituloContenedor'> No se han encontrado noticias referente a tu busqueda </h2>
-      )
+        noticias && noticias.length > 0 ?( noticias
+        .slice(paginasVisitadas, paginasVisitadas + NOTICIAS_POR_PAGINA)
+        .map((noticia) => {
+          return(
+                <div className="contenedorPadreNoticias" key={noticia.IdPublicacion} >
+                    <div className="columnasDivContenedor">
+                        <h2 className="tituloContenedor"><a href={"/noticias/verNoticia/?id="+ 
+                        noticia.IdPublicacion}>{noticia.Titulo}</a></h2>
+                        <h3 className="textoContenedor">{recortarTexto(noticia.Texto)}</h3>
+                    </div>
+                    <div className="columnasDivContenedor">
+                      <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ noticia.TipoFoto +
+                      "&"+"path=noticias/" + noticia.NombreFoto} alt= {noticia.DescripcionFoto}></img>
+                    </div>
+                </div>
+          );}))
+          :(
+            <h2 className='tituloContenedor'> No se han encontrado noticias referente a tu busqueda </h2>
+          )
       }
       <ReactPaginate
         previousLabel={<BsArrowLeft/>} nextLabel={<BsArrowRight/>}

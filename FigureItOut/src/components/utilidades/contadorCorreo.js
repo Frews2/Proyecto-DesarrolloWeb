@@ -1,26 +1,18 @@
 import React, {Component} from "react";
-import { BsSearch } from "react-icons/bs";
 
-var segundosContador=10;
+import { servicioReenviarCorreo } from "../../servicios/servicioSesion.js";
+
+const SEGUNDOS_CONTADOR=10;
+
 export class ContadorCorreo extends Component
 {
     async reenviar(e)
     {
+        e.preventDefault();
+        
         if(sessionStorage.getItem('correo') !== null)
         {
-            e.preventDefault();
-            fetch("http://localhost:4000/codigos/enviarCorreo", 
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                
-                body: JSON.stringify({
-                    Correo: (sessionStorage.getItem('correo')),
-                })
-            })
-            .then(response=> response.json())
+            servicioReenviarCorreo()
             .then(data=>
             {
                 if(data.exito)
@@ -44,11 +36,12 @@ export class ContadorCorreo extends Component
         }
     }
 
-    render(){
+    render()
+    {
 
         var downloadTimer = setInterval(function()
         {
-            if(segundosContador <= 0)
+            if(SEGUNDOS_CONTADOR <= 0)
             {
                 clearInterval(downloadTimer);
                 document.getElementById("botonReenvio").disabled = false;
@@ -57,12 +50,13 @@ export class ContadorCorreo extends Component
             } 
             else 
             {
-                document.getElementById("contador").innerHTML = "Espere "+ segundosContador + " segundos para reenviar correo";
+                document.getElementById("contador").innerHTML = "Espere "+ SEGUNDOS_CONTADOR + " segundos para reenviar correo";
             }
             
-            segundosContador -= 1;
+            SEGUNDOS_CONTADOR -= 1;
 
         }, 1000);
+        
         return(
             <form onSubmit={(e)=>this.reenviar(e)}>
                 <div className="etiquetaContador">

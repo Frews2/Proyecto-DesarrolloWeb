@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
+let queryString = window.location.search;
+let urlParametros = new URLSearchParams(queryString);
+
+const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const FIGURAS_POR_PAGINA = 3;
 const API_LINK = "http://localhost:4000/"
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 
 
 export default function ListaFiguras() {
