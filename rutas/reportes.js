@@ -24,7 +24,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar el reporte. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(400).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   var nuevoReporte = req.body;
@@ -37,7 +37,7 @@ async (req, res) => {
     if (resultadoCreacion.exito) {
       
       respuestaJson.exito = true;
-      return res.status(200).send(respuestaJson);
+      return res.status(201).send(respuestaJson);
     } else {
       res.status(400).send(respuestaJson);
     }

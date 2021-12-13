@@ -26,7 +26,7 @@ async (req, res) => {
     respuestaJson.mensaje = 'Se encontaron errores al validar el comentario. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
-    return res.status(500).send(respuestaJson).end();
+    return res.status(406).send(respuestaJson).end();
   }
 
   var nuevoComentario = req.body;
@@ -38,7 +38,7 @@ async (req, res) => {
 
     if (resultadoCreacion.exito) {
       respuestaJson.exito = true;
-      return res.status(200).send(respuestaJson);
+      return res.status(201).send(respuestaJson);
     } else {
       res.status(400).send(respuestaJson);
     }
@@ -67,7 +67,7 @@ async (req, res) => {
   if(!idPublicacion && !idComentario){
     respuestaJson.mensaje = 'ERROR: ' +
       'Debe ingresar una id de publicación o una id de comentario.';
-    return res.status(400).send(respuestaJson);
+    return res.status(406).send(respuestaJson);
   }
   if (idComentario) {
     return obtenerComentarioDatos(idComentario)
