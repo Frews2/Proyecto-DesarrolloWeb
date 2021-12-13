@@ -13,7 +13,7 @@ db.cuentas.insertMany([
         "IdCuenta": "6f2850f9-b82f-451d-baf2-26fd93874418",
         "Email": "frews@gmail.com",
         "TipoCuenta": "Coleccionista",
-        "Password": "$2a$10$Y6BUBqzyoZ9lLJYEawIgJu5rXNsOYkX/2chhvXM86osYdqENtnehu",
+        "Password": "$2a$10$X.IH.bTN6vZ2GRf.t1iFPeQeakxrAAl2/nTe8cmKxfHpINx9InMxO",
         "Apodo": "El frews",
         "Estatus": "Activo"
     },
@@ -21,11 +21,35 @@ db.cuentas.insertMany([
         "IdCuenta": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
         "Email": "marcos@gmail.com",
         "TipoCuenta": "Coleccionista",
-        "Password": "$2a$10$09vwxAXe6Z.LbLCoSi72huWEXcLo5/EPe7p5OVGEIJqOh/eHe4Iue",
+        "Password": "$2a$10$qDVqQkd7gVeinIQgVEt6d..5Ta6VpWmuotAtesAss5tSeo3iRL.P6",
         "Apodo": "Marco Polo",
-        "Estatus": "Activo"
+        "Estatus": "Pendiente"
+    },
+    {
+        "IdCuenta": "d0b44b73-87d8-4813-90ba-b9dcc9a7aac8",
+        "Email": "pruebaPeriodista@hotmail.com",
+        "TipoCuenta": "Periodista",
+        "Password": "$2a$10$26UpnYDRyLaechCYoeBk5OOOqR.1tZn6Y5YRBNHDLMOUozBbET7eq",
+        "Apodo": "PruebaP",
+        "Estatus": "Pendiente"
+    },
+    {
+        "IdCuenta": "7ede095a-5fe2-4785-89ce-8f893780b25f",
+        "Email": "pruebaPeriodista2@hotmail.com",
+        "TipoCuenta": "Periodista",
+        "Password": "$2a$10$6WVp2ZS3hoyoiiTDspVNS.YrcXxz7ZfCz/X0b2ntgwnR03m793KeO",
+        "Apodo": "Reportado",
+        "Estatus": "Reportado"
     },
 ]);
+
+db.codigos.insert([
+    {
+        "Correo": "pruebaPeriodista@hotmail.com",
+        "Numero": "12345"
+    }
+]);
+
 
 db.figuras.insert([
     {
@@ -105,7 +129,7 @@ db.noticias.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de una caja transparante con un hombre alto con una capa adentro.",
         "Etiquetas": ["DC","Superman","nuevo"],
-        "Estatus": "Activo"
+        "Estatus": "Reportado"
     }
 ]);
 
@@ -123,7 +147,7 @@ db.reviews.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de una figura de hombre alto con una capa y mascara vestido de negro.",
         "Etiquetas": ["DC","Batman"],
-        "Comentarios": ["e0345ad4-828a-42c1-990d-0ced7d3592ef"],
+        "Comentarios": ["87d68b3c-d32b-435f-8d08-448629f38151"],
         "Estatus": "Activo"
     },
     {
@@ -154,21 +178,39 @@ db.reviews.insert([
         "TipoFoto": ".jpg",
         "DescripcionFoto": "Imagen de la cara de un hombre con barba con una figura junto de su mejilla.",
         "Etiquetas": ["Noticia","Superman","Sol"],
-        "Estatus": "Activo"
+        "Estatus": "Reportado"
     }
 ]);
 
 db.comentarios.insert([
     {
-        "IdComentario": "e0335ad4-828a-42c1-990d-0ced7d3592ef",
+        "IdComentario": "87d68b3c-d32b-435f-8d08-448629f38151",
         "Texto": "Buen review",
-        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
+        "IdPublicacionOriginal":"e0335ad4-828a-42c1-990d-0ced7d3592ef",
         "Estatus": "Activo"
     },
     {
-        "IdComentario": "a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
+        "IdComentario": "296586c3-f036-49f8-b6c0-4f051de6c10a",
         "Texto": "Buena noticia",
-        "IdPublicacionOriginal":"5b8e53b1-94e1-4b97-a2fc-7b9078133e76",
+        "IdPublicacionOriginal":"a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
+        "Estatus": "Activo"
+    },
+    {
+        "IdComentario": "4682c517-fb88-4f40-ad57-a83197c9e943",
+        "Texto": "No me gusta. palabra mala",
+        "IdPublicacionOriginal":"a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
+        "Estatus": "Activo"
+    },
+    {
+        "IdComentario": "fe432d43-5c85-4f31-b497-40eab6a5578c",
+        "Texto": "Hitler no era tan malo",
+        "IdPublicacionOriginal":"a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
+        "Estatus": "Activo"
+    },
+    {
+        "IdComentario": "cdc97ab1-0251-4129-9756-dd511aad751d",
+        "Texto": "palabra mala x2",
+        "IdPublicacionOriginal":"a4d3c395-f2e8-41c3-8fc1-9e8362b088d4",
         "Estatus": "Activo"
     }
 ]);
@@ -179,7 +221,6 @@ db.reportes.insert([
         "IdPublicacion": "296586c3-f036-49f8-b6c0-4f051de6c90a",
         "TipoPublicacion": "Review",
         "IdAcusador": "89e886e9-e46c-4e59-a1fb-e5bae1ead90f",
-        "Razon": "No es un review, es una foto de hitler",
-        "IdAcusado": "6f2850f9-b82f-451d-baf2-26fd93874418"
+        "Razon": "No es un review, es una foto de hitler"
     }
 ]);
