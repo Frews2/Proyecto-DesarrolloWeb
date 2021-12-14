@@ -9,7 +9,8 @@ import  VistaNoticia  from "../../components/noticias/vistaNoticia.js";
 import { CrearComentario } from "../../components/utilidades/crearComentario.js";
 import { CrearReporte } from "../../components/utilidades/crearReporte.js";
 
-function PaginaVerNoticia() {
+function PaginaVerNoticia() 
+{
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout title="Revisa la noticia">
