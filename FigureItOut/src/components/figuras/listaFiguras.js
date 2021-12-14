@@ -94,8 +94,8 @@ export default function ListaFiguras()
                     <h3 className="textoContenedor"> {"Material: "+figuraJson.Material}</h3>
                 </div>
                 <div className="columnasDivContenedor">
-                  <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ figuraJson.TipoFoto +
-                  "&"+"path=figuras/" + figuraJson.NombreFoto} alt= {figuraJson.DescripcionFoto}></img>
+                  <img className="fotoColumnaContenedor" src={API_IMAGENES + "direccion=figuras/"+ figuraJson.NombreFoto +
+                      "&tipo=" + figuraJson.TipoFoto} alt= {figuraJson.DescripcionFoto}></img>
                 </div>
             </div>
       );

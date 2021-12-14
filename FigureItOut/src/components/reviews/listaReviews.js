@@ -103,8 +103,8 @@ export default function ListaReviews()
                     <h3 className="textoContenedor">{"Calificacion: "+review.Calificacion+"/10"}</h3>
                 </div>
                 <div className="columnasDivContenedor">
-                  <img className="fotoColumnaContenedor" src={API_IMAGENES + "type=" + review.TipoFoto + 
-                  "&"+"path=reviews/" + review.NombreFoto} alt= {review.DescripcionFoto}></img>
+                  <img className="fotoColumnaContenedor" src={API_IMAGENES + "direccion=reviews/"+ review.NombreFoto +
+                      "&tipo=" + review.TipoFoto} alt= {review.DescripcionFoto}></img>
                 </div>
             </div>
       );

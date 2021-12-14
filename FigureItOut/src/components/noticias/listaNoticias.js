@@ -80,8 +80,9 @@ export default function noticias() {
                         <h3 className="textoContenedor">{recortarTexto(noticia.Texto)}</h3>
                     </div>
                     <div className="columnasDivContenedor">
-                      <img className="fotoColumnaContenedor" src={API_IMAGENES + "type="+ noticia.TipoFoto +
-                      "&"+"path=noticias/" + noticia.NombreFoto} alt= {noticia.DescripcionFoto}></img>
+                      <img className="fotoColumnaContenedor" src={API_IMAGENES + "direccion=noticias/"+ noticia.NombreFoto +
+                      "&tipo=" + noticia.TipoFoto} alt= {noticia.DescripcionFoto}></img>
+                      
                     </div>
                 </div>
           );}))

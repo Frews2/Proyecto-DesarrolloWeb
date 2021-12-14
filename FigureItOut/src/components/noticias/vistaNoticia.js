@@ -84,7 +84,7 @@ export default function VistaNoticia()
 
               <div>
                 {noticia && <img className="fotoPublicacion" 
-                src={API_IMAGENES + "type="+ noticia.TipoFoto +"&"+"path=noticias/" + noticia.NombreFoto} 
+                src={API_IMAGENES + "direccion=noticias/"+ noticia.NombreFoto +"&tipo=" + noticia.TipoFoto} 
                 alt= {noticia.DescripcionFoto} ></img>}
               </div>
 

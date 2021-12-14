@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { CrearReporte } from "../../components/utilidades/crearReporte.js";
 
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
-const API_IMAGENES = API_LINK+"imagenes/Ver?";
+const API_IMAGENES = API_LINK+"imagenes/ver?";
 
 export default function VistaReview(){
     const [review, setReview] = useState([]);
@@ -78,7 +78,7 @@ export default function VistaReview(){
               </div>
               <div>
                 {review && <img className="fotoPublicacion" 
-                src={API_IMAGENES + "type="+ review.TipoFoto +"&path=reviews/" + review.NombreFoto} 
+                src={API_IMAGENES + "direccion=reviews/"+ review.NombreFoto +"&tipo=" + review.TipoFoto} 
                 alt= {review.DescripcionFoto} ></img>}
               </div>
               <div>
