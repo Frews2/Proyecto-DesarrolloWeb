@@ -241,7 +241,9 @@ export class CrearNoticia extends Component {
 
                     <div className="form-group">
                         <label htmlFor="figurasCombox">Selecciona la figura *</label>
-                        <select id="figurasCombox" name="FigurasCombox" onChange={this.handleChange} required></select>
+                        <select id="figurasCombox" name="FigurasCombox" onChange={this.handleChange} required>
+                            <option value="" default>Selecciona una opción</option>
+                        </select>
                     </div>
 
                     <button type="submit" className="botonNormal" disabled={this.state.disabled} >Subir Noticia</button>

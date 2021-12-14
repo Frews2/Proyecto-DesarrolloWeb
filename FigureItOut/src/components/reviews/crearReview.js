@@ -258,7 +258,9 @@ export class CrearReview extends Component {
 
                     <div className="form-group">
                         <label htmlFor="figura">Selecciona la figura *</label>
-                        <select id="figurasCombox" name="FigurasCombox" onChange={this.handleChange} required></select>
+                        <select id="figurasCombox" name="FigurasCombox" onChange={this.handleChange} required>
+                            <option value="" default>Selecciona una figura</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="Calificacion">Dale una calificacion *</label>

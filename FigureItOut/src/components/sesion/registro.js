@@ -85,10 +85,9 @@ export class Registro extends Component
         e.preventDefault();
         if(this.validacionGeneral() === true && typeof window !== 'undefined')
         {
-            var actualDate = new Date();
             var registroFormatoFecha = new Date (this.state.form.fechaNacimiento);
-            var formatoFecha = actualDate.getDate() + "/" + (actualDate.getMonth() + 1) + "/" + actualDate.getFullYear();
-            var nacimientoFecha = (registroFormatoFecha.getDate()+1) + "/" + (registroFormatoFecha.getMonth() + 1) + "/" + registroFormatoFecha.getFullYear();
+            var nacimientoFecha = (registroFormatoFecha.getDate()+1) + "/" + (registroFormatoFecha.getMonth() + 1) + 
+            "/" + registroFormatoFecha.getFullYear();
                     
             let datosRegistro =JSON.stringify({
                 Email: this.state.form.email.replace(REGEX_ESPACIODOBLE,''),
@@ -97,7 +96,6 @@ export class Registro extends Component
                 Apodo: this.state.form.apodo.replace(REGEX_ESPACIODOBLE,''),
                 Nombre: this.state.form.nombre.replace(REGEX_ESPACIODOBLE,''),
                 Ocupacion: this.state.form.ocupacion.replace(REGEX_ESPACIODOBLE,''),
-                FechaRegistro: formatoFecha,
                 FechaNacimiento: nacimientoFecha,
                 Pais: this.state.form.pais.replace(REGEX_ESPACIODOBLE,''),
                 Sexo: this.state.form.sexo.replace(REGEX_ESPACIODOBLE,''),
@@ -183,7 +181,7 @@ export class Registro extends Component
                     <div className="form-group">
                         <label htmlFor="pais" >Pais *</label>
                             <select id="pais" name="pais" onChange={this.handleChange} required>
-                                <option value="" disabled>Selecciona una opción</option>
+                                <option value="" default >Selecciona una opción</option>
                                 <option value="Argentina">Argentina</option>
                                 <option value="Australia">Australia</option>
                                 <option value="Belize">Belize</option>
@@ -214,7 +212,7 @@ export class Registro extends Component
                     <div className="form-group">
                         <label htmlFor="Sexo" >Sexo *</label>
                         <select onChange={this.handleChange} id="Sexo" name="sexo" required>
-                            <option disabled>Selecciona una opción</option>
+                            <option value="" default>Selecciona una opción</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
                             <option value="Otro">Otro</option>
@@ -224,6 +222,7 @@ export class Registro extends Component
                     <div className="form-group">
                         <label htmlFor="tipoCuenta">Tipo de cuenta *</label>
                         <select onChange={this.handleChange} id="tipoCuenta" name="tipoCuenta" required>
+                            <option value="" default>Selecciona una opción</option>
                             <option value="Periodista">Periodista</option>
                             <option value="Coleccionista">Coleccionista</option>
                         </select>
