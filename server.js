@@ -16,7 +16,7 @@ import fileupload from 'express-fileupload';
 import mongoose from 'mongoose';
 
 const app = express();
-const PORT = 4000;
+const PORT = 4100;
 const URL_BASE_DE_DATOS = process.env.DB_CONNECTION_STRING;
 const USUARIO_BASE_DE_DATOS = process.env.MONGO_USERNAME;
 const CONTRASENIA_BASE_DE_DATOS = process.env.MONGO_PASSWORD;
