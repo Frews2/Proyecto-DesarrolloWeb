@@ -88,7 +88,7 @@ export async function reportarComentario(idComentario) {
   var seReporto = false;
 
   if (Review.exists({ IdComentario: idComentario, Estatus: ACTIVO })) {
-    return Review.updateOne(
+    return Comentario.updateOne(
       { IdComentario: idComentario },
       { Estatus: REPORTADO })
     .then(seActualizo => {
