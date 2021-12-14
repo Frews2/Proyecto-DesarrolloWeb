@@ -3,7 +3,9 @@ import React, { Component } from "react";
 import { servicioRegistro } from "../../servicios/servicioSesion.js";
 
 const ESTADO_REGISTRO="Pendiente";
-const REGEX_MAIL=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const REGEX_MAIL=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
 const REGEX_ESPACIOBLANCO=/\s/g;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const LONGITUD_MINIMA_GENERAL = 3;
