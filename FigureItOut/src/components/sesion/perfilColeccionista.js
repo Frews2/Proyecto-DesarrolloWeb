@@ -14,12 +14,12 @@ export class PerfilColeccionista extends Component{
                 .then(exito => {
                     if(exito === false)
                     {
-                        window.location.pathname = '../';
+                        window.location.pathname = '/';
                     }
                 }).catch(error => {
                     window.alert("Ocurrió un error");
                     console.error(error);
-                    window.location.pathname = '../';
+                    window.location.pathname = '/';
                 }) 
             }
         }
@@ -32,11 +32,13 @@ export class PerfilColeccionista extends Component{
                 <div className="inicioCerrarSesion">
                     <button type="submit" className="botonNormal"  onClick={function(e) 
                     {
-                        window.location.href="../reviews/subirReview"    
+                        window.location.href="/reviews/subirReview"    
                     }} >Subir Review</button>
-                    <button type="submit" className="botonNormal" onClick={function(e) {
-                        sessionStorage.setItem('token',null);
-                        window.location.href="../"    
+                    <button type="submit" className="botonNormal" onClick={function(e)
+                    {
+                        sessionStorage.removeItem('token');
+                        window.alert("Hasta pronto");
+                        window.location.href="/"    
                     }} >Cerrar sesion</button>
                 </div>
             </div>

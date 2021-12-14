@@ -27,11 +27,11 @@ export default function VistaReview(){
     {
       let queryString = window.location.search;
       let urlParametros = new URLSearchParams(queryString);
-      const ID_REVIEW = urlParametros.get('id');
+      var idReview = urlParametros.get('id');
     
       const fetchData = async () => 
       {
-        const res = await  fetch(API_LINK+"reviews/buscar?id="+ID_REVIEW, 
+        const res = await  fetch(API_LINK+"reviews/buscar?id="+idReview, 
         {
           method: "GET",
           headers: {
@@ -46,19 +46,26 @@ export default function VistaReview(){
 }, [setReview]);
 
   useEffect(() => {
-    const fetchData = async () => 
+    if(typeof window !== "undefined")
     {
-      const res = await  fetch(API_LINK+"comentarios/buscar?idPublicacion="+ID_REVIEW, 
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+
+      var idReview = urlParametros.get('id');
+      const fetchData = async () => 
       {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-      });
-      const json = await res.json();
-      setComentarios(json.resultado);
-    };
-    fetchData();
+        const res = await  fetch(API_LINK+"comentarios/buscar?idPublicacion="+idReview, 
+        {
+          method: "GET",
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        });
+        const json = await res.json();
+        setComentarios(json.resultado);
+      };
+      fetchData();
+    }
   }, [setComentarios]);
 
     return (
@@ -84,8 +91,8 @@ export default function VistaReview(){
           comentarios && comentarios.length > 0 ?( comentarios
           .map((comentarios) => {
             return(
-              <div className='contenedorComentarios'>
-                  <div className="contenedorComentario" key={comentarios.IdComentario} >
+              <div className='contenedorComentarios'  key={comentarios.IdComentario} >
+                  <div className="contenedorComentario">
                     <h3 className="nombreUsuarioComentario">{comentarios.Apodo+":"}</h3>
                     <h3 className="textoComentario">{comentarios.Texto}</h3>
                           <h3 className="textoComentario">{"Registrado: "+comentarios.FechaRegistro}</h3>

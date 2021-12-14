@@ -31,10 +31,10 @@ export default function VistaNoticia()
       let queryString = window.location.search;
       let urlParametros = new URLSearchParams(queryString);
 
-      const ID_PUBLICACION = urlParametros.get('id');
+      var idPublicacion = urlParametros.get('id');
       const fetchData = async () => 
       {
-        const res = await  fetch(API_LINK+"noticias/buscar?id="+ID_PUBLICACION, 
+        const res = await  fetch(API_LINK+"noticias/buscar?id="+idPublicacion, 
         {
           method: "GET",
           headers: {
@@ -50,19 +50,26 @@ export default function VistaNoticia()
 
   useEffect(() => 
   {
-    const fetchData = async () => 
+    if(typeof window !== "undefined")
     {
-      const res = await  fetch(API_LINK+"comentarios/buscar?idPublicacion="+ID_PUBLICACION, 
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+
+      var idPublicacion = urlParametros.get('id');
+      const fetchData = async () => 
       {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-      });
-      const json = await res.json();
-      setComentarios(json.resultado);
-    };
-    fetchData();
+        const res = await  fetch(API_LINK+"comentarios/buscar?idPublicacion="+idPublicacion, 
+        {
+          method: "GET",
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        });
+        const json = await res.json();
+        setComentarios(json.resultado);
+      };
+      fetchData();
+    }
   }, [setComentarios]);
   
     return (

@@ -15,12 +15,12 @@ export class PerfilPeriodista extends Component{
                     .then(exito => {
                         if(exito === false)
                         {
-                            window.location.pathname = '../';
+                            window.location.pathname = '/';
                         }
                     }).catch(error => {
                         window.alert("Ocurrió un error");
                         console.error(error);
-                        window.location.pathname = '../';
+                        window.location.pathname = '/';
                     }) 
                 }
             }
@@ -35,13 +35,13 @@ export class PerfilPeriodista extends Component{
                     <button type="submit" className="botonNormal"  onClick=
                     {function(e) 
                     {
-                        window.location.href="../noticias/subirNoticia"    
+                        window.location.href="/noticias/subirNoticia"    
                     }} >Subir Noticias</button>
 
                     <button type="submit" className="botonNormal" onClick=
                     {function(e) 
                     {
-                        window.location.href="../figuras/subirFigura"    
+                        window.location.href="/figuras/subirFigura"    
                     }} >Subir Figura</button>
                 </div>
 
@@ -49,8 +49,9 @@ export class PerfilPeriodista extends Component{
                     <button type="submit" className="botonNormal" onClick=
                     {function(e) 
                     {
-                        sessionStorage.setItem('token',null);
-                        window.location.href="../"    
+                        sessionStorage.removeItem('token');
+                        window.alert("Hasta pronto");
+                        window.location.href="/"    
                     }} >Cerrar sesion</button>
                 </div>
             </div>

@@ -72,7 +72,7 @@ export class Login extends Component
                     {
                         sessionStorage.setItem('correo',this.state.form.email.replace(REGEX_ESPACIODOBLE,''));
                         window.alert("Su cuenta aun no ha sido validada, favor de activar su correo");
-                        window.location.href ="validarCorreo";
+                        window.location.href ="/validarCorreo";
                     }
                     else
                     {

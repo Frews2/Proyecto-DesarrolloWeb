@@ -137,9 +137,10 @@
   
   .contenedorComentario
   {
-    width:50%;
-    height: 100%;
-    border: 10%;
+    width: 50%;
+    height: 40%;
+    border: 1%;
+    padding-right: 1%;
     padding-left: 5%;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -160,7 +161,14 @@
 
   .botonReporte
   {
-    width: 100%;
-    padding-right: 12%;
-    padding-left: 10%;
+    width: 120%;
+    font-weight: 1%;
+  }
+  
+  .contenedorReporte
+  {
+    width: 180%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
   }

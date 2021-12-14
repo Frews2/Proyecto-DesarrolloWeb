@@ -65,7 +65,7 @@ export class CrearReporte extends Component
             {
                 let queryString = window.location.search;
                 let urlParametros = new URLSearchParams(queryString);
-                const idPublicacion = urlParametros.get('id');
+                var idPublicacion = urlParametros.get('id');
 
                 const reporteForm = new FormData();
                 reporteForm.append('Razon',razonReporte.replace(REGEX_ESPACIODOBLE,''));
@@ -101,7 +101,8 @@ export class CrearReporte extends Component
             
             <div className="contenedorReporte">
                 <form onSubmit={(e)=>this.reportarPublicacion(e)}>
-                    <button type="submit" className="botonReporte" id="botonBusqueda"><BsFillFlagFill/></button>
+                    <button type="submit" className="botonReporte" id="botonBusqueda"
+                    value="Reportar">Reportar <BsFillFlagFill/></button>
                 </form>
             </div>
             );
