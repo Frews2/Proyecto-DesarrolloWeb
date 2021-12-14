@@ -139,19 +139,20 @@ export class Login extends Component
                 <h1>Iniciar Sesion</h1>
 
                 <div className="form-group">
-                    <label htmlFor="email" >Email:</label>
+                    <label htmlFor="email" >Correo*  (minimo 5 y maximo 50 caracteres)</label>
                     <input type="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} id="email"
                     maxLength="50" name="email" pattern= "[a-z0-9._%+-]+@+[a-z0-9.-]+\.[a-z]{2,}$" onChange={this.handleChange} required/>
                 </div>
 
                 <div className="form-group" >
-                    <label htmlFor="password">Contraseña:</label>
+                    <label htmlFor="password">Contraseña* (minimo 6 y maximo 15 caracteres)</label>
                     <input name="password" type="password" maxLength="15" className="form-control"  minLength={5}
                     placeholder="introduce tu contraseña" onChange={this.handleChange} id="password" required />
                 </div>
                 <div className="form-end">
                     <button type="submit" className="botonNormal" disabled={this.state.disabled}>Acceder</button>
                     <p> ¿No estas registrado?<a href="registro">registrate</a> </p>
+                    <p >Favor de verificar las especificaciones de cada campo</p>
                 </div>
                 </form>
             </div>

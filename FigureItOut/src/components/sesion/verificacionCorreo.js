@@ -114,7 +114,7 @@ export class VerificacionCorreo extends Component
                         <h2>Valida Correo</h2>
 
                         <div className="form-group">
-                            <label>Codigo de verificacion</label>
+                            <label>Codigo de verificacion* (Valor numerico de 5 digitos )</label>
                             <input type="number" className="form-control" id="numeroEntrada" placeholder="Introduce el codigo"
                             name="codigoVer" onChange={this.handleChange} required/>
                         </div>

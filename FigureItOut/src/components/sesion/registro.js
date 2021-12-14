@@ -8,7 +8,7 @@ const REGEX_MAIL=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((
 
 const REGEX_ESPACIOBLANCO=/\s/g;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
-const LONGITUD_MINIMA_GENERAL = 3;
+const LONGITUD_MINIMA_GENERAL = 4;
 const LONGITUD_MAXIMA_GENERAL = 16;
 const LONGITUD_MINIMA_CORREO_CONTRASEÑA=5;
 const LONGITUD_MAXIMA_CORREO= 50;
@@ -158,18 +158,18 @@ export class Registro extends Component
                     <h1>Registrate</h1>
 
                     <div className="form-group">
-                        <label htmlFor="apodo">Apodo *</label>
+                        <label htmlFor="apodo">Apodo* (minimo 4 y maximo 15 caracteres)</label>
                         <input type="text" id="apodo" maxLength="15" className="form-control"  minLength={3} placeholder="Escribe tu apodo" 
                         onChange={this.handleChange} name="apodo" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor ="nombre" >Nombre *</label>
+                        <label htmlFor ="nombre" >Nombre* (minimo 4 y maximo 15 caracteres)</label>
                         <input type="text" id="nombre" maxLength="15" className="form-control" name="nombre"
                         minLength={3} placeholder="Escribe tu primer nombre" onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="ocupacion" >Ocupacion *</label>
+                        <label htmlFor="ocupacion" >Ocupacion* (minimo 4 y maximo 15 caracteres)</label>
                         <input type="text" id="ocupacion"maxLength="15" className="form-control"  minLength={3} name="ocupacion"
                         placeholder="Escribe tu ocupacion" onChange={this.handleChange} required/>
                     </div>
@@ -193,7 +193,6 @@ export class Registro extends Component
                                 <option value="Chile">Chile</option>
                                 <option value="Colombia">Colombia</option>
                                 <option value="Costa Rica">Costa Rica</option>
-                                <option value="Cuba">Cuba</option>
                                 <option value="RepDominicana">Republica Dominicana</option>
                                 <option value="Ecuador">Ecuador</option>
                                 <option value="Salvador">El Salvador</option>
@@ -203,7 +202,6 @@ export class Registro extends Component
                                 <option value="Mexico">Mexico</option>
                                 <option value="Panama">Panama</option>
                                 <option value="Paraguay">Paraguay</option>
-                                <option value="Peru">Peru</option>
                                 <option value="PuertoRico">Puerto Rico</option>
                                 <option value="España">España</option>
                                 <option value="Uraguay">Uruguay</option>
@@ -231,25 +229,26 @@ export class Registro extends Component
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email" >Correo *</label>
+                        <label htmlFor="email" >Correo* (minimo 5 y maximo 50 caracteres)</label>
                         <input type="email" id="email" className="form-control" placeholder="tucorreo@ejemplo.com" minLength={5} 
                         maxLength="50" name="email" pattern= "[a-z0-9._%+-]+@+[a-z0-9.-]+\.[a-z]{2,}$" onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="contraseña">Contraseña *</label>
+                        <label htmlFor="contraseña">Contraseña * (minimo 6 y maximo 15 caracteres)</label>
                         <input name="contraseña" id="contraseña" type="password" maxLength="15" className="form-control"  minLength={6}
                         placeholder="introduce tu contraseña" onChange={this.handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirmarContraseña">Confirmar Contraseña *</label>
+                        <label htmlFor="confirmarContraseña">Confirmar Contraseña* (minimo 6 y maximo 15 caracteres)</label>
                         <input name="confirmarContraseña" id="confirmarContraseña" type="password" maxLength="15" className="form-control"  minLength={6}
                         placeholder="introduce tu contraseña" onChange={this.handleChange} required />
                     </div>
                     <button type="submit" className="botonNormal" disabled={this.state.disabled} >Registrate</button>
                     <p>¿Ya estas registrado?<a href="login">ingresa aqui</a> </p>
                     <p >Los campos con (*) son obligatorios de llenar </p>
+                    <p >Favor de verificar las especificaciones de cada campo</p>
                 </form>
             </div>
         );

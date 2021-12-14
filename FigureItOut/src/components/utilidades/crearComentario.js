@@ -102,7 +102,7 @@ export class CrearComentario extends Component
                 <form onSubmit={(e)=>this.comentarPublicacion(e)}>
                     
                 <div className="form-group">
-                    <label htmlFor="realizarComentario">Realizar un comentario:</label>
+                    <label htmlFor="realizarComentario">Realizar un comentario* (minimo 5 y maximo 50 caracteres)</label>
                     <input id="realizarComentario" className="form-control" placeholder="Realiza un comentario" minLength={5} 
                     maxLength="50" name="Comentario"  onChange={this.handleChange} required/>
                 </div>

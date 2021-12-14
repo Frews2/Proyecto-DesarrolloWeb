@@ -230,18 +230,18 @@ export class CrearReview extends Component {
                     <h2>Sube tu review</h2>
 
                     <div className="form-group">
-                        <label htmlFor="titulo" >Titulo*</label>
+                        <label htmlFor="titulo" >Titulo* (minimo 3 y maximo 30 caracteres)</label>
                         <input id="titulo" className="form-control" placeholder="Titulo de la noticia" minLength={3} 
                         maxLength="30" name="Titulo"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="contenido">Contenido *</label>
-                        <textarea type="text" id="contenido" className="textoLargo" maxLength="1190"   minLength={50} placeholder="Escribe tu Contenido" 
+                        <label htmlFor="contenido">Contenido* (minimo 50 y maximo 1200 caracteres)</label>
+                        <textarea type="text" id="contenido" className="textoLargo" maxLength="1200"   minLength={50} placeholder="Escribe tu Contenido" 
                         onChange={this.handleChange} name="Contenido" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="etiquetas" >Etiquetas * (Favor de separarlas con ,)</label>
+                        <label htmlFor="etiquetas" >Etiquetas separadas con ,* (minimo 3 y maximo 30 caracteres)</label>
                         <input id="etiquetas"  className="form-control" placeholder="Figura,Marca,Noticia" minLength={3} 
                         maxLength="30" name="Etiquetas"  onChange={this.handleChange} required/>
                     </div>
@@ -251,7 +251,7 @@ export class CrearReview extends Component {
                     </div>
                     
                     <div className="form-group">
-                        <label htmlFor="descripcionImagen">Descripcion de la imagen *</label>
+                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 3 y maximo 30 caracteres)</label>
                         <input id="descripcionImagen" className="form-control" placeholder="Describe la imagen que adjuntaste" minLength={3} 
                         maxLength="30" name="DescripcionImagen"  onChange={this.handleChange} required/>
                     </div>
@@ -263,13 +263,14 @@ export class CrearReview extends Component {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="Calificacion">Dale una calificacion *</label>
+                        <label htmlFor="Calificacion">Dale una calificacion* (Cantidad numerica del 1 al 10)</label>
                         <input type="number" className="form-control" id="calificacion" placeholder="En cantidad numerica del 1 a 10" 
                         name="Calificacion" onChange={this.handleChange} min={1} max={10} required/>
                     </div>
 
                     <button type="submit" className="botonNormal" disabled={this.state.disabled} >Subir Review</button>
-                    <p className="forgot-password text-right">Los campos con (*) son obligatorios de llenar </p>
+                    <p >Los campos con (*) son obligatorios de llenar </p>
+                    <p >Favor de verificar las especificaciones de cada campo</p>
                 </form>
             </div>
         );

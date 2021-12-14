@@ -213,18 +213,18 @@ export class CrearNoticia extends Component {
                     <h2>Sube la noticia</h2>
 
                     <div className="form-group">
-                        <label htmlFor="titulo" >Titulo*</label>
+                        <label htmlFor="titulo" >Titulo* (minimo 3 y maximo 30 caracteres)</label>
                         <input id="titulo" className="form-control" placeholder="Titulo de la noticia" minLength={5} 
                         maxLength="30" name="Titulo"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="contenido">Contenido *</label>
+                        <label htmlFor="contenido">Contenido* (minimo 50 y maximo 1500 caracteres)</label>
                         <textarea type="text" id="contenido" className="textoLargo" maxLength="1500"  minLength={50} placeholder="Escribe tu Contenido" 
                         onChange={this.handleChange} name="Contenido" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="etiquetas" >Etiquetas * (Favor de separarlas con ,)</label>
+                        <label htmlFor="etiquetas" >Etiquetas* Separadas con , (minimo 3 y maximo 30 caracteres)</label>
                         <input id="etiquetas"  className="form-control" placeholder="Figura,Marca,Noticia" minLength={5} 
                         maxLength="49" name="Etiquetas"  onChange={this.handleChange} required/>
                     </div>
@@ -234,7 +234,7 @@ export class CrearNoticia extends Component {
                     </div>
                     
                     <div className="form-group">
-                        <label htmlFor="descripcionImagen">Descripcion de la imagen *</label>
+                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 3 y maximo 30 caracteres)</label>
                         <input id="descripcionImagen" className="form-control" placeholder="Describe la imagen que adjuntaste" minLength={10} 
                         maxLength="49" name="DescripcionImagen"  onChange={this.handleChange} required/>
                     </div>
@@ -247,7 +247,8 @@ export class CrearNoticia extends Component {
                     </div>
 
                     <button type="submit" className="botonNormal" disabled={this.state.disabled} >Subir Noticia</button>
-                    <p className="forgot-password text-right">Los campos con (*) son obligatorios de llenar </p>
+                    <p>Los campos con (*) son obligatorios de llenar </p>
+                    <p >Favor de verificar las especificaciones de cada campo</p>
                 </form>
             </div>
         );

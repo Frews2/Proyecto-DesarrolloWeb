@@ -196,25 +196,25 @@ export class SubirFigura extends Component
                     <h2>Sube la figura</h2>
 
                     <div className="form-group">
-                        <label htmlFor="Nombre" >Nombre*</label>
+                        <label htmlFor="Nombre" >Nombre* (minimo 3 y maximo 20 caracteres)</label>
                         <input id="Nombre" className="form-control" placeholder="Nombre de la figura" minLength={3} 
                         maxLength="20" name="Nombre"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="Altura" >Altura* (en cm.)</label>
+                        <label htmlFor="Altura" >Altura en centimetros* (Valor numerico entre 1 y 999)</label>
                         <input id="Altura" className="form-control" placeholder="Altura de la figura (en cm.)" minLength={1} 
                         maxLength="3" name="Altura"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="Material" >Material*</label>
+                        <label htmlFor="Material" >Material* (minimo 3 y maximo 20 caracteres)</label>
                         <input id="Material"  className="form-control" placeholder="Material principal de la figura" minLength={3} 
                         maxLength="20" name="Material"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="Marca" >Marca*</label>
+                        <label htmlFor="Marca" >Marca* (minimo 3 y maximo 20 caracteres)</label>
                         <input id="Marca"  className="form-control" placeholder="Marca del producto" minLength={3} 
                         maxLength="20" name="Marca"  onChange={this.handleChange} required/>
                     </div>
@@ -225,7 +225,7 @@ export class SubirFigura extends Component
                     </div>
                     
                     <div className="form-group">
-                        <label htmlFor="descripcionImagen">Descripcion de la imagen *</label>
+                        <label htmlFor="descripcionImagen">Descripcion de la imagen* * (minimo 3 y maximo 20 caracteres)</label>
                         <input id="descripcionImagen" className="form-control" required
                         placeholder="Describe la imagen que adjuntaste"minLength={3} 
                         maxLength="20" name="DescripcionImagen"  onChange={this.handleChange}/>
@@ -233,7 +233,8 @@ export class SubirFigura extends Component
 
                     <button type="submit" className="botonNormal" disabled={this.state.disabled} >Subir Figura</button>
 
-                    <p className="forgot-password text-right">Los campos con (*) son obligatorios de llenar </p>
+                    <p >Los campos con (*) son obligatorios de llenar </p>
+                    <p >Favor de verificar las especificaciones de cada campo</p>
 
                 </form>
             </div>
