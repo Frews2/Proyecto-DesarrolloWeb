@@ -1,5 +1,5 @@
 const API_SESIONES = "https://figure-it-out-uv.herokuapp.com/cuentas/"
-const API_CORREOS = "https://figure-it-out-uv.herokuapp.com/codigos/enviarCorreo"
+const API_CORREOS = "https://figure-it-out-uv.herokuapp.com/codigos/"
 
 export async function servicioLogin(datosDeUsuario) {
     return fetch(API_SESIONES+"Login", 
@@ -39,7 +39,7 @@ export async function servicioRegistro(datosDeUsuario) {
 
 export async function servicioValidarCorreo(datosDeUsuario)
 {
-    return fetch(API_SESIONES+"Verificar", 
+    return fetch(API_CORREOS+"verificar", 
     {
         method: "POST",
         headers: 
@@ -90,7 +90,7 @@ export async function servicioValidarColeccionista()
 
 export async function servicioReenviarCorreo() 
 {
-    return fetch(API_CORREOS, 
+    return fetch(API_CORREOS + "enviarCorreo", 
     {
         method: "POST",
         headers: {
