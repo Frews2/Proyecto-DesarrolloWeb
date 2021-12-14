@@ -22,7 +22,7 @@ services:
         depends_on: 
             - "db_figureitout"
         ports:
-            - "4000:4000"
+            - "4100:4100"
         build: 
             context: ../api/
             dockerfile: Dockerfile
