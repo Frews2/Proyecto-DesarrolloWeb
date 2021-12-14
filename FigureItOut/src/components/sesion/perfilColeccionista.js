@@ -8,6 +8,8 @@ export class PerfilColeccionista extends Component{
     {
         function checarSesion()
         {
+            if(typeof window !== 'undefined')
+            {
                 servicioValidarColeccionista()
                 .then(exito => {
                     if(exito === false)
@@ -15,10 +17,11 @@ export class PerfilColeccionista extends Component{
                         window.location.pathname = '../';
                     }
                 }).catch(error => {
-                    alert("Ocurrió un error");
+                    window.alert("Ocurrió un error");
                     console.error(error);
                     window.location.pathname = '../';
                 }) 
+            }
         }
         return(
             <div onLoad={checarSesion()}>

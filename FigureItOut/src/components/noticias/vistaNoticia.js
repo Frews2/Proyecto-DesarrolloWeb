@@ -3,13 +3,8 @@ import { useEffect, useState } from 'react';
 
 import { CrearReporte } from "../../components/utilidades/crearReporte.js";
 
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const ID_PUBLICACION = urlParametros.get('id');
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
-const TIPO_REPORTE_COMENTAIRO = "Comentario";
 
 
 export default function VistaNoticia()
@@ -19,28 +14,38 @@ export default function VistaNoticia()
     
   function checarSesion()
   {
-    if(sessionStorage.getItem('token') === null)
+    if(typeof window !== 'undefined')
     {
-      alert("Inicie sesion porfavor");
-      window.location.pathname = '/'
+      if(sessionStorage.getItem('token') === null)
+      {
+        window.alert("Inicie sesion porfavor");
+        window.location.pathname = '/';
+      }
     }
   }
 
   useEffect(() => 
   {
-    const fetchData = async () => 
+    if(typeof window !== "undefined")
     {
-      const res = await  fetch(API_LINK+"noticias/buscar?id="+ID_PUBLICACION, 
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+
+      const ID_PUBLICACION = urlParametros.get('id');
+      const fetchData = async () => 
       {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-      });
-      const json = await res.json();
-      setNoticia(json.resultado[0]);
-    };
-    fetchData();
+        const res = await  fetch(API_LINK+"noticias/buscar?id="+ID_PUBLICACION, 
+        {
+          method: "GET",
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        });
+        const json = await res.json();
+        setNoticia(json.resultado[0]);
+      };
+      fetchData();
+    }
   }, [setNoticia]);
 
   useEffect(() => 

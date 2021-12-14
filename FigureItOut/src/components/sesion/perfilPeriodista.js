@@ -7,19 +7,22 @@ export class PerfilPeriodista extends Component{
     {
         function checarSesion()
         {
-            if(sessionStorage.getItem('token') !== null)
+            if(typeof window !== 'undefined')
             {
-                servicioValidarPeriodista()
-                .then(exito => {
-                    if(exito === false)
-                    {
+                if(sessionStorage.getItem('token') !== null)
+                {
+                    servicioValidarPeriodista()
+                    .then(exito => {
+                        if(exito === false)
+                        {
+                            window.location.pathname = '../';
+                        }
+                    }).catch(error => {
+                        window.alert("Ocurrió un error");
+                        console.error(error);
                         window.location.pathname = '../';
-                    }
-                }).catch(error => {
-                    alert("Ocurrió un error");
-                    console.error(error);
-                    window.location.pathname = '../';
-                }) 
+                    }) 
+                }
             }
         }
         return(

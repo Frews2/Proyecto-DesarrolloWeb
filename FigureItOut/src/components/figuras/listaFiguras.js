@@ -2,10 +2,6 @@ import React,{ useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const FIGURAS_POR_PAGINA = 5;
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
@@ -19,51 +15,63 @@ export default function ListaFiguras()
 
   function definirBusqueda()
   {
-    var enlaceBusqueda;
+    if(typeof window !== "undefined")
+    {
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
 
-      if(FILTRO_BUSQUEDA !=null)
-      {
-        enlaceBusqueda= API_LINK+"figuras/buscar?filtro="+FILTRO_BUSQUEDA;
-      }
-      else
-      {
-        enlaceBusqueda= API_LINK+"figuras/buscar";
-      }
-    return enlaceBusqueda;
+      var filtroBusqueda = urlParametros.get('busqueda');
+      var enlaceBusqueda;
+
+        if(filtroBusqueda !=null)
+        {
+          enlaceBusqueda= API_LINK+"figuras/buscar?filtro="+filtroBusqueda;
+        }
+        else
+        {
+          enlaceBusqueda= API_LINK+"figuras/buscar";
+        }
+      return enlaceBusqueda;
+    }
   }
 
   function checarSesion()
   {
-    if(sessionStorage.getItem('token') === null)
+    if(typeof window !== 'undefined')
     {
-      alert("Inicie sesion porfavor");
-      window.location.pathname = '/'
+      if(sessionStorage.getItem('token') === null)
+      {
+        window.alert("Inicie sesion porfavor");
+        window.location.pathname = '/'
+      }
     }
   }
 
   useEffect(() => 
   {
-    const fetchData = async () => 
+    if(typeof window !== "undefined")
     {
-      const res = await  fetch(definirBusqueda(), 
+      const fetchData = async () => 
       {
-        method: "GET",
-        headers: 
+        const res = await  fetch(definirBusqueda(), 
         {
-            'Content-Type': 'application/json',
-            'Authorization': sessionStorage.getItem('token')
+          method: "GET",
+          headers: 
+          {
+              'Content-Type': 'application/json',
+              'Authorization': sessionStorage.getItem('token')
+          }
+        });
+        const json = await res.json();
+        
+        if(json.exito === false && typeof window !== "undefined")
+        {
+          window.alert(json.mensaje);
         }
-      });
-      const json = await res.json();
-      
-      if(json.exito === false)
-      {
-        alert(json.mensaje);
-      }
-      setFiguras(json.resultado);
-    };
-    fetchData();
-  }, [setFiguras]);
+        setFiguras(json.resultado);
+      };
+      fetchData();
+  }}, [setFiguras]);
 
   const contadorPagina = figuras === null?0:Math.ceil(figuras.length / FIGURAS_POR_PAGINA);
   const cambioPagina = ({ selected }) => 

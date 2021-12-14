@@ -83,7 +83,7 @@ export class Registro extends Component
     async registrar(e) 
     {
         e.preventDefault();
-        if(this.validacionGeneral() === true)
+        if(this.validacionGeneral() === true && typeof window !== 'undefined')
         {
             var actualDate = new Date();
             var registroFormatoFecha = new Date (this.state.form.fechaNacimiento);
@@ -109,28 +109,28 @@ export class Registro extends Component
             {
                 if(data.exito)
                 {
-                    alert("Se han guardado sus datos, verifique su correo");
+                    window.alert("Se han guardado sus datos, verifique su correo");
                     sessionStorage.setItem('correo',this.state.form.email.replace(REGEX_ESPACIODOBLE,''));
                     window.location.pathname = 'sesion/validarCorreo';
                 }
                 else
                 {
-                    alert(data.mensaje);
+                    window.alert(data.mensaje);
                     if(data.resultado != null)
                     {
                         data.resultado.forEach(error => {
-                            alert(error.msg);
+                            window.alert(error.msg);
                         });
                     }
                 }
             }).catch(error => {
-                alert("Ocurrió un error");
+                window.alert("Ocurrió un error");
                 console.error(error)
             })
         }
         else
         {
-            alert("Uno o mas campos se encuentran erroneos verifica");
+            window.alert("Uno o mas campos se encuentran erroneos verifica");
         }
     }
 
@@ -139,13 +139,16 @@ export class Registro extends Component
 
         function checarSesion()
         {
-            if(sessionStorage.getItem('correo') !== null )
+            if(typeof window !== 'undefined')
             {
-                window.location.pathname = 'sesion/validarCorreo';
-            }
-            if(sessionStorage.getItem('token') !== null)
-            {
-                window.location.pathname = '/'
+                if(sessionStorage.getItem('correo') !== null )
+                {
+                    window.location.pathname = 'sesion/validarCorreo';
+                }
+                if(sessionStorage.getItem('token') !== null)
+                {
+                    window.location.pathname = '/'
+                }
             }
         }
 

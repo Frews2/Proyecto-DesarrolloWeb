@@ -3,15 +3,10 @@ import { BsFillFlagFill } from "react-icons/bs";
 
 import { servicioReportarPublicacion } from "../../servicios/servicioPublicacion.js";
 
-
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-const ID_REVIEW = urlParametros.get('id');
 const LONGITUD_MINIMA_REPORTE = 4;
 const LONGITUD_MAXIMA_REPORTE = 49;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const REGEX_ESPACIOBLANCO =/\s/g;
-const REPORTE_FORM = new FormData();
 
 export class CrearReporte extends Component
 {
@@ -62,34 +57,42 @@ export class CrearReporte extends Component
     async reportarPublicacion(e)
     {
         e.preventDefault();
-        let razonReporte = prompt("Ingrese las razones de su reporte","");
-       
-        if(this.validarTexto(razonReporte) === true )
+        if(typeof window !== "undefined")
         {
-            REPORTE_FORM.append('Razon',razonReporte.replace(REGEX_ESPACIODOBLE,''));
-            REPORTE_FORM.append('IdPublicacion',ID_REVIEW);
-            REPORTE_FORM.append('TipoPublicacion', this.props.tipo);
-
-            servicioReportarPublicacion(REPORTE_FORM)
-           .then(data=>
+            let razonReporte = prompt("Ingrese las razones de su reporte","");
+        
+            if(this.validarTexto(razonReporte) === true )
             {
-                if(data.exito === true)
+                let queryString = window.location.search;
+                let urlParametros = new URLSearchParams(queryString);
+                const idPublicacion = urlParametros.get('id');
+
+                const reporteForm = new FormData();
+                reporteForm.append('Razon',razonReporte.replace(REGEX_ESPACIODOBLE,''));
+                reporteForm.append('IdPublicacion',idPublicacion);
+                reporteForm.append('TipoPublicacion', this.props.tipo);
+
+                servicioReportarPublicacion(reporteForm)
+            .then(data=>
                 {
-                    alert(data.mensaje);
-                    window.location.href="/";
-                }
-                else
-                {
-                    alert(data.mensaje);
-                    data.resultado.forEach(error => {
-                        alert(error.msg);
-                    });
-                }
-            }).catch(error => {
-                alert("Ocurrió un error");
-                console.error(error)
-            })
-       }
+                    if(data.exito === true)
+                    {
+                        window.alert(data.mensaje);
+                        window.location.href="/";
+                    }
+                    else
+                    {
+                        window.alert(data.mensaje);
+                        data.resultado.forEach(error => {
+                            window.alert(error.msg);
+                        });
+                    }
+                }).catch(error => {
+                    window.alert("Ocurrió un error");
+                    console.error(error)
+                })
+            }
+        }
     }
 
     render()

@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react';
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const NOTICIAS_POR_PAGINA = 5;
 const LONGITUD_MAXIMA_TEXTO = 150;
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
@@ -19,15 +15,23 @@ export default function noticias() {
   const paginasVisitadas = numeroPagina * NOTICIAS_POR_PAGINA;
 
   function definirBusqueda(){
-    var enlaceBusqueda;
-      if(FILTRO_BUSQUEDA !=null)
+    if(typeof window !== "undefined")
+    {
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+
+      var filtroBusqueda = urlParametros.get('busqueda');
+      var enlaceBusqueda;
+      
+      if(filtroBusqueda !=null)
       {
-        enlaceBusqueda= API_LINK+"noticias/Buscar?filtro="+FILTRO_BUSQUEDA;
+        enlaceBusqueda= API_LINK+"noticias/Buscar?filtro="+filtroBusqueda;
       }
       else
       {
         enlaceBusqueda= API_LINK+"noticias/Buscar";
       }
+    }
     return enlaceBusqueda;
   }
 

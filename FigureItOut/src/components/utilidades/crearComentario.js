@@ -2,16 +2,10 @@ import React, {Component} from "react";
 
 import { servicioComentarPublicacion } from "../../servicios/servicioPublicacion.js";
 
-
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const ID_REVIEW = urlParametros.get('id');
 const LONGITUD_MINIMA_COMENTARIO = 4;
 const LONGITUD_MAXIMA_COMENTARIO = 49;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const REGEX_ESPACIOBLANCO=/\s/g;
-const COMENTARIO_FORM = new FormData();
 
 
 export class CrearComentario extends Component
@@ -64,31 +58,39 @@ export class CrearComentario extends Component
     async comentarPublicacion(e)
     {
        e.preventDefault();
-       if(this.validarTexto() === true )
+       if(typeof window !== "undefined")
        {
-            COMENTARIO_FORM.append('Texto',this.state.form.Comentario.replace(REGEX_ESPACIODOBLE,''));
-            COMENTARIO_FORM.append('IdPublicacionOriginal',ID_REVIEW);
+        if(this.validarTexto() === true )
+        {
+            let queryString = window.location.search;
+            let urlParametros = new URLSearchParams(queryString);
+            let idReview = urlParametros.get('id');
 
-           servicioComentarPublicacion(COMENTARIO_FORM)
-           .then(data=>
-            {
-                if(data.exito === true)
+            const comentarioForm = new FormData();
+            comentarioForm.append('Texto',this.state.form.Comentario.replace(REGEX_ESPACIODOBLE,''));
+            comentarioForm.append('IdPublicacionOriginal',idReview);
+
+            servicioComentarPublicacion(comentarioForm)
+            .then(data=>
                 {
-                    alert(data.mensaje);
-                    window.location.reload();
-                }
-                else
-                {
-                    alert(data.mensaje);
-                    data.resultado.forEach(error => {
-                        alert(error.msg);
-                    });
-                }
-            }).catch(error => {
-                alert("Ocurrió un error");
-                console.error(error)
-            })
-       }
+                    if(data.exito === true)
+                    {
+                        window.alert(data.mensaje);
+                        window.location.reload();
+                    }
+                    else
+                    {
+                        window.alert(data.mensaje);
+                        data.resultado.forEach(error => {
+                            window.alert(error.msg);
+                        });
+                    }
+                }).catch(error => {
+                    window.alert("Ocurrió un error");
+                    console.error(error)
+                })
+            }
+        }
     }
 
     render()

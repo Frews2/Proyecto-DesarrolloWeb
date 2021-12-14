@@ -2,14 +2,8 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { CrearReporte } from "../../components/utilidades/crearReporte.js";
 
-
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const ID_REVIEW = urlParametros.get('id');
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
-
 
 export default function VistaReview(){
     const [review, setReview] = useState([]);
@@ -17,30 +11,39 @@ export default function VistaReview(){
 
     function checarSesion()
     {
-      if(sessionStorage.getItem('token') === null)
+      if(typeof window !== 'undefined')
       {
-        alert("Inicie sesion porfavor");
-        window.location.pathname = '/'
+        if(sessionStorage.getItem('token') === null)
+        {
+          window.alert("Inicie sesion porfavor");
+          window.location.pathname = '/'
+        }
       }
-
     }
 
   useEffect(() => 
   {
-    const fetchData = async () => 
+    if(typeof window !== "undefined")
     {
-      const res = await  fetch(API_LINK+"reviews/buscar?id="+ID_REVIEW, 
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+      const ID_REVIEW = urlParametros.get('id');
+    
+      const fetchData = async () => 
       {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-      });
-      const json = await res.json();
-      setReview(json.resultado[0]);
-    };
-    fetchData();
-  }, [setReview]);
+        const res = await  fetch(API_LINK+"reviews/buscar?id="+ID_REVIEW, 
+        {
+          method: "GET",
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        });
+        const json = await res.json();
+        setReview(json.resultado[0]);
+      };
+      fetchData();
+  }
+}, [setReview]);
 
   useEffect(() => {
     const fetchData = async () => 

@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
-let queryString = window.location.search;
-let urlParametros = new URLSearchParams(queryString);
-
-const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const REVIEWS_POR_PAGINA = 5;
 const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
@@ -20,17 +16,24 @@ export default function ListaReviews()
   
   function definirBusqueda()
   {
-    var enlaceBusqueda;
+    if(typeof window !== "undefined")
+    {
+      let queryString = window.location.search;
+      let urlParametros = new URLSearchParams(queryString);
+      
+      var filtroBusqueda = urlParametros.get('busqueda');
+      var enlaceBusqueda;
 
-    if(FILTRO_BUSQUEDA !=null)
-    {
-      enlaceBusqueda= API_LINK+"reviews/Buscar?filtro="+FILTRO_BUSQUEDA;
+      if(filtroBusqueda !=null)
+      {
+        enlaceBusqueda= API_LINK+"reviews/Buscar?filtro="+filtroBusqueda;
+      }
+      else
+      {
+        enlaceBusqueda= API_LINK+"reviews/Buscar";
+      }
+      return enlaceBusqueda;
     }
-    else
-    {
-      enlaceBusqueda= API_LINK+"reviews/Buscar";
-    }
-    return enlaceBusqueda;
   }
 
   function recortarTexto(noticiaTexto)
@@ -44,12 +47,14 @@ export default function ListaReviews()
 
   function checarSesion()
   {
-    if(sessionStorage.getItem('token') === null)
+    if(typeof window !== 'undefined')
     {
-      alert("Inicie sesion porfavor");
-      window.location.pathname = '/'
+      if(sessionStorage.getItem('token') === null)
+      {
+        window.alert("Inicie sesion porfavor");
+        window.location.pathname = '/'
+      }
     }
-
   }
 
   useEffect(() => 
@@ -67,9 +72,9 @@ export default function ListaReviews()
       });
 
       const json = await res.json();
-      if(json.exito === false)
+      if(json.exito === false && typeof window !== "undefined")
       {
-        alert(json.mensaje);
+        window.alert(json.mensaje);
       }
         setReviews(json.resultado);
     };

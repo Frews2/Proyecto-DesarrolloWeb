@@ -55,7 +55,7 @@ export class VerificacionCorreo extends Component
     async verificar(e)
     {
         e.preventDefault();
-        if(this.validacionGeneral() === true)
+        if(this.validacionGeneral() === true && typeof window !== 'undefined')
         {
             if(sessionStorage.getItem('correo')!= null)
             {
@@ -69,28 +69,28 @@ export class VerificacionCorreo extends Component
                 .then(data=>{
                     if(data.exito)
                     {
-                        alert(data.mensaje);
-                        alert("Favor de iniciar sesion con su cuenta verificada");
+                        window.alert(data.mensaje);
+                        window.alert("Favor de iniciar sesion con su cuenta verificada");
                         sessionStorage.setItem('correo',null);
                         window.location.pathname = '/';
                     }
                     else
                     {
-                        alert(data.mensaje);
+                        window.alert(data.mensaje);
                     }
                 }).catch(error => {
-                    alert("Ocurrió un error");
+                    window.alert("Ocurrió un error");
                     console.error(error)
                 })
             }
             else
             {
-                alert("Aun no ha echo login para verificar un correo");
+                window.alert("Aun no ha echo login para verificar un correo");
             }
         }
         else
         {
-            alert("Error en el campo, verifique que solo sean 5 numeros sin espacios");
+            window.alert("Error en el campo, verifique que solo sean 5 numeros sin espacios");
         }
     }
 
@@ -98,9 +98,12 @@ export class VerificacionCorreo extends Component
     {
         function checarSesion()
         {
-            if(sessionStorage.getItem('correo') === null || sessionStorage.getItem('token') !== null)
+            if(typeof window !== 'undefined')
             {
-                window.location.pathname = '/'
+                if(sessionStorage.getItem('correo') === null || sessionStorage.getItem('token') !== null)
+                {
+                    window.location.pathname = '/'
+                }
             }
         }
 

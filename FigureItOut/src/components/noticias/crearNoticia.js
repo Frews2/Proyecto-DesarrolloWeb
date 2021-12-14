@@ -75,48 +75,51 @@ export class CrearNoticia extends Component {
     async registrarNoticia(e)
     {
         e.preventDefault();
-        if(this.validacionGeneral() === true &&  sessionStorage.getItem('token') !== null)
+        if(typeof window !== "undefined")
         {
-            const noticiaForm = new FormData();
-            noticiaForm.append("IdFigura", this.state.form.FigurasCombox);
-            noticiaForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
-            noticiaForm.append('Texto',this.state.form.Contenido.replace(REGEX_ESPACIODOBLE,''));
-            noticiaForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
-            noticiaForm.append('NombreFoto',this.state.form.Imagen);
-            noticiaForm.append('TipoFoto',this.state.form.ExtensionImagen);
-            noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
-            noticiaForm.append('IdCuenta','39c2d6c5-cdaa-48e8-a231-8a60f59391c5');
-            noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
-            
+            if(this.validacionGeneral() === true &&  sessionStorage.getItem('token') !== null)
+            {
+                const noticiaForm = new FormData();
+                noticiaForm.append("IdFigura", this.state.form.FigurasCombox);
+                noticiaForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
+                noticiaForm.append('Texto',this.state.form.Contenido.replace(REGEX_ESPACIODOBLE,''));
+                noticiaForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
+                noticiaForm.append('NombreFoto',this.state.form.Imagen);
+                noticiaForm.append('TipoFoto',this.state.form.ExtensionImagen);
+                noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
+                noticiaForm.append('IdCuenta','39c2d6c5-cdaa-48e8-a231-8a60f59391c5');
+                noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
+                
 
-            servicioRegistroNoticias(noticiaForm)
-            .then(data=>{
-                if(data.exito)
-                {
-                    alert("Se han guardado la noticia correctamente");
-                    window.location.href="/Noticias"
-                }
-                else
-                {
-                    alert(data.mensaje);
-                    data.resultado.forEach(error => {
-                        alert(error.msg);
-                    });
-                }
-            }).catch(error => {
-                alert("Ocurrió un error");
-                console.error(error);
-            })
-        }
-        else
-        {
-            alert("Uno o mas campos se encuentran erroneos verifica");
+                servicioRegistroNoticias(noticiaForm)
+                .then(data=>{
+                    if(data.exito)
+                    {
+                        window.alert("Se han guardado la noticia correctamente");
+                        window.location.href="/Noticias"
+                    }
+                    else
+                    {
+                        window.alert(data.mensaje);
+                        data.resultado.forEach(error => {
+                            window.alert(error.msg);
+                        });
+                    }
+                }).catch(error => {
+                    window.alert("Ocurrió un error");
+                    console.error(error);
+                })
+            }
+            else
+            {
+                window.alert("Uno o mas campos se encuentran erroneos verifica");
+            }
         }
     }
 
     fileSelectHandler = event =>
     {
-        if(event.target.files[0] !=null)
+        if(event.target.files[0] !=null && typeof window !== "undefined")
         {
             if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < 30)
             {
@@ -144,7 +147,7 @@ export class CrearNoticia extends Component {
             }
             else
             {
-                alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
+                window.alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
 
                 this.setState({
                     archivoImagen: null,
@@ -167,42 +170,45 @@ export class CrearNoticia extends Component {
     render() 
     {
         
-        window.onload = function()
+        function checarSesion()
         {
-            if(sessionStorage.getItem('token') !== null)
+            if(typeof window !== 'undefined')
             {
-                let comboboxHTML = document.getElementById('figurasCombox');
-                comboboxHTML.length = 0;
+                if(sessionStorage.getItem('token') !== null)
+                {
+                    let comboboxHTML = document.getElementById('figurasCombox');
+                    comboboxHTML.length = 0;
 
-                servicioObtenerFiguras()
-                .then(data=>{
-                    if(data.exito)
-                    {
-                        for (let i = 0; i < data.resultado.length; i++) 
+                    servicioObtenerFiguras()
+                    .then(data=>{
+                        if(data.exito)
                         {
-                            var option = document.createElement('option');
-                            option.appendChild(document.createTextNode(data.resultado[i].Nombre));
-                            option.value = data.resultado[i].IdFigura;
-                            comboboxHTML.appendChild(option);
-                        } 
-                    }
-                    else
-                    {
-                        alert(data.mensaje);
-                    }
-                }).catch(error => {
-                    console.log(error)
-                });
-            }
-            else
-            {
-                window.location.pathname = '/'
-                alert("Porfavor inicie sesion");
+                            for (let i = 0; i < data.resultado.length; i++) 
+                            {
+                                var option = document.createElement('option');
+                                option.appendChild(document.createTextNode(data.resultado[i].Nombre));
+                                option.value = data.resultado[i].IdFigura;
+                                comboboxHTML.appendChild(option);
+                            } 
+                        }
+                        else
+                        {
+                            window.alert(data.mensaje);
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    });
+                }
+                else
+                {
+                    window.location.pathname = '/'
+                    window.alert("Porfavor inicie sesion");
+                }
             }
         }
 
         return (
-            <div className="formGeneral">
+            <div className="formGeneral" onLoad={checarSesion()}>
                 <form onSubmit={(e)=>this.registrarNoticia(e)}>
                     <h2>Sube la noticia</h2>
 

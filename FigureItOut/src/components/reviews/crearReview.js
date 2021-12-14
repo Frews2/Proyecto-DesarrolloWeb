@@ -76,49 +76,53 @@ export class CrearReview extends Component {
 
     async registrarNoticia(e) {
         e.preventDefault();
-        if(this.validacionGeneral() === true && sessionStorage.getItem('token') !== null)
+        if(typeof window !== "undefined")
         {
-            const reviewForm = new FormData();
-            
-            reviewForm.append("IdFigura", this.state.form.FigurasCombox);
-            reviewForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
-            reviewForm.append('Calificacion',this.state.form.Calificacion.replace(REGEX_ESPACIODOBLE,''));
-            reviewForm.append('Texto',this.state.form.Contenido.replace(REGEX_ESPACIODOBLE,''));
-            reviewForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
-            reviewForm.append('NombreFoto',this.state.form.Imagen);
-            reviewForm.append('TipoFoto',this.state.form.ExtensionImagen);
-            reviewForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
-            reviewForm.append('IdCuenta','6f2850f9-b82f-451d-baf2-26fd93874418');
-            reviewForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
-
-            servicioRegistroReviews(reviewForm)
-            .then(data=>
+            if(this.validacionGeneral() === true && sessionStorage.getItem('token') !== null)
             {
-                if(data.exito)
+                const reviewForm = new FormData();
+                
+                reviewForm.append("IdFigura", this.state.form.FigurasCombox);
+                reviewForm.append('Titulo',this.state.form.Titulo.replace(REGEX_ESPACIODOBLE,''));
+                reviewForm.append('Calificacion',this.state.form.Calificacion.replace(REGEX_ESPACIODOBLE,''));
+                reviewForm.append('Texto',this.state.form.Contenido.replace(REGEX_ESPACIODOBLE,''));
+                reviewForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
+                reviewForm.append('NombreFoto',this.state.form.Imagen);
+                reviewForm.append('TipoFoto',this.state.form.ExtensionImagen);
+                reviewForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
+                reviewForm.append('IdCuenta','6f2850f9-b82f-451d-baf2-26fd93874418');
+                reviewForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
+
+                servicioRegistroReviews(reviewForm)
+                .then(data=>
                 {
-                    alert("Se han guardado tu review correctamente");
-                    window.location.pathname="/Reviews"
-                }
-                else
-                {
-                    alert(data.mensaje);
-                    data.resultado.forEach(error => {
-                        alert(error.msg);
-                    });
-                }
-            }).catch(error => {
-                alert("Ocurrió un error");
-                console.error(error);
-            })
-        }
-        else
-        {
-            alert("Uno o mas campos se encuentran incorrectos verificar");
+                    if(data.exito)
+                    {
+                        window.alert("Se han guardado tu review correctamente");
+                        window.location.pathname="/Reviews"
+                    }
+                    else
+                    {
+                        window.alert(data.mensaje);
+                        data.resultado.forEach(error => {
+                            window.alert(error.msg);
+                        });
+                    }
+                }).catch(error => {
+                    window.alert("Ocurrió un error");
+                    console.error(error);
+                })
+            }
+            else
+            {
+                window.alert("Uno o mas campos se encuentran incorrectos verificar");
+            }
         }
     }
 
-    handlreCambioArchivo = event =>{
-        if(event.target.files[0] !=null)
+    handlreCambioArchivo = event =>
+    {
+        if(event.target.files[0] !=null && typeof window !== "undefined")
         {
             if(event.target.files[0].name.length > LONGITUD_MINIMA_ARCHIVONOMBRE && 
                 event.target.files[0].name.length < LONGITUD_MAXIMA_GENERAL)
@@ -146,7 +150,7 @@ export class CrearReview extends Component {
                 }
                 else
                 {
-                    alert("El archivo seleccionado no es un .jpg, favor de verificar");
+                    window.alert("El archivo seleccionado no es un .jpg, favor de verificar");
                     this.setState({
                         archivoImagen: null,
                         disabled: true
@@ -156,7 +160,7 @@ export class CrearReview extends Component {
             }
             else
             {
-                alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
+                window.alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
                 this.setState({
                     archivoImagen: null,
                     disabled: true
@@ -176,49 +180,52 @@ export class CrearReview extends Component {
     
     render() 
     {
-        window.onload = function()
+        function checarSesion()
         {
-            if(sessionStorage.getItem('token') !== null)
+            if(typeof window !== 'undefined')
             {
-                let comboboxHTML = document.getElementById('figurasCombox');
-                comboboxHTML.length = 0;
+                if(sessionStorage.getItem('token') !== null)
+                {
+                    let comboboxHTML = document.getElementById('figurasCombox');
+                    comboboxHTML.length = 0;
 
-                servicioObtenerFiguras()
-                .then(data=>{
-                    if(data.exito)
-                    {
-                        for (let i = 0; i < data.resultado.length; i++) 
+                    servicioObtenerFiguras()
+                    .then(data=>{
+                        if(data.exito)
                         {
-                            var option = document.createElement('option');
-                            option.appendChild(document.createTextNode(data.resultado[i].Nombre));
-                            option.value = data.resultado[i].IdFigura;
-                            comboboxHTML.appendChild(option);
-                        } 
-                    }
-                    else
-                    {
-                        if(data.token === false)
-                        {
-                            alert(data.mensaje + "\nInicie sesion por favor");
-                            window.location.pathname = '/'
+                            for (let i = 0; i < data.resultado.length; i++) 
+                            {
+                                var option = document.createElement('option');
+                                option.appendChild(document.createTextNode(data.resultado[i].Nombre));
+                                option.value = data.resultado[i].IdFigura;
+                                comboboxHTML.appendChild(option);
+                            } 
                         }
                         else
                         {
-                            alert(data.mensaje);
+                            if(data.token === false)
+                            {
+                                window.alert(data.mensaje + "\nInicie sesion por favor");
+                                window.location.pathname = '/'
+                            }
+                            else
+                            {
+                                window.alert(data.mensaje);
+                            }
                         }
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });    
-            }
-            else
-            {
-                window.location.pathname = '/'
-                alert("Porfavor inicie sesion");
+                    }).catch(error => {
+                        console.log(error);
+                    });    
+                }
+                else
+                {
+                    window.location.pathname = '/'
+                    window.alert("Porfavor inicie sesion");
+                }
             }
         }
         return (
-            <div className="formGeneral">
+            <div className="formGeneral" onLoad={checarSesion()}>
                 <form onSubmit={(e)=>this.registrarNoticia(e)}>
                     <h2>Sube tu review</h2>
 

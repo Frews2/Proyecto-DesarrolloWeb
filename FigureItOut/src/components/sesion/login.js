@@ -57,6 +57,8 @@ export class Login extends Component
     async login(e) 
     {
         e.preventDefault();
+        if(typeof window !== "undefined")
+        {
             let datosLogin = JSON.stringify({
                 Email: this.state.form.email.replace(REGEX_ESPACIODOBLE,''),
                 Password: this.state.form.password
@@ -69,60 +71,65 @@ export class Login extends Component
                     if(data.resultado === null)
                     {
                         sessionStorage.setItem('correo',this.state.form.email.replace(REGEX_ESPACIODOBLE,''));
-                        alert("Su cuenta aun no ha sido validada, favor de activar su correo");
+                        window.alert("Su cuenta aun no ha sido validada, favor de activar su correo");
                         window.location.href ="validarCorreo";
                     }
                     else
                     {
                         sessionStorage.setItem('token',data.resultado);
-                        alert("Bienvenido");
+                        window.alert("Bienvenido");
                         window.location.reload();
                     }
                 }
                 else
                 {
-                    alert("Error de acceso, verifique su correo y/o contraseña");
+                    window.alert("Error de acceso, verifique su correo y/o contraseña");
                 }
             }).catch(error => {
-                alert("Ocurrió un error");
+                window.alert("Ocurrió un error");
                 console.error(error);
             })
+        }
     }
 
     render() 
     {
         function checarSesion()
         {
-            if(sessionStorage.getItem('token') !== null)
+            if(typeof window !== 'undefined')
             {
-                servicioValidarPeriodista()
-                .then(exito => {
-                    if(exito === true)
-                    {
-                        window.location.pathname = '../sesion/inicioPeriodista';
-                    }
-                    else
-                    {
-                        servicioValidarColeccionista()
-                        .then(exito => {
-                            if(exito === true)
-                            {
-                                window.location.pathname = '../sesion/inicioColeccionista';
-                            }
-                        }).catch(err => {
-                            alert("Ocurrió un error");
-                        }) 
-                    }
-                }).catch(err => {
-                    alert("Ocurrió un error");
-                    console.log(err);
-                }) 
-            }
-            
-            if(sessionStorage.getItem('correo') !== null)
-            {
-                alert('Favor de validar su correo');
-                window.location.pathname = 'sesion/validarCorreo';
+                if(sessionStorage.getItem('token') !== null)
+                {
+                    servicioValidarPeriodista()
+                    .then(exito => {
+                        if(exito === true)
+                        {
+                            window.location.pathname = '../sesion/inicioPeriodista';
+                        }
+                        else
+                        {
+                            servicioValidarColeccionista()
+                            .then(exito => {
+                                if(exito === true)
+                                {
+                                    window.location.pathname = '../sesion/inicioColeccionista';
+                                }
+                            }).catch(err => {
+                                window.alert("Ocurrió un error");
+                                console.log(err);
+                            }) 
+                        }
+                    }).catch(err => {
+                        window.alert("Ocurrió un error");
+                        console.log(err);
+                    }) 
+                }
+                
+                if(sessionStorage.getItem('correo') !== null)
+                {
+                    window.alert('Favor de validar su correo');
+                    window.location.pathname = 'sesion/validarCorreo';
+                }
             }
         }
 

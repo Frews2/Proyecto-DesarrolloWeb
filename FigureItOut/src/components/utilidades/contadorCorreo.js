@@ -9,54 +9,58 @@ export class ContadorCorreo extends Component
     async reenviar(e)
     {
         e.preventDefault();
-
-        if(sessionStorage.getItem('correo') !== null)
+        if(typeof window !== 'undefined')
         {
-            servicioReenviarCorreo()
-            .then(data=>
+            if(sessionStorage.getItem('correo') !== null)
             {
-                if(data.exito)
+                servicioReenviarCorreo()
+                .then(data=>
                 {
-                    alert(data.mensaje);
-                    window.location.reload();
-                }
-                else
-                {
-                    window.location.reload();
-                    alert("Error: "+data.mensaje);
-                }
-            }).catch(error => {
-                alert("Ocurrió un error");
-                console.error(error);
-            })
-        }
-        else
-        {
-            alert("No se cuenta con ningun correo para validar, inicie sesion");
-            window.location.href ="/"
+                    if(data.exito)
+                    {
+                        window.alert(data.mensaje);
+                        window.location.reload();
+                    }
+                    else
+                    {
+                        window.location.reload();
+                        window.alert("Error: "+data.mensaje);
+                    }
+                }).catch(error => {
+                    window.alert("Ocurrió un error");
+                    console.error(error);
+                })
+            }
+            else
+            {
+                window.alert("No se cuenta con ningun correo para validar, inicie sesion");
+                window.location.href ="/"
+            }
         }
     }
 
     render()
     {
-
-        var downloadTimer = setInterval(function()
+        if(typeof window !== "undefined")
         {
-            if(SEGUNDOS_CONTADOR <= 0)
+            var downloadTimer = setInterval(function()
             {
-                clearInterval(downloadTimer);
-                document.getElementById("botonReenvio").disabled = false;
-                document.getElementById("contador").innerHTML ="";
+                if(SEGUNDOS_CONTADOR <= 0)
+                {
+                    clearInterval(downloadTimer);
+                    document.getElementById("botonReenvio").disabled = false;
+                    document.getElementById("contador").innerHTML ="";
+                    
+                } 
+                else 
+                {
+                    document.getElementById("contador").innerHTML = "Espere "+ SEGUNDOS_CONTADOR + " segundos para reenviar correo";
+                }
                 
-            } 
-            else 
-            {
-                document.getElementById("contador").innerHTML = "Espere "+ SEGUNDOS_CONTADOR + " segundos para reenviar correo";
-            }
-            
-            SEGUNDOS_CONTADOR -= 1;
+                SEGUNDOS_CONTADOR -= 1;
 
-        }, 1000);
+            }, 1000);
+        }
         
         return(
             <form onSubmit={(e)=>this.reenviar(e)}>

@@ -75,56 +75,59 @@ export class SubirFigura extends Component
     async registrarFigura(e) 
     {
         e.preventDefault();
-        if(this.validarGeneral() === true)
+        if(typeof window !== "undefined")
         {
-            const figuraForm = new FormData();
+            if(this.validarGeneral() === true)
+            {
+                const figuraForm = new FormData();
 
-            figuraForm.append('Nombre',this.state.form.Nombre.replace(REGEX_ESPACIODOBLE,''));
-            figuraForm.append('Altura',this.state.form.Altura.replace(REGEX_ESPACIODOBLE,''));
-            figuraForm.append('Material',this.state.form.Material.replace(REGEX_ESPACIODOBLE,''));
-            figuraForm.append('Marca',this.state.form.Marca.replace(REGEX_ESPACIODOBLE,''));
-            figuraForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
-            figuraForm.append('NombreFoto',this.state.form.Imagen);
-            figuraForm.append('TipoFoto',this.state.form.ExtensionImagen);
-            figuraForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
+                figuraForm.append('Nombre',this.state.form.Nombre.replace(REGEX_ESPACIODOBLE,''));
+                figuraForm.append('Altura',this.state.form.Altura.replace(REGEX_ESPACIODOBLE,''));
+                figuraForm.append('Material',this.state.form.Material.replace(REGEX_ESPACIODOBLE,''));
+                figuraForm.append('Marca',this.state.form.Marca.replace(REGEX_ESPACIODOBLE,''));
+                figuraForm.append('Foto',this.state.archivoImagen, this.state.archivoImagen.name);
+                figuraForm.append('NombreFoto',this.state.form.Imagen);
+                figuraForm.append('TipoFoto',this.state.form.ExtensionImagen);
+                figuraForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
 
-            servicioRegistroFiguras(figuraForm)
-            .then(data=>
-                {
-                    if(data.exito)
+                servicioRegistroFiguras(figuraForm)
+                .then(data=>
                     {
-                        alert("Se ha guardado la figura correctamente");
-                        window.location.href="/Figuras"
-                    }
-                    else
-                    {
-                        if(data.token===false)
+                        if(data.exito)
                         {
-                            alert(data.mensaje);
+                            window.alert("Se ha guardado la figura correctamente");
+                            window.location.href="/Figuras"
                         }
                         else
                         {
-                            console.log(data);
-                            alert(data.mensaje);
-                            data.resultado.forEach(error => {
-                                alert(error.msg);
-                            });
+                            if(data.token===false)
+                            {
+                                window.alert(data.mensaje);
+                            }
+                            else
+                            {
+                                console.log(data);
+                                window.alert(data.mensaje);
+                                data.resultado.forEach(error => {
+                                    window.alert(error.msg);
+                                });
+                            }
                         }
-                    }
-                }).catch(error => {
-                    alert("Ocurrió un error");
-                    console.error(error);
-                })
-        }
-        else
-        {
-            alert("Uno o mas campos se encuentran erroneos verifica");
+                    }).catch(error => {
+                        window.alert("Ocurrió un error");
+                        console.error(error);
+                    })
+            }
+            else
+            {
+                window.alert("Uno o mas campos se encuentran erroneos verifica");
+            }
         }
     }
 
     fileSelectHandler = event =>
     {
-        if(event.target.files[0] !=null)
+        if(event.target.files[0] !=null && typeof window !== "undefined")
         {
             if(event.target.files[0].name.length > 0 && event.target.files[0].name.length < LONGITUD_MAXIMA_ARCHIVONOMBRE)
             {
@@ -155,7 +158,7 @@ export class SubirFigura extends Component
             }
             else
             {
-                alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
+                window.alert("El nombre del archivo es muy pesado, favor de acortar el nombre para poder subir la noticia");
                 this.setState({
                     archivoImagen: null,
                     disabled: true
@@ -175,16 +178,20 @@ export class SubirFigura extends Component
     
     render() 
     {
-        window.onload = function()
+        function checarSesion()
         {
-            if(sessionStorage.getItem('token') === null)
+            if(typeof window !== 'undefined')
             {
-                window.location.pathname = '/'
-                alert("Porfavor inicie sesion");
+                if(sessionStorage.getItem('token') === null)
+                {
+                    window.location.pathname = '/'
+                    window.alert("Porfavor inicie sesion");
+                }
             }
         }
+
         return (
-            <div className="formGeneral">
+            <div className="formGeneral" onLoad={checarSesion()}>
                 <form onSubmit={(e)=>this.registrarFigura(e)}>
                     <h2>Sube la figura</h2>
 
