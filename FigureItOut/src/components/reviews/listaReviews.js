@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
@@ -8,8 +7,8 @@ let urlParametros = new URLSearchParams(queryString);
 
 const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const REVIEWS_POR_PAGINA = 5;
-const API_IMAGENES = "http://localhost:4000/imagenes/Ver?";
-const API_LINK="http://localhost:4000/";
+const API_LINK="https://figure-it-out-uv.herokuapp.com/";
+const API_IMAGENES = API_LINK+"imagenes/Ver?";
 const LONGITUD_MAXIMA_TEXTO = 100;
 
 
@@ -70,8 +69,7 @@ export default function ListaReviews()
       const json = await res.json();
       if(json.exito === false)
       {
-        alert(json.mensaje + "\nInicie sesion por favor");
-        window.location.pathname = '/';
+        alert(json.mensaje);
       }
         setReviews(json.resultado);
     };
@@ -79,7 +77,7 @@ export default function ListaReviews()
   }, [setReviews]);
   
   const contadorPagina = reviews === null?0 :Math.ceil(reviews.length / REVIEWS_POR_PAGINA);
-  const changePage = ({ selected }) => 
+  const cambioPagina = ({ selected }) => 
   {
     setNumeroPagina(selected);
   };
@@ -88,7 +86,8 @@ export default function ListaReviews()
     <div id="ListaReviews" className="App" onLoad={checarSesion()}>
       { reviews && reviews.length> 0? ( reviews
     .slice(paginasVisitadas, paginasVisitadas + REVIEWS_POR_PAGINA)
-    .map((review) => {
+    .map((review) => 
+    {
       return (
             <div className="contenedorPadrePublicacion" key={review.IdPublicacion}>
                 <div className="columnasDivContenedor">
@@ -104,17 +103,17 @@ export default function ListaReviews()
                 </div>
             </div>
       );
-    })):(
+    })):
+      (
       <h2 className='tituloContenedor'> No se han encontrado reviews </h2>
       )}
       <ReactPaginate
         previousLabel={<BsArrowLeft/>} nextLabel={<BsArrowRight/>}
-        pageCount={contadorPagina} onPageChange={changePage} 
+        pageCount={contadorPagina} onPageChange={cambioPagina} 
         containerClassName={"paginationBttns"} previousLinkClassName={"paginacionBoton"} 
         nextLinkClassName={"paginacionBoton"} disabledClassName={"paginacionDesabilitada"} 
         activeClassName={"paginationActive"}
       />
-
     </div>
   );
 }

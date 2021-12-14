@@ -1,4 +1,4 @@
-const API_FIGURAS = "http://localhost:4000/figuras/"
+const API_FIGURAS = "https://figure-it-out-uv.herokuapp.com/figuras/"
 
 export async function servicioObtenerFiguras() {
     return fetch(API_FIGURAS+"Buscar", 

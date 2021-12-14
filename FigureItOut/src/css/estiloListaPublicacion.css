@@ -65,7 +65,7 @@
   .tituloPublicacion
   {
     font-weight: bold;
-    padding-left: 37.5%;
+    padding-left: 34%;
     padding-top: 2%;
   }
   
@@ -156,4 +156,11 @@
   {
     padding-left: 2%;
     font-size: 80%;
+  }
+
+  .botonReporte
+  {
+    width: 100%;
+    padding-right: 12%;
+    padding-left: 10%;
   }

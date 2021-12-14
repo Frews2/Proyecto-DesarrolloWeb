@@ -9,7 +9,7 @@ let urlParametros = new URLSearchParams(queryString);
 const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
 const NOTICIAS_POR_PAGINA = 5;
 const LONGITUD_MAXIMA_TEXTO = 150;
-const API_LINK="http://localhost:4000/";
+const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
 
 
@@ -39,9 +39,12 @@ export default function noticias() {
   }
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await  fetch(definirBusqueda(), {
+  useEffect(() => 
+  {
+    const fetchData = async () => 
+    {
+      const res = await  fetch(definirBusqueda(), 
+      {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'

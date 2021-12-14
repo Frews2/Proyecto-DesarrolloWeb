@@ -57,8 +57,6 @@ export class Login extends Component
     async login(e) 
     {
         e.preventDefault();
-        if(this.validacionGeneral() === true)
-        {
             let datosLogin = JSON.stringify({
                 Email: this.state.form.email.replace(REGEX_ESPACIODOBLE,''),
                 Password: this.state.form.password
@@ -89,11 +87,6 @@ export class Login extends Component
                 alert("Ocurrió un error");
                 console.error(error);
             })
-        }
-        else
-        {
-            alert("Verificar Campos porfavor");
-        }
     }
 
     render() 

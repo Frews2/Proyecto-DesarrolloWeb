@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import ReactPaginate from "react-paginate";
 import {BsArrowLeft,BsArrowRight} from "react-icons/bs";
 
@@ -7,12 +6,13 @@ let queryString = window.location.search;
 let urlParametros = new URLSearchParams(queryString);
 
 const FILTRO_BUSQUEDA = urlParametros.get('busqueda');
-const FIGURAS_POR_PAGINA = 3;
-const API_LINK = "http://localhost:4000/"
+const FIGURAS_POR_PAGINA = 5;
+const API_LINK="https://figure-it-out-uv.herokuapp.com/";
 const API_IMAGENES = API_LINK+"imagenes/Ver?";
 
 
-export default function ListaFiguras() {
+export default function ListaFiguras()
+{
   const [figuras, setFiguras] = useState([]);
   const [numeroPagina, setNumeroPagina] = useState(0);
   const paginasVisitadas = numeroPagina * FIGURAS_POR_PAGINA;
@@ -20,13 +20,14 @@ export default function ListaFiguras() {
   function definirBusqueda()
   {
     var enlaceBusqueda;
+
       if(FILTRO_BUSQUEDA !=null)
       {
-        enlaceBusqueda= API_LINK+"figuras/Buscar?filtro="+FILTRO_BUSQUEDA;
+        enlaceBusqueda= API_LINK+"figuras/buscar?filtro="+FILTRO_BUSQUEDA;
       }
       else
       {
-        enlaceBusqueda= API_LINK+"figuras/Buscar";
+        enlaceBusqueda= API_LINK+"figuras/buscar";
       }
     return enlaceBusqueda;
   }
@@ -54,12 +55,17 @@ export default function ListaFiguras() {
         }
       });
       const json = await res.json();
+      
+      if(json.exito === false)
+      {
+        alert(json.mensaje);
+      }
       setFiguras(json.resultado);
     };
     fetchData();
   }, [setFiguras]);
 
-  const contadorPagina = figuras===null?0:Math.ceil(figuras.length / FIGURAS_POR_PAGINA);
+  const contadorPagina = figuras === null?0:Math.ceil(figuras.length / FIGURAS_POR_PAGINA);
   const cambioPagina = ({ selected }) => 
   {
     setNumeroPagina(selected);
@@ -92,10 +98,8 @@ export default function ListaFiguras() {
       <ReactPaginate
         previousLabel={<BsArrowLeft/>} nextLabel={<BsArrowRight/>}
         pageCount={contadorPagina} onPageChange={cambioPagina}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"paginacionBoton"}
-        nextLinkClassName={"paginacionBoton"}
-        disabledClassName={"paginacionDesabilitada"}
+        containerClassName={"paginationBttns"} previousLinkClassName={"paginacionBoton"}
+        nextLinkClassName={"paginacionBoton"} disabledClassName={"paginacionDesabilitada"}
         activeClassName={"paginationActive"}
       />
     </div>

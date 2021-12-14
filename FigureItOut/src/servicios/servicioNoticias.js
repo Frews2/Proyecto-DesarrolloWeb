@@ -1,4 +1,4 @@
-const API_NOTICIAS = "http://localhost:4000/noticias/"
+const API_NOTICIAS = "https://figure-it-out-uv.herokuapp.com/noticias/"
 
 export async function servicioRegistroNoticias(formNoticia)
 {

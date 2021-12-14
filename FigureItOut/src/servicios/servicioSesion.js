@@ -1,5 +1,5 @@
-const API_SESIONES = "http://localhost:4000/cuentas/"
-const API_CORREOS = "http://localhost:4000/codigos/enviarCorreo"
+const API_SESIONES = "https://figure-it-out-uv.herokuapp.com/cuentas/"
+const API_CORREOS = "https://figure-it-out-uv.herokuapp.com/codigos/enviarCorreo"
 
 export async function servicioLogin(datosDeUsuario) {
     return fetch(API_SESIONES+"Login", 

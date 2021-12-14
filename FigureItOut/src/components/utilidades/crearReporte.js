@@ -98,7 +98,7 @@ export class CrearReporte extends Component
             
             <div className="contenedorReporte">
                 <form onSubmit={(e)=>this.reportarPublicacion(e)}>
-                    <button type="submit" className="botonNormal" id="botonBusqueda"><BsFillFlagFill/></button>
+                    <button type="submit" className="botonReporte" id="botonBusqueda"><BsFillFlagFill/></button>
                 </form>
             </div>
             );

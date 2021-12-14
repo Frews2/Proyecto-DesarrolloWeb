@@ -1,4 +1,4 @@
-const API = "http://localhost:4000/"
+const API = "https://figure-it-out-uv.herokuapp.com/"
 
 export async function servicioComentarPublicacion(formComentario) 
 {
