@@ -14,7 +14,7 @@ function PaginaVerReview()
   return (
     <Layout title="Revisa la review">
     <main>
-      <CrearReporte tipo={"Review"}></CrearReporte>
+      <CrearReporte tipo={"Review"} id={null}></CrearReporte>
       <VistaReview></VistaReview>
       <CrearComentario></CrearComentario>
     </main>

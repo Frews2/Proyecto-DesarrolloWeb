@@ -15,7 +15,7 @@ function PaginaVerNoticia()
   return (
     <Layout title="Revisa la noticia">
     <main>
-      <CrearReporte tipo={"Noticia"}></CrearReporte>
+      <CrearReporte tipo={"Noticia"} id={null}></CrearReporte>
       <VistaNoticia></VistaNoticia>
       <CrearComentario></CrearComentario>
     </main>
