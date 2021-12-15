@@ -20,6 +20,13 @@ export default function VistaReview(){
         }
       }
     }
+    
+    function recortarTexto(fecha)
+    {
+      fecha = fecha.substring(0, 10);
+
+      return fecha;
+    }
 
   useEffect(() => 
   {
@@ -95,8 +102,8 @@ export default function VistaReview(){
                   <div className="contenedorComentario">
                     <h3 className="nombreUsuarioComentario">{comentarios.Apodo+":"}</h3>
                     <h3 className="textoComentario">{comentarios.Texto}</h3>
-                          <h3 className="textoComentario">{"Registrado: "+comentarios.FechaRegistro}</h3>
-                    <CrearReporte tipo={"Comentario"}></CrearReporte>
+                          <h3 className="textoComentario">{"Registrado en : "+ recortarTexto(comentarios.FechaRegistro)}</h3>
+                    <CrearReporte tipo={"Comentario"} id={comentarios.IdComentario}></CrearReporte>
                   </div>
               </div>
             );}))

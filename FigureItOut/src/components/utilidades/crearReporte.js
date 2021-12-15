@@ -69,11 +69,19 @@ export class CrearReporte extends Component
 
                 const reporteForm = new FormData();
                 reporteForm.append('Razon',razonReporte.replace(REGEX_ESPACIODOBLE,''));
-                reporteForm.append('IdPublicacion',idPublicacion);
                 reporteForm.append('TipoPublicacion', this.props.tipo);
 
+                if(this.props.id !== null)
+                {
+                    reporteForm.append('IdPublicacion',this.props.id);
+                }
+                else
+                {
+                    reporteForm.append('IdPublicacion',idPublicacion);
+                }
+
                 servicioReportarPublicacion(reporteForm)
-            .then(data=>
+                .then(data=>
                 {
                     if(data.exito === true)
                     {

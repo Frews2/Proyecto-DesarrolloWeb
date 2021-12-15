@@ -24,6 +24,13 @@ export default function VistaNoticia()
     }
   }
 
+  function recortarTexto(fecha)
+  {
+    fecha = fecha.substring(0, 10);
+
+    return fecha;
+  }
+
   useEffect(() => 
   {
     if(typeof window !== "undefined")
@@ -101,8 +108,8 @@ export default function VistaNoticia()
                         <div className="contenedorComentario">
                           <h3 className="nombreUsuarioComentario">{comentarios.Apodo+":"}</h3>
                           <h3 className="textoComentario">{comentarios.Texto}</h3>
-                          <h3 className="textoComentario">{"Registrado: "+comentarios.FechaRegistro}</h3>
-                          <CrearReporte tipo={"Comentario"}></CrearReporte>
+                          <h3 className="textoComentario">{"Registrado: "+recortarTexto(comentarios.FechaRegistro)}</h3>
+                          <CrearReporte tipo={"Comentario"} id={comentarios.IdComentario}></CrearReporte>
                         </div>
                         
                     </div>
