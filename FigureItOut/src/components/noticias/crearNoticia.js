@@ -58,6 +58,7 @@ export class CrearNoticia extends Component {
                 
             },
         });
+        console.log(this.state.form);
         if(this.validacionGeneral()=== true)
         {
             this.setState({
@@ -87,7 +88,6 @@ export class CrearNoticia extends Component {
                 noticiaForm.append('NombreFoto',this.state.form.Imagen);
                 noticiaForm.append('TipoFoto',this.state.form.ExtensionImagen);
                 noticiaForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
-                noticiaForm.append('IdCuenta','39c2d6c5-cdaa-48e8-a231-8a60f59391c5');
                 noticiaForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
                 
 
@@ -177,27 +177,31 @@ export class CrearNoticia extends Component {
                 if(sessionStorage.getItem('token') !== null)
                 {
                     let comboboxHTML = document.getElementById('figurasCombox');
-                    comboboxHTML.length = 0;
+                    if(comboboxHTML.length < 2)
+                    {
+                        comboboxHTML.length = 0;
 
-                    servicioObtenerFiguras()
-                    .then(data=>{
-                        if(data.exito)
-                        {
-                            for (let i = 0; i < data.resultado.length; i++) 
+                        servicioObtenerFiguras()
+                        .then(data=>{
+                            if(data.exito)
                             {
-                                var option = document.createElement('option');
-                                option.appendChild(document.createTextNode(data.resultado[i].Nombre));
-                                option.value = data.resultado[i].IdFigura;
-                                comboboxHTML.appendChild(option);
-                            } 
-                        }
-                        else
-                        {
-                            window.alert(data.mensaje);
-                        }
-                    }).catch(error => {
-                        console.log(error)
-                    });
+                                for (let i = 0; i < data.resultado.length; i++) 
+                                {
+                                    var option = document.createElement('option');
+                                    option.appendChild(document.createTextNode(data.resultado[i].Nombre));
+                                    option.value = data.resultado[i].IdFigura;
+                                    comboboxHTML.appendChild(option);
+                                }
+                                
+                            }
+                            else
+                            {
+                                window.alert(data.mensaje);
+                            }
+                        }).catch(error => {
+                            console.log(error)
+                        });
+                    }
                 }
                 else
                 {

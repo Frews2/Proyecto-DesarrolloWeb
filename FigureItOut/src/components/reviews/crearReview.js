@@ -90,7 +90,6 @@ export class CrearReview extends Component {
                 reviewForm.append('NombreFoto',this.state.form.Imagen);
                 reviewForm.append('TipoFoto',this.state.form.ExtensionImagen);
                 reviewForm.append('DescripcionFoto', this.state.form.DescripcionImagen.replace(REGEX_ESPACIODOBLE,''));
-                reviewForm.append('IdCuenta','6f2850f9-b82f-451d-baf2-26fd93874418');
                 reviewForm.append('Etiquetas',this.state.form.Etiquetas.replace(REGEX_ESPACIODOBLE,''));
 
                 servicioRegistroReviews(reviewForm)
@@ -187,35 +186,39 @@ export class CrearReview extends Component {
                 if(sessionStorage.getItem('token') !== null)
                 {
                     let comboboxHTML = document.getElementById('figurasCombox');
-                    comboboxHTML.length = 0;
+                    
+                    if(comboboxHTML.length < 2)
+                    {
+                        comboboxHTML.length = 0;
 
-                    servicioObtenerFiguras()
-                    .then(data=>{
-                        if(data.exito)
-                        {
-                            for (let i = 0; i < data.resultado.length; i++) 
+                        servicioObtenerFiguras()
+                        .then(data=>{
+                            if(data.exito)
                             {
-                                var option = document.createElement('option');
-                                option.appendChild(document.createTextNode(data.resultado[i].Nombre));
-                                option.value = data.resultado[i].IdFigura;
-                                comboboxHTML.appendChild(option);
-                            } 
-                        }
-                        else
-                        {
-                            if(data.token === false)
-                            {
-                                window.alert(data.mensaje + "\nInicie sesion por favor");
-                                window.location.pathname = '/'
+                                for (let i = 0; i < data.resultado.length; i++) 
+                                {
+                                    var option = document.createElement('option');
+                                    option.appendChild(document.createTextNode(data.resultado[i].Nombre));
+                                    option.value = data.resultado[i].IdFigura;
+                                    comboboxHTML.appendChild(option);
+                                } 
                             }
                             else
                             {
-                                window.alert(data.mensaje);
+                                if(data.token === false)
+                                {
+                                    window.alert(data.mensaje + "\nInicie sesion por favor");
+                                    window.location.pathname = '/'
+                                }
+                                else
+                                {
+                                    window.alert(data.mensaje);
+                                }
                             }
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                    });    
+                        }).catch(error => {
+                            console.log(error);
+                        });    
+                    }
                 }
                 else
                 {
