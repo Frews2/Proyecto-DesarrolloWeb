@@ -86,15 +86,16 @@ export async function obtenerComentarioDatos(id) {
 
 export async function reportarComentario(idComentario) {
   var seReporto = false;
-
-  if (Comentario.exists({ IdComentario: idComentario, Estatus: ACTIVO })) {
+  
+  if(Comentario.exists({IdComentario: idComentario, Estatus: ACTIVO })){
     return Comentario.updateOne(
-      { IdComentario: idComentario },
-      { Estatus: REPORTADO })
+      {IdComentario: idComentario},
+      {Estatus: REPORTADO}
+    )
     .then(seActualizo => {
-      if (seActualizo) {
+      if(seActualizo){
         seReporto = true;
-      }
+      } 
       return seReporto;
     })
     .catch(error => {
