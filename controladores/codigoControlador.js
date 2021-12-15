@@ -2,8 +2,6 @@ import Codigo from '../modelos/codigo.js';
 import mandarCodigoConfirmacion from '../utilidades/servicioEmail.js';
 
 export async function enviarCorreo(email) {
-  var seMando;
-
   var resultadoJson = {
     exito: false,
     origen: 'codigo/EnviarCorreo',
@@ -12,16 +10,13 @@ export async function enviarCorreo(email) {
   };
 
   return Codigo.find({ Correo: email })
-  .then(async codigoObtenido => {
+  .then(codigoObtenido => {
     if (codigoObtenido) {
-      seMando = await mandarCodigoConfirmacion(
+      resultadoJson.exito = mandarCodigoConfirmacion(
         codigoObtenido.Correo,
         codigoObtenido.Numero);
-
-        if(seMando){
+        if(resultadoJson.exito){
           resultadoJson.mensaje = 'ÉXITO: Correo mandado';
-        } else{
-          resultadoJson.mensaje = 'ERROR: El email ingresado no es válido.';
         }
     } else{
       resultadoJson.mensaje = 'ERROR: El email ingresado no es válido.';
