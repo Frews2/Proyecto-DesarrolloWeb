@@ -158,18 +158,18 @@ export class Registro extends Component
                     <h1>Registrate</h1>
 
                     <div className="form-group">
-                        <label htmlFor="apodo">Apodo* (minimo 4 y maximo 15 caracteres)</label>
+                        <label htmlFor="apodo">Apodo* (minimo 5 y maximo 15 caracteres)</label>
                         <input type="text" id="apodo" maxLength="15" className="form-control"  minLength={3} placeholder="Escribe tu apodo" 
                         onChange={this.handleChange} name="apodo" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor ="nombre" >Nombre* (minimo 4 y maximo 15 caracteres)</label>
+                        <label htmlFor ="nombre" >Nombre* (minimo 5 y maximo 15 caracteres)</label>
                         <input type="text" id="nombre" maxLength="15" className="form-control" name="nombre"
                         minLength={3} placeholder="Escribe tu primer nombre" onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="ocupacion" >Ocupacion* (minimo 4 y maximo 15 caracteres)</label>
+                        <label htmlFor="ocupacion" >Ocupacion* (minimo 5 y maximo 15 caracteres)</label>
                         <input type="text" id="ocupacion"maxLength="15" className="form-control"  minLength={3} name="ocupacion"
                         placeholder="Escribe tu ocupacion" onChange={this.handleChange} required/>
                     </div>
@@ -215,7 +215,6 @@ export class Registro extends Component
                             <option value="" default>Selecciona una opción</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
                         </select>
                     </div>
 

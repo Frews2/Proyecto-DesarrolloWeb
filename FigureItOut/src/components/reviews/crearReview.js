@@ -41,7 +41,7 @@ export class CrearReview extends Component {
 
     validacionGeneral(){
         if(this.validarInput(this.state.form.Titulo) === true && this.state.form.Contenido.length >= 50 && 
-        this.state.form.Contenido.length <= 1200 && this.validarInput(this.state.form.Etiquetas) === true &&
+        this.state.form.Contenido.length <= 1201 && this.validarInput(this.state.form.Etiquetas) === true &&
         this.state.form.Imagen != null && this.validarInput(this.state.form.DescripcionImagen) === true &&
         this.state.form.ExtensionImagen.length > LOGITUD_MINIMA_VACIA && 
         this.state.form.FigurasCombox.length > LOGITUD_MINIMA_VACIA &&
@@ -233,7 +233,7 @@ export class CrearReview extends Component {
                     <h2>Sube tu review</h2>
 
                     <div className="form-group">
-                        <label htmlFor="titulo" >Titulo* (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="titulo" >Titulo* (minimo 4 y maximo 30 caracteres)</label>
                         <input id="titulo" className="form-control" placeholder="Titulo de la noticia" minLength={3} 
                         maxLength="30" name="Titulo"  onChange={this.handleChange} required/>
                     </div>
@@ -244,7 +244,7 @@ export class CrearReview extends Component {
                         onChange={this.handleChange} name="Contenido" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="etiquetas" >Etiquetas separadas con ,* (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="etiquetas" >Etiquetas separadas con ,* (minimo 4 y maximo 30 caracteres)</label>
                         <input id="etiquetas"  className="form-control" placeholder="Figura,Marca,Noticia" minLength={3} 
                         maxLength="30" name="Etiquetas"  onChange={this.handleChange} required/>
                     </div>
@@ -254,7 +254,7 @@ export class CrearReview extends Component {
                     </div>
                     
                     <div className="form-group">
-                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 4 y maximo 30 caracteres)</label>
                         <input id="descripcionImagen" className="form-control" placeholder="Describe la imagen que adjuntaste" minLength={3} 
                         maxLength="30" name="DescripcionImagen"  onChange={this.handleChange} required/>
                     </div>

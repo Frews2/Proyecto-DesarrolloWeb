@@ -4,8 +4,8 @@ import { servicioRegistroNoticias } from "../../servicios/servicioNoticias.js";
 import { servicioObtenerFiguras } from "../../servicios/servicioFiguras.js";
 
 
-const LONGITUD_MAXIMA_GENERAL = 50;
-const LONGITUD_MINIMA_GENERAL = 5;
+const LONGITUD_MAXIMA_GENERAL = 31;
+const LONGITUD_MINIMA_GENERAL = 4;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const REGEX_ESPACIOBLANCO=/\s/g;
 
@@ -38,8 +38,8 @@ export class CrearNoticia extends Component {
     {
         if(this.validarInput(this.state.form.Titulo) === true && this.validarInput(this.state.form.Etiquetas) === true 
         && this.validarInput(this.state.form.FigurasCombox) === true && this.validarInput(this.state.form.DescripcionImagen) === true 
-        && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 100
-        && this.state.form.Contenido.length < 1500 && this.state.form.Contenido.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL)
+        && this.state.form.Imagen != null  && this.state.form.ExtensionImagen.length > 1 && this.state.form.Contenido.length > 99
+        && this.state.form.Contenido.length < 1501 && this.state.form.Contenido.replace(REGEX_ESPACIOBLANCO,"").length > LONGITUD_MINIMA_GENERAL)
         {
             return true;
         }
@@ -217,20 +217,20 @@ export class CrearNoticia extends Component {
                     <h2>Sube la noticia</h2>
 
                     <div className="form-group">
-                        <label htmlFor="titulo" >Titulo* (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="titulo" >Titulo* (minimo 5 y maximo 30 caracteres)</label>
                         <input id="titulo" className="form-control" placeholder="Titulo de la noticia" minLength={5} 
                         maxLength="30" name="Titulo"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="contenido">Contenido* (minimo 50 y maximo 1500 caracteres)</label>
+                        <label htmlFor="contenido">Contenido* (minimo 100 y maximo 1500 caracteres)</label>
                         <textarea type="text" id="contenido" className="textoLargo" maxLength="1500"  minLength={50} placeholder="Escribe tu Contenido" 
                         onChange={this.handleChange} name="Contenido" required/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="etiquetas" >Etiquetas* Separadas con , (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="etiquetas" >Etiquetas* Separadas con , (minimo 5 y maximo 30 caracteres)</label>
                         <input id="etiquetas"  className="form-control" placeholder="Figura,Marca,Noticia" minLength={5} 
-                        maxLength="49" name="Etiquetas"  onChange={this.handleChange} required/>
+                        maxLength="30" name="Etiquetas"  onChange={this.handleChange} required/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="foto">Foto: </label>
@@ -238,9 +238,9 @@ export class CrearNoticia extends Component {
                     </div>
                     
                     <div className="form-group">
-                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 3 y maximo 30 caracteres)</label>
+                        <label htmlFor="descripcionImagen">Descripcion de la imagen* (minimo 5 y maximo 30 caracteres)</label>
                         <input id="descripcionImagen" className="form-control" placeholder="Describe la imagen que adjuntaste" minLength={10} 
-                        maxLength="49" name="DescripcionImagen"  onChange={this.handleChange} required/>
+                        maxLength="30" name="DescripcionImagen"  onChange={this.handleChange} required/>
                     </div>
 
                     <div className="form-group">
