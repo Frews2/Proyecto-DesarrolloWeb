@@ -1,3 +1,8 @@
+/*
+ Fecha: 25/11/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import express from 'express';
 import { validationResult, checkSchema } from 'express-validator';
 import { guardarComentario,
@@ -14,7 +19,8 @@ checkSchema(checkSchemaComentario),
 async (req, res) => {
   const { errors } = validationResult(req);
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'comentarios/registrar',
     mensaje: 'ERROR: No pudimos registrar su comentario',
@@ -22,7 +28,8 @@ async (req, res) => {
     tokenValido: true
   };
 
-  if (errors.length > 0) {
+  if (errors.length > 0) 
+  {
     respuestaJson.mensaje = 'Se encontaron errores al validar el comentario. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
@@ -32,18 +39,22 @@ async (req, res) => {
   var nuevoComentario = req.body;
   
   guardarComentario(nuevoComentario)
-  .then(resultadoCreacion => {
+  .then(resultadoCreacion => 
+    {
     respuestaJson.mensaje = resultadoCreacion.mensaje;
     respuestaJson.resultado = resultadoCreacion.resultado;
 
-    if (resultadoCreacion.exito) {
+    if (resultadoCreacion.exito) 
+    {
       respuestaJson.exito = true;
       return res.status(201).send(respuestaJson);
-    } else {
+    } else 
+    {
       res.status(400).send(respuestaJson);
     }
   })
-  .catch(error => {
+  .catch(error => 
+    {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
     'Ocurrió un error al intentar registrar el comentario. Intente más tarde.';
@@ -53,10 +64,12 @@ async (req, res) => {
 });
 
 router.get('/buscar',
-async (req, res) => {
+async (req, res) => 
+{
   const {idPublicacion, idComentario} = req.query;
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'comentarios/buscar',
     mensaje: 'ERROR: ' +
@@ -64,43 +77,54 @@ async (req, res) => {
     resultado: null
   };
 
-  if(!idPublicacion && !idComentario){
+  if(!idPublicacion && !idComentario)
+  {
     respuestaJson.mensaje = 'ERROR: ' +
       'Debe ingresar una id de publicación o una id de comentario.';
     return res.status(406).send(respuestaJson);
   }
-  if (idComentario) {
+  if (idComentario) 
+  {
     return obtenerComentarioDatos(idComentario)
-    .then((comentarios) => {
-      if (comentarios && comentarios.length > 0) {
+    .then((comentarios) => 
+    {
+      if (comentarios && comentarios.length > 0) 
+      {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
         return res.status(200).send(respuestaJson);
-      } else{
+      } else
+      {
         return res.status(404).send(respuestaJson);
       }
     })
-    .catch((error) => {
+    .catch((error) => 
+    {
       console.error('ERROR: ' + error);
       respuestaJson.mensaje = 'ERROR: ' +
         'Ocurrió un error al intentar buscar el comentario. Intente más tarde.';
       respuestaJson.resultado = error;
       return res.status(500).send(respuestaJson);
     });
-  } else{
+  } else
+  {
     obtenerComentarios(idPublicacion)
-    .then((comentarios) => {
-      if (comentarios && comentarios.length > 0) {
+    .then((comentarios) => 
+    {
+      if (comentarios && comentarios.length > 0) 
+      {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Comentarios encontrados.';
         respuestaJson.resultado = comentarios;
         return res.status(200).send(respuestaJson);
-      } else{
+      } else
+      {
         return res.status(404).send(respuestaJson);
       }
     })
-    .catch((error) => {
+    .catch((error) => 
+    {
       console.error('ERROR: ' + error);
       respuestaJson.mensaje = 'ERROR: ' +
         'Ocurrió un error al intentar buscar el comentario. Intente más tarde.';

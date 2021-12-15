@@ -1,3 +1,8 @@
+/*
+ Fecha: 05/10/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import express from 'express';
 import { validationResult, checkSchema } from 'express-validator';
 import Figura from '../modelos/figura.js';
@@ -11,10 +16,12 @@ const router = express.Router();
 router.post('/registrar', 
 ChecarTokenActivo,
 checkSchema(checkSchemaFigura),
-async (req, res) => {
+async (req, res) => 
+{
   const { errors } = validationResult(req);
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'figuras/registrar',
     mensaje: 'ERROR: No pudimos registrar la figura',
@@ -22,7 +29,8 @@ async (req, res) => {
     tokenValido: true
   };
 
-  if (errors.length > 0) {
+  if (errors.length > 0) 
+  {
     respuestaJson.mensaje = 'Se encontaron errores al validar la figura. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
@@ -32,34 +40,43 @@ async (req, res) => {
   var nuevaFigura = req.body;
 
   Figura.exists({ Nombre: nuevaFigura.Nombre })
-  .then((existe) => {
-    if (existe) {
+  .then((existe) => 
+  {
+    if (existe) 
+    {
       respuestaJson.mensaje = 'ERROR: El nombre: ' + nuevaFigura.Nombre + 
         ', ya pertenece a una figura. Cambielo por favor.';
       return res.status(422).send(respuestaJson);
-    } else {
-      if (req.files && req.files.Foto ) {
+    } else 
+    {
+      if (req.files && req.files.Foto ) 
+      {
         nuevaFigura.Foto = req.files.Foto;
-      } else{
+      } else
+      {
         respuestaJson.mensaje = 'ERROR: No se encuentra una foto adjunta';
         return res.status(406).send(respuestaJson).end();
       }
       
       guardarFigura(nuevaFigura)
-      .then(resultadoCreacion => {
+      .then(resultadoCreacion =>
+      {
         respuestaJson.mensaje = resultadoCreacion.mensaje;
         respuestaJson.resultado = resultadoCreacion.resultado;
 
-        if (resultadoCreacion.exito) {
+        if (resultadoCreacion.exito) 
+        {
           respuestaJson.exito = true;
           return res.status(201).send(respuestaJson);
-        } else {
+        } else 
+        {
           return res.status(400).send(respuestaJson);
         }
       });
     }
   })
-  .catch(error => {
+  .catch(error => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
       'Ocurrió un error inesperado al registrar la figura.';
@@ -69,10 +86,12 @@ async (req, res) => {
 });
 
 router.get('/buscar',
-async (req, res) => {
+async (req, res) => 
+{
   const { filtro, id } = req.query;
   
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'figuras/buscar',
     mensaje: 'ERROR: ' +
@@ -80,39 +99,49 @@ async (req, res) => {
     resultado: null
   };
 
-  if (id) {
+  if (id) 
+  {
     return obtenerFiguraDatos(id)
-    .then((figuraEncontrada) => {
-      if (figuraEncontrada && figuraEncontrada.length > 0) {
+    .then((figuraEncontrada) => 
+    {
+      if (figuraEncontrada && figuraEncontrada.length > 0) 
+      {
         respuestaJson.exito = true;
         respuestaJson.resultado = figuraEncontrada;
         respuestaJson.mensaje = 'ÉXITO: Figura encontrada.';
         return res.status(200).send(respuestaJson);
-      } else{
+      } else
+      {
         return res.status(404).send(respuestaJson);
       }
     })
-    .catch((error) => {
+    .catch((error) => 
+    {
       console.error('ERROR: ' + error);
       respuestaJson.mensaje = 'ERROR: ' +
         'Ocurrió un error al intentar buscar una figura. Intente más tarde.';
       respuestaJson.resultado = error;
       return res.status(500).send(respuestaJson);
     });
-  } else{
+  } else
+  {
     obtenerFiguras(filtro)
-    .then((figuras) => {
-      if (figuras && figuras.length > 0) {
+    .then((figuras) => 
+    {
+      if (figuras && figuras.length > 0) 
+      {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'ÉXITO: Figuras encontradas.';
         respuestaJson.resultado = figuras;
         return res.status(200).send(respuestaJson);
-      } else{
+      } else
+      {
         return res.status(404).send(respuestaJson);
       }
       
     })
-    .catch((error) => {
+    .catch((error) => 
+    {
       console.error('ERROR: ' + error);
       respuestaJson.mensaje = 'ERROR: ' +
         'Ocurrió un error al intentar buscar figuras. Intente más tarde.';

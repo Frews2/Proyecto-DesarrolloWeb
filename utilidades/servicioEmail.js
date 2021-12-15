@@ -1,13 +1,20 @@
+/*
+ Fecha: 20/09/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import { createTransport } from 'nodemailer';
 
 const USUARIO = process.env.EMAIL_SERVICE_SENDER;
 const CONTRASENIA = process.env.EMAIL_SERVICE_PASSWORD;
 
-const transporteDeCorreo = createTransport({
+const transporteDeCorreo = createTransport(
+{
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
-  auth: {
+  auth: 
+  {
     user: USUARIO,
     pass: CONTRASENIA
   },
@@ -16,10 +23,10 @@ const transporteDeCorreo = createTransport({
 const ENVIADOR_CORREO = '"FigureItOut Team" <figureitoutpage@gmail.com>';
 
 
-export default async function mandarCodigoConfirmacion(
-  email,
-  codigoVerificacion) {
-  const CORREO = {
+export default async function mandarCodigoConfirmacion(email, codigoVerificacion) 
+{
+  const CORREO = 
+  {
     from: ENVIADOR_CORREO,
     to: email,
     subject: 'Email de Confirmación para registro de cuenta',
@@ -29,14 +36,18 @@ export default async function mandarCodigoConfirmacion(
   };
 
   return transporteDeCorreo.sendMail(CORREO)
-  .then((respuesta) => {
-    if (respuesta.accepted) {
+  .then((respuesta) => 
+  {
+    if (respuesta.accepted) 
+    {
       return true;
-    } else{
+    } else
+    {
       return false;
     }
   })
-  .catch((error) => {
+  .catch((error) => 
+  {
     console.error('ERROR: No se mandó correo. ' + error);
     return false;
   });

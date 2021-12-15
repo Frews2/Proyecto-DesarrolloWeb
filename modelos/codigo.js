@@ -1,19 +1,28 @@
+/*
+ Fecha: 15/09/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import mongoose from 'mongoose';
 
 const { model, Schema } = mongoose;
 
-const codigoSchema = new Schema({
-  Correo: { 
+const codigoSchema = new Schema(
+{
+  Correo: 
+  { 
     type: String,
     required: true,
     match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ 
   },
-  Numero: { 
+  Numero: 
+  { 
     type: Number, 
     required: true,
     match: /^[0-9]+$/
   },
-  FechaCreacion: { 
+  FechaCreacion: 
+  { 
     type: Date, 
     default: Date.now, 
     expires: '30m'

@@ -1,3 +1,8 @@
+/*
+ Fecha: 20/09/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import express from 'express';
 import Codigo from '../modelos/codigo.js';
 import { checarCodigoConfirmacion, eliminarCodigoGuardado,
@@ -6,10 +11,12 @@ import { activarCuenta } from '../controladores/cuentaControlador.js';
 
 const router = express.Router();
 
-router.post('/verificar', async (req, res) => {
+router.post('/verificar', async (req, res) => 
+{
   const { Correo, Numero } = req.body;
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'codigos/verificar',
     mensaje: 'ERROR: No pudimos verificar el código de confirmación',
@@ -17,19 +24,26 @@ router.post('/verificar', async (req, res) => {
   };
 
   checarCodigoConfirmacion(Correo, Numero)
-  .then((resultado) => {
+  .then((resultado) => 
+  {
     respuestaJson.exito = resultado.exito;
     respuestaJson.mensaje = resultado.mensaje;
     
-    if (respuestaJson.exito) {
+    if (respuestaJson.exito) 
+    {
       activarCuenta(Correo)
-      .then((activado) => {
-        if (activado) {
+      .then((activado) => 
+      {
+        if (activado) 
+        {
           eliminarCodigoGuardado(Correo, Numero)
-          .then((eliminado) => {
-            if(eliminado){
+          .then((eliminado) => 
+          {
+            if(eliminado)
+            {
               respuestaJson.exito = true;
-            } else {
+            } else 
+            {
               respuestaJson.exito = false;
               respuestaJson.mensaje = 'Cuenta dada de alta pero, ' +
                 'codigo de verificacion persiste en sistema.';
@@ -37,17 +51,20 @@ router.post('/verificar', async (req, res) => {
           })
           .catch((error) => console.error('ERROR: ' + error));
           return res.status(200).send(respuestaJson);
-        } else {
+        } else 
+        {
           respuestaJson.mensaje = 'ERROR: No pudimos activar su cuenta';
           return res.status(500).send(respuestaJson);
         }
       })
       .catch((error) => console.errror('ERROR: ' + error));
-    } else {
+    } else 
+    {
       return res.status(400).send(respuestaJson);
     }
   })
-  .catch((error) => {
+  .catch((error) => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
       'Ocurrió un error al intentar validar el código. Intenté más tarde.';
@@ -56,10 +73,12 @@ router.post('/verificar', async (req, res) => {
   });
 });
 
-router.post('/enviarCorreo', async (req, res) => {
+router.post('/enviarCorreo', async (req, res) => 
+{
   const { Correo } = req.body;
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'codigos/enviarCorreo',
     mensaje: 'ERROR: No se mandó el correo. Intente más tarde.',
@@ -67,23 +86,30 @@ router.post('/enviarCorreo', async (req, res) => {
   };
 
   Codigo.exists({ Correo: req.body.Correo })
-  .then((existe) => {
-    if (!existe) {
+  .then((existe) => 
+  {
+    if (!existe) 
+    {
       respuestaJson.mensaje = 'ERROR: El correo ingresado ' + 
         'no se encuentra en el sistema. Debe ingresar su correo de registro.';
       return res.status(422).send(respuestaJson);
-    } else {
+    } else 
+    {
       enviarCorreo(Correo)
-      .then((resultado) => {
+      .then((resultado) => 
+      {
         respuestaJson.mensaje = resultado.mensaje;
-        if (resultado.exito) {
+        if (resultado.exito) 
+        {
           respuestaJson.exito = true;
           return res.status(200).send(respuestaJson);
-        } else {
+        } else 
+        {
           return res.status(500).send(respuestaJson);
         }
       })
-      .catch((error) => {
+      .catch((error) => 
+      {
         console.error('ERROR: ' + error);
         respuestaJson.mensaje = 'ERROR: ' +
           'Ocurrió un error al intentar mandar el correo. Intenté más tarde.';
@@ -92,7 +118,8 @@ router.post('/enviarCorreo', async (req, res) => {
       });
     }
   })
-  .catch((error) => {
+  .catch((error) => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
       'Ocurrió un error al intentar mandar el correo. Intenté más tarde.';

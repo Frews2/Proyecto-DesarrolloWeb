@@ -1,3 +1,8 @@
+/*
+ Fecha: 15/10/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import { 
   existeColeccionistaActivo } from '../controladores/cuentaControlador.js';
 import { existeFigura } from '../controladores/figuraControlador.js';
@@ -9,56 +14,77 @@ const MAX_TITULO = 50;
 const MIN_TEXTO = 10;
 const MAX_TEXTO = 1000;
 
-function esStringValido(texto, min, max) {
+function esStringValido(texto, min, max) 
+{
   texto = texto.replace(/\s/g,"");
   
-  if (texto.lenth < min || texto.length > max) {
+  if (texto.lenth < min || texto.length > max) 
+  {
     throw new Error(`ERROR: La cadena de caracteres debe ser entre 
     ${min} y ${max} de largo.`);
-  } else{
+  } else
+  {
     return true;
   }
 }
 
-function esCalificacionValida(valor) {
+function esCalificacionValida(valor) 
+{
   const MIN = 0;
   const MAX = 10;
-  if (valor < MIN || valor > MAX ) {
+  if (valor < MIN || valor > MAX ) 
+  {
   throw new Error(
     `ERROR: La calificacion debe ser un valor entre ${MIN} y ${MAX}.`);
-  } else{
-  return true;
+  } else
+  {
+    return true;
   }
 }
 
-const checkSchemaReview = {
-  Titulo: {
-    custom: {
-      options: (value) => {
+const checkSchemaReview = 
+{
+  Titulo: 
+  {
+    custom: 
+    {
+      options: (value) => 
+      {
         return esStringValido(value, MIN_TITULO, MAX_TITULO);
       },
     },
   },
-  Texto: {
-    custom: {
-      options: (value) => {
+  Texto: 
+  {
+    custom: 
+    {
+      options: (value) => 
+      {
         return esStringValido(value, MIN_TEXTO, MAX_TEXTO);
       },
     },
   },
-  Calificacion: {
-    custom: {
-      options: (value) => {
+  Calificacion: 
+  {
+    custom: 
+    {
+      options: (value) => 
+      {
         return esCalificacionValida(value);
       },
     },
   },
-  Foto: {
-    custom: {
-      options: async (value, { req }) => {
+  Foto: 
+  {
+    custom: 
+    {
+      options: async (value, { req }) => 
+      {
         return existeImagen(req.files.Foto, value)
-        .then((existe) => {
-          if (!existe) {
+        .then((existe) => 
+        {
+          if (!existe) 
+          {
             return Promise.reject('No existe una foto, ' +
               'por favor agregue una foto.');
           }
@@ -67,26 +93,37 @@ const checkSchemaReview = {
       },
     },
   },
-  NombreFoto: {
-    custom: {
-      options: (value) => {
+  NombreFoto: 
+  {
+    custom: 
+    {
+      options: (value) => 
+      {
         return esStringValido(value, MIN_NOMBRE, MAX_NOMBRE);
       },
     },
   },
-  DescripcionFoto: {
-    custom: {
-      options: (value) => {
+  DescripcionFoto: 
+  {
+    custom: 
+    {
+      options: (value) => 
+      {
         return esStringValido(value, MIN_DESCRIPCION, MAX_DESCRIPCION);
       },
     },
   },
-  TipoFoto: {
-    custom: {
-      options: async (value, { req }) => {
+  TipoFoto: 
+  {
+    custom: 
+    {
+      options: async (value, { req }) => 
+      {
         return esFormatoValido(req.body.TipoFoto, value)
-        .then((existe) => {
-          if (!existe) {
+        .then((existe) => 
+        {
+          if (!existe) 
+          {
             return Promise.reject('El tipo de foto no es valido. ' +
               'Por favor verifique que la foto tenga extensión correcta.');
           }
@@ -95,12 +132,17 @@ const checkSchemaReview = {
       },
     },
   },
-  IdFigura: {
-    custom: {
-      options: async (value, { req }) => {
+  IdFigura: 
+  {
+    custom: 
+    {
+      options: async (value, { req }) => 
+      {
         return existeFigura(req.body.IdFigura, value)
-        .then((existe) => {
-          if (!existe) {
+        .then((existe) => 
+        {
+          if (!existe) 
+          {
             return Promise.reject('La figura especificada de ' + 
               'la crítica no se encuentra en nuestro sistema. ' +
               'Por favor verifique la información.');
@@ -110,12 +152,17 @@ const checkSchemaReview = {
       },
     },
   },
-  IdCuenta: {
-    custom: {
-      options: async (value) => {
+  IdCuenta: 
+  {
+    custom: 
+    {
+      options: async (value) => 
+      {
         return existeColeccionistaActivo(value)
-        .then((existe) => {
-          if (!existe) {
+        .then((existe) => 
+        {
+          if (!existe) 
+          {
             return Promise.reject('El creador especificado no se ' +
               'encuentra activo o no es Coleccionista. ' +
               'Por favor verifique la información.');

@@ -1,10 +1,16 @@
+/*
+ Fecha: 06/10/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import { Guid } from 'js-guid';
 import Noticia from '../modelos/noticia.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
 import { ACTIVO, REPORTADO,
   ORDEN_DESCENDIENDO, INCLUIR } from '../utilidades/constantes.js';
 
-export async function guardarNoticia(nuevaNoticia) {
+export async function guardarNoticia(nuevaNoticia) 
+{
   const CARPETA = 'noticias';
   const { Foto } = nuevaNoticia;
   const GUID = Guid.newGuid();
@@ -12,37 +18,44 @@ export async function guardarNoticia(nuevaNoticia) {
   var archivoSinExtension = GUID + nuevaNoticia.NombreFoto;
   var rutaImagen = '';
 
-  var resultadoJson = {
+  var resultadoJson = 
+  {
     exito: false,
     origen: 'noticia/Registrar',
     mensaje: 'ERROR: No pudimos registrar la noticia. Intenté de nuevo.',
     resultado: null
   };
 
-  if(Foto.name != null){
+  if(Foto.name != null)
+  {
     Foto.name = nombreArchivo;
-  } else{
+  } else
+  {
     resultadoJson.mensaje = 'ERROR: No se tiene una foto adjuntada.';
     return resultadoJson;
   }
 
   const respuestaGuardado = await guardarImagen(Foto, CARPETA)
-  .then((resultado) => {
+  .then((resultado) => 
+  {
     return resultado;
   })
-  .catch((err) => {
+  .catch((err) => 
+  {
     console.error(err);
     return err;
   });
 
-  if (!respuestaGuardado.exito) {
+  if (!respuestaGuardado.exito) 
+  {
     resultadoJson.mensaje = respuestaGuardado.mensaje;
     return resultadoJson;
   }
 
   rutaImagen = respuestaGuardado.rutaImagen;
 
-  var noticia = {
+  var noticia = 
+  {
     IdPublicacion: GUID,
     Titulo: nuevaNoticia.Titulo,
     IdCuenta: nuevaNoticia.IdCuenta,
@@ -58,15 +71,18 @@ export async function guardarNoticia(nuevaNoticia) {
   var noticiaAGuardar = new Noticia(noticia);
 
   return noticiaAGuardar.save()
-  .then((seGuardo) => {
-    if(seGuardo) {
+  .then((seGuardo) => 
+  {
+    if(seGuardo) 
+    {
       resultadoJson.exito = true;
       resultadoJson.mensaje = 'ÉXITO: Noticia guardada';
       resultadoJson.resultado = 'Ruta de imagen es: ' + seGuardo.Foto;
     }
     return resultadoJson;
   })
-  .catch(error => {
+  .catch(error => 
+  {
     console.error(error);
     resultadoJson.mensaje = 'ERROR: ' +
       'Ocurrió un error al intentar crear la noticia. Intenté de nuevo.';
@@ -74,20 +90,24 @@ export async function guardarNoticia(nuevaNoticia) {
   });
 }
 
-export async function agregarComentarioANoticia(idPublicacion, idComentario) {
+export async function agregarComentarioANoticia(idPublicacion, idComentario) 
+{
   var seAgregoComentario = false;
 
-  if(Noticia.exists({IdPublicacion: idPublicacion, Estatus: ACTIVO})){
+  if(Noticia.exists({IdPublicacion: idPublicacion, Estatus: ACTIVO}))
+  {
     return Noticia.updateOne(
       {IdPublicacion: idPublicacion},
       { $push: {comentarios: idComentario} })
-    .then(seGuardo => {
+    .then(seGuardo => 
+    {
       if(seGuardo){
         seAgregoComentario = true;
       } 
       return seAgregoComentario;
     })
-    .catch(error => {
+    .catch(error => 
+    {
       console.error(error);
       return seAgregoComentario;
     });
@@ -95,21 +115,26 @@ export async function agregarComentarioANoticia(idPublicacion, idComentario) {
   return seAgregoComentario;
 }
 
-export async function reportarNoticia(id) {
+export async function reportarNoticia(id) 
+{
   var seReporto = false;
   
-  if(Noticia.exists({IdPublicacion: id, Estatus: ACTIVO })){
+  if(Noticia.exists({IdPublicacion: id, Estatus: ACTIVO }))
+  {
     return Noticia.updateOne(
       {IdPublicacion: id},
       {Estatus: REPORTADO}
     )
-    .then(seActualizo => {
-      if(seActualizo){
+    .then(seActualizo => 
+    {
+      if(seActualizo)
+      {
         seReporto = true;
       } 
       return seReporto;
     })
-    .catch(error => {
+    .catch(error => 
+    {
       console.error(error);
       return seReporto;
     });
@@ -117,15 +142,19 @@ export async function reportarNoticia(id) {
   return seReporto;
 }
 
-export async function obtenerNoticias(texto) {
+export async function obtenerNoticias(texto) 
+{
   var filtro = {};
 
-  if (texto) {
-    filtro.$or = [
+  if (texto) 
+  {
+    filtro.$or = 
+    [
       { Titulo: { $regex: texto, $options: INCLUIR } },
       { Etiquetas: { $regex: texto, $options: INCLUIR } },
     ];
-    filtro.$and = [
+    filtro.$and = 
+    [
       { Estatus: ACTIVO }
     ];
 
@@ -134,25 +163,31 @@ export async function obtenerNoticias(texto) {
     .then((noticias) => {
       return noticias;
     })
-    .catch((err) => {
+    .catch((err) => 
+    {
       console.error(err);
       return [];
     });
-  } else {
+  } else 
+  {
     return await Noticia.find({ Estatus: ACTIVO });
   }
 }
   
-export async function obtenerNoticiaDatos(id) {
+export async function obtenerNoticiaDatos(id) 
+{
   return await Noticia.find({ IdPublicacion: id, Estatus: ACTIVO });
 }
 
-export async function esNoticiaActiva(id) {
+export async function esNoticiaActiva(id) 
+{
   return Noticia.exists({ IdPublicacion: id, Estatus: ACTIVO })
-  .then((existe) => {
+  .then((existe) => 
+  {
     return existe;
   })
-  .catch((err) => {
+  .catch((err) => 
+  {
     console.error(err);
     return false;
   });

@@ -1,3 +1,8 @@
+/*
+ Fecha: 20/09/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import bcrypt  from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import express from 'express';
@@ -13,10 +18,12 @@ const router = express.Router();
 
 router.post('/registrar',
 checkSchema(esSchemaCuentaValido),
-async (req, res) => {
+async (req, res) => 
+{
   var usuario = req.body;
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'cuentas/registrar',
     mensaje: 'ERROR: No pudimos registrar su cuenta',
@@ -26,7 +33,8 @@ async (req, res) => {
 
   const { errors } = validationResult(req);
 
-  if (errors.length > 0) {
+  if (errors.length > 0) 
+  {
     respuestaJson.mensaje = 'Se encontaron errores al validar la cuenta. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
@@ -34,27 +42,34 @@ async (req, res) => {
   }
 
   existeCuenta(usuario.Email)
-  .then((existe) => {
-    if (existe) {
+  .then((existe) => 
+  {
+    if (existe) 
+    {
       respuestaJson.mensaje = 'ERROR: El correo: ' + usuario.Email + 
         ', ya pertenece a una cuenta. Utilize otro email.';
       return res.status(422).send(respuestaJson);
-    } else {
+    } else 
+    {
       guardarCuenta(usuario)
-      .then(resultadoCreacion => {
+      .then(resultadoCreacion => 
+      {
         respuestaJson.mensaje = resultadoCreacion.mensaje;
         respuestaJson.resultado = resultadoCreacion.resultado;
           
-        if (resultadoCreacion.exito) {
+        if (resultadoCreacion.exito) 
+        {
           respuestaJson.exito = true;
           return res.status(201).send(respuestaJson);
-        } else {
+        } else 
+        {
           return res.status(400).send(respuestaJson);
         }
       });
     }
   })
-  .catch((error) => {
+  .catch((error) => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
       'Ocurrió un error inesperado al registrar el usuario.';
@@ -63,8 +78,10 @@ async (req, res) => {
   });
 });
 
-router.post('/login', async (req, res) => {
-  var respuestaJson = {
+router.post('/login', async (req, res) => 
+{
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'cuentas/login',
     mensaje: 'ERROR: Autentificación fallida. No se pudo iniciar sesión',
@@ -73,54 +90,64 @@ router.post('/login', async (req, res) => {
   };
 
   return Cuenta.findOne({ Email: req.body.Email })
-  .then((cuentaEncontrada) => {
-    if (cuentaEncontrada == null) {
+  .then((cuentaEncontrada) => 
+  {
+    if (cuentaEncontrada == null) 
+    {
       return res.status(401).send(respuestaJson);    
-    } else {
-      if(cuentaEncontrada.Estatus == REPORTADO){
+    } else 
+    {
+      if(cuentaEncontrada.Estatus == REPORTADO)
+      {
         respuestaJson.mensaje = 'Su cuenta esta baneada. ' + 
           'No puede accesar el sistema';
-          return res.status(423).send(respuestaJson).end();  
+        return res.status(423).send(respuestaJson).end();  
       }
 
-      if(cuentaEncontrada.Estatus == PENDIENTE){
+      if (cuentaEncontrada.Estatus == PENDIENTE)
+      {
         respuestaJson.exito = true;
         respuestaJson.mensaje = 'Su cuenta necesita ser verificada. ' + 
           'Solicita correo de verificación para dar de alta su cuenta';
-          return res.status(425).send(respuestaJson).end(); 
+        return res.status(425).send(respuestaJson).end(); 
       }
 
       bcrypt.compare(req.body.Password,
         cuentaEncontrada.Password,
-        (err, respuesta) => {
-          if (err) {
+        (err, respuesta) => 
+        {
+          if (err) 
+          {
             return res.status(401).send(respuestaJson);
           }
 
-          if (respuesta) {
+          if (respuesta) 
+          {
             const TOKEN = jwt.sign(
-              {
-                IdCuenta: cuentaEncontrada.IdCuenta,
-                Email: cuentaEncontrada.Email,
-                TipoCuenta: cuentaEncontrada.TipoCuenta,
-                Apodo: cuentaEncontrada.Apodo
-              },
-              process.env.JWT_KEY, 
-              {
-                expiresIn: '2h'
-              }
-            );
+            {
+              IdCuenta: cuentaEncontrada.IdCuenta,
+              Email: cuentaEncontrada.Email,
+              TipoCuenta: cuentaEncontrada.TipoCuenta,
+              Apodo: cuentaEncontrada.Apodo
+            },
+            process.env.JWT_KEY, 
+            {
+              expiresIn: '2h'
+            });
+
             respuestaJson.exito = true;
             respuestaJson.mensaje = 'Éxito: Sesión iniciada.';
             respuestaJson.resultado = TOKEN;
             return res.status(200).send(respuestaJson);
-          } else {
+          } else 
+          {
             return res.status(401).send(respuestaJson);
           }
       });
     }
   })
-  .catch((error) => {
+  .catch((error) => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: Ocurrió un error inesperado ' +
       'y no pudimos iniciar sesión. Intente más tarde.';
@@ -131,8 +158,10 @@ router.post('/login', async (req, res) => {
 
 router.get('/verificarPeriodista', 
 ChecarTokenActivo,
-async (req, res) => {
-  var respuestaJson = {
+async (req, res) => 
+{
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'cuentas/verificarPeriodista',
     mensaje: 'ERROR: El correo no pertenece a periodista activo.',
@@ -141,20 +170,24 @@ async (req, res) => {
   };
   
   const EXISTE = await existePeriodistaActivo(req.body.IdCuenta);
-  if (EXISTE) {
+  if (EXISTE) 
+  {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un periodista activo';
     return res.status(202).send(respuestaJson);
-  } else {
+  } else 
+  {
     return res.status(405).send(respuestaJson);
   }
 });
 
 router.get('/verificarColeccionista', 
 ChecarTokenActivo,
-async (req, res) => {
-  var respuestaJson = {
+async (req, res) => 
+{
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'cuentas/verificarColeccionista',
     mensaje: 'ERROR: El correo no pertenece a coleccionista activo',
@@ -163,12 +196,14 @@ async (req, res) => {
   };
   
   const EXISTE = await existeColeccionistaActivo(req.body.IdCuenta);
-  if (EXISTE) {
+  if (EXISTE) 
+  {
     respuestaJson.exito = true;
     respuestaJson.resultado = true;
     respuestaJson.mensaje = 'ÉXITO: El correo es de un coleccionista activo';
     return res.status(202).send(respuestaJson);
-  } else {
+  } else 
+  {
     return res.status(405).send(respuestaJson);
   }
 });

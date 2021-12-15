@@ -1,3 +1,8 @@
+/*
+ Fecha: 12/09/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 export const ACTIVO = 'Activo';
 export const REPORTADO = 'Reportado';
 export const PENDIENTE = 'Pendiente';

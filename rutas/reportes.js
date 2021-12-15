@@ -1,3 +1,8 @@
+/*
+ Fecha: 14/11/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import express from 'express';
 import { validationResult, checkSchema } from 'express-validator';
 import { guardarReporte } from '../controladores/reporteControlador.js';
@@ -9,10 +14,12 @@ const router = express.Router();
 router.post('/registrar', 
 ChecarTokenActivo,
 checkSchema(checkSchemaReporte),
-async (req, res) => {
+async (req, res) => 
+{
   const { errors } = validationResult(req);
 
-  var respuestaJson = {
+  var respuestaJson = 
+  {
     exito: false,
     origen: 'reportes/registrar',
     mensaje: 'ERROR: No pudimos registrar su reporte',
@@ -20,7 +27,8 @@ async (req, res) => {
     tokenValido: true
   };
 
-  if (errors.length > 0) {
+  if (errors.length > 0) 
+  {
     respuestaJson.mensaje = 'Se encontaron errores al validar el reporte. ' +
       'Corrijalos por favor.';
     respuestaJson.resultado = errors;
@@ -30,19 +38,23 @@ async (req, res) => {
   var nuevoReporte = req.body;
   
   guardarReporte(nuevoReporte)
-  .then(resultadoCreacion => {
+  .then(resultadoCreacion => 
+  {
     respuestaJson.mensaje = resultadoCreacion.mensaje;
     respuestaJson.resultado = resultadoCreacion.resultado;
 
-    if (resultadoCreacion.exito) {
+    if (resultadoCreacion.exito) 
+    {
       
       respuestaJson.exito = true;
       return res.status(201).send(respuestaJson);
-    } else {
+    } else 
+    {
       res.status(400).send(respuestaJson);
     }
   })
-  .catch(error => {
+  .catch(error => 
+  {
     console.error('ERROR: ' + error);
     respuestaJson.mensaje = 'ERROR: ' +
     'Ocurrió un error al intentar registrar el reporte. Intente más tarde.';

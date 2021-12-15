@@ -1,19 +1,28 @@
+/*
+ Fecha: 04/10/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import { Guid } from 'js-guid';
 import Figura from '../modelos/figura.js';
 import { guardarImagen } from '../utilidades/servicioImagen.js';
 import { INCLUIR } from '../utilidades/constantes.js';
 
-export async function existeFigura(idFigura) {
+export async function existeFigura(idFigura) 
+{
   return Figura.exists({ IdFigura: idFigura})
-  .then((existe) => {
+  .then((existe) => 
+  {
     return existe;
   })
-  .catch((err) => {
+  .catch((err) => 
+  {
     console.error(err);
     return false;
   });
 }
-export async function guardarFigura(nuevaFigura) {
+export async function guardarFigura(nuevaFigura) 
+{
   const CARPETA = 'figuras';
   const { Foto } = nuevaFigura;
   const GUID = Guid.newGuid();
@@ -21,36 +30,43 @@ export async function guardarFigura(nuevaFigura) {
   var archivoSinExtension = GUID + nuevaFigura.NombreFoto;
   var rutaImagen = '';
 
-  var resultadoJson = {
+  var resultadoJson = 
+  {
     exito: false,
     origen: 'figura/Registrar',
     mensaje: 'ERROR: No pudimos registrar la figura. Intenté de nuevo.',
   };
 
-  if(Foto.name != null){
+  if(Foto.name != null)
+  {
     Foto.name = nombreArchivo;
-  } else{
+  } else
+  {
     resultadoJson.mensaje = 'ERROR: No se tiene una foto adjuntada.';
     return resultadoJson;
   }
 
   const respuestaGuardado = await guardarImagen(Foto, CARPETA)
-  .then((resultado) => {
+  .then((resultado) => 
+  {
     return resultado;
   })
-  .catch((err) => {
+  .catch((err) => 
+  {
     console.error(err);
     return err;
   });
 
-  if (!respuestaGuardado.exito) {
+  if (!respuestaGuardado.exito) 
+  {
     resultadoJson.mensaje = respuestaGuardado.mensaje;
     return resultadoJson;
   }
   
   rutaImagen = respuestaGuardado.rutaImagen;
 
-  var figura = {
+  var figura = 
+  {
     IdFigura: GUID,
     Nombre: nuevaFigura.Nombre,
     Altura: nuevaFigura.Altura,
@@ -65,15 +81,18 @@ export async function guardarFigura(nuevaFigura) {
   var figuraAGuardar = new Figura(figura);
 
   return figuraAGuardar.save()
-  .then((seGuardo) => {
-    if(seGuardo) {
+  .then((seGuardo) => 
+  {
+    if(seGuardo) 
+    {
       resultadoJson.exito = true;
       resultadoJson.mensaje = 'ÉXITO: Figura guardada.';
       resultadoJson.resultado = 'Ruta de imagen es: ' + seGuardo.Foto;
     }
     return resultadoJson;
   })
-  .catch(error => {
+  .catch(error => 
+  {
     console.error(error);
     resultadoJson.mensaje = 'ERROR: ' +
       'Ocurrió un error al intentar crear la figura. Intenté de nuevo.';
@@ -81,27 +100,34 @@ export async function guardarFigura(nuevaFigura) {
   });
 }
 
-export async function obtenerFiguras(texto) {
+export async function obtenerFiguras(texto) 
+{
   var filtro = {};
-  if (texto) {
-    filtro.$or = [
+  if (texto) 
+  {
+    filtro.$or = 
+    [
       { Nombre: { $regex: texto, $options: INCLUIR } },
       { Marca: { $regex: texto, $options: INCLUIR } },
     ];
 
     return Figura.find(filtro)
-    .then((figuras) => {
+    .then((figuras) => 
+    {
       return figuras;
     })
-    .catch((err) => {
+    .catch((err) => 
+    {
       console.error(err);
       return [];
     });
-  } else {
+  } else 
+  {
     return await Figura.find();
   }
 }
 
-export async function obtenerFiguraDatos(identificador) {
+export async function obtenerFiguraDatos(identificador) 
+{
   return await Figura.find({ IdFigura: identificador });
 }

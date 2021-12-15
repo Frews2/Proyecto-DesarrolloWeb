@@ -1,23 +1,31 @@
+/*
+ Fecha: 6/11/2021
+ Autor(s): Ricardo Moguel Sánchez
+*/
+
 import { Guid } from 'js-guid';
 import Reporte from '../modelos/reporte.js';
 import { reportarNoticia } from '../controladores/noticiaControlador.js';
 import { reportarReview } from '../controladores/reviewControlador.js';
 import { reportarComentario } from '../controladores/comentarioControlador.js';
 
-export async function guardarReporte(nuevoReporte) {
+export async function guardarReporte(nuevoReporte) 
+{
   const NOTICIA = 'Noticia';
   const REVIEW = 'Review';
   const COMENTARIO = 'Comentario';
   const GUID = Guid.newGuid();
 
-  var resultadoJson = {
+  var resultadoJson = 
+  {
     exito: false,
     origen: 'reporte/Registrar',
     mensaje: 'Error: No pudimos registrar el reporte. Intenté de nuevo.',
     resultado: null
   };
 
-  var reporte = {
+  var reporte = 
+  {
     IdReporte: GUID,
     IdPublicacion: nuevoReporte.IdPublicacion,
     TipoPublicacion: nuevoReporte.TipoPublicacion,
@@ -28,11 +36,14 @@ export async function guardarReporte(nuevoReporte) {
   var reporteAGuardar = new Reporte(reporte);
 
   return reporteAGuardar.save()
-  .then((seGuardo) => {
-    if(seGuardo) {
+  .then((seGuardo) => 
+  {
+    if(seGuardo) 
+    {
       var seActualizo = false;
 
-      switch(reporteAGuardar.TipoPublicacion){
+      switch(reporteAGuardar.TipoPublicacion)
+      {
         case NOTICIA: 
           seActualizo = reportarNoticia(reporteAGuardar.IdPublicacion);
           break;
@@ -44,17 +55,20 @@ export async function guardarReporte(nuevoReporte) {
           break;  
       }
 
-      if(seActualizo){
+      if(seActualizo)
+      {
         resultadoJson.exito = true;
         resultadoJson.mensaje = 'ÉXITO: Reporte Guardado.';
-      } else{
+      } else
+      {
         resultadoJson.mensaje = 'ERROR: No se logró reportar la publicación. ' +
         'Intente otra vez';
       }
     }
     return resultadoJson;
   })
-  .catch(error => {
+  .catch(error => 
+  {
     console.error('ERROR: ' + error);
     resultadoJson.mensaje = 'ERROR: ' +
       'Ocurrió un error al intentar registrar el reporte. Intenté de nuevo.';
