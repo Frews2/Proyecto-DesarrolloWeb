@@ -71,7 +71,7 @@ export class VerificacionCorreo extends Component
                     {
                         window.alert(data.mensaje);
                         window.alert("Favor de iniciar sesion con su cuenta verificada");
-                        sessionStorage.setItem('correo',null);
+                        sessionStorage.removeItem('correo');
                         window.location.pathname = '/';
                     }
                     else
