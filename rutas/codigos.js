@@ -70,7 +70,7 @@ router.post('/enviarCorreo', async (req, res) => {
     respuestaJson.mensaje = resultado.mensaje;
       
     if (resultado.exito) {
-      resultado.exito = true;
+      respuestaJson.exito = true;
       return res.status(200).send(respuestaJson);
     } else {
       return res.status(500).send(respuestaJson);
