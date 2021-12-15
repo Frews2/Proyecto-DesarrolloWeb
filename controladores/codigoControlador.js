@@ -12,9 +12,9 @@ export async function enviarCorreo(email) {
   };
 
   return Codigo.find({ Correo: email })
-  .then(codigoObtenido => {
+  .then(async codigoObtenido => {
     if (codigoObtenido) {
-      seMando = mandarCodigoConfirmacion(
+      seMando = await mandarCodigoConfirmacion(
         codigoObtenido.email,
         codigoObtenido.Numero);
 
