@@ -15,7 +15,7 @@ export async function enviarCorreo(email) {
   .then(async codigoObtenido => {
     if (codigoObtenido) {
       seMando = await mandarCodigoConfirmacion(
-        codigoObtenido.email,
+        codigoObtenido.Correo,
         codigoObtenido.Numero);
 
         if(seMando){
