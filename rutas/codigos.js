@@ -1,4 +1,5 @@
 import express from 'express';
+import Codigo from '../modelos/codigo.js';
 import { checarCodigoConfirmacion, eliminarCodigoGuardado,
   enviarCorreo } from '../controladores/codigoControlador.js';
 import { activarCuenta } from '../controladores/cuentaControlador.js';
@@ -65,15 +66,30 @@ router.post('/enviarCorreo', async (req, res) => {
     resultado: null
   };
 
-  enviarCorreo(Correo)
-  .then((resultado) => {
-    respuestaJson.mensaje = resultado.mensaje;
-      
-    if (resultado.exito) {
-      respuestaJson.exito = true;
-      return res.status(200).send(respuestaJson);
+  Codigo.exists({ Correo: req.body.Correo })
+  .then((existe) => {
+    if (!existe) {
+      respuestaJson.mensaje = 'ERROR: El correo ingresado ' + 
+        'no se encuentra en el sistema. Debe ingresar su correo de registro.';
+      return res.status(422).send(respuestaJson);
     } else {
-      return res.status(500).send(respuestaJson);
+      enviarCorreo(Correo)
+      .then((resultado) => {
+        respuestaJson.mensaje = resultado.mensaje;
+        if (resultado.exito) {
+          respuestaJson.exito = true;
+          return res.status(200).send(respuestaJson);
+        } else {
+          return res.status(500).send(respuestaJson);
+        }
+      })
+      .catch((error) => {
+        console.error('ERROR: ' + error);
+        respuestaJson.mensaje = 'ERROR: ' +
+          'Ocurrió un error al intentar mandar el correo. Intenté más tarde.';
+        respuestaJson.resultado = error;
+        return res.status(500).send(respuestaJson);
+      });
     }
   })
   .catch((error) => {
