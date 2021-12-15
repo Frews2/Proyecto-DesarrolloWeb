@@ -13,7 +13,7 @@ export async function enviarCorreo(email) {
   .then(codigoObtenido => {
     if (codigoObtenido) {
       resultadoJson.exito = mandarCodigoConfirmacion(
-        codigoObtenido.Correo,
+        email,
         codigoObtenido.Numero);
         if(resultadoJson.exito){
           resultadoJson.mensaje = 'ÉXITO: Correo mandado';
