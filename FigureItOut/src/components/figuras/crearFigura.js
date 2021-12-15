@@ -5,7 +5,7 @@ import { servicioRegistroFiguras } from "../../servicios/servicioFiguras.js";
 const LONGITUD_MAXIMA_ARCHIVONOMBRE = 30;
 const REGEX_ESPACIODOBLE=/ +(?= )/g;
 const REGEX_ESPACIOBLANCO=/\s/g;
-const LONGITUD_MINIMA_GENERAL= 0;
+const LONGITUD_MINIMA_GENERAL= 2;
 const LONGITUD_MAXIMA_GENERAL=21;
 
 export class SubirFigura extends Component 
@@ -38,7 +38,7 @@ export class SubirFigura extends Component
 
     validarGeneral()
     {
-        if(this.validarInput(this.state.form.Nombre) === true && this.state.form.Altura.length >= 1 
+        if(this.validarInput(this.state.form.Nombre) === true && this.state.form.Altura.length > 0 
         && this.state.form.Altura.length < 4 && this.validarInput(this.state.form.Material) === true
         && this.validarInput(this.state.form.Marca) === true && this.state.form.Imagen != null  
         && this.validarInput(this.state.form.DescripcionImagen) === true 
